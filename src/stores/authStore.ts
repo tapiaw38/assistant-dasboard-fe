@@ -9,8 +9,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const { loginMutation, meUserQuery } = useAuthQueries()
 
-  const loginUser = (credentials: LoginParams) => {
-    loginMutation.mutate(credentials, {
+  const loginUser = (params: LoginParams) => {
+    loginMutation.mutate(params, {
       onSuccess: (response: LoginResponse) => {
         user.value = response.data
         token.value = response.token
