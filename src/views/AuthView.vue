@@ -26,6 +26,9 @@ const loginWithGoogle = async (code: string) => {
 }
 
 const handleRedirect = async (to: string) => {
+  if (to === 'auth') {
+    toggleView()
+  }
   return router.push(to)
 }
 </script>
@@ -41,7 +44,7 @@ const handleRedirect = async (to: string) => {
               <AuthLogin @redirect="handleRedirect" />
             </template>
             <template v-else>
-              <AuthRegister />
+              <AuthRegister @redirect="handleRedirect" />
             </template>
             <div class="flex flex-row mt-3 justify-content-center flex-column align-content-center">
               <GoogleButton @code="loginWithGoogle" v-if="!isLoginPending" />
@@ -49,7 +52,7 @@ const handleRedirect = async (to: string) => {
             </div>
           </div>
         </div>
-        <p class="text-center text-sm text-gray-500" @click="toggleView">
+        <p class="text-center text-sm text-gray-500 cursor-pointer" @click="toggleView">
           {{ !isLogin ? isLoginMessage : isRegisterMessage }}
         </p>
       </template>
@@ -59,10 +62,4 @@ const handleRedirect = async (to: string) => {
   </div>
 </template>
 
-<style scoped>
-.auth-view {
-  height: 100vh;
-  width: 100vw;
-  background-color: #f5f5f5;
-}
-</style>
+<style scoped></style>

@@ -107,7 +107,7 @@ watch(
 
 <template>
   <div class="dashboard md:col-6" v-if="!isMeUserPending && isMeUserSuccess">
-    <h1 class="text-3xl font-bold mb-4 mt-4 text-200 text-primary">Perfile del Negocio</h1>
+    <h1 class="text-3xl font-bold mb-4 mt-4 text-200 text-primary">Perfil del Negocio</h1>
     <Panel :header="'Hola ' + user?.first_name">
       <p class="text-md font-bold mb-4">Agregar y editar asistentes para tu negocio</p>
 

@@ -19,8 +19,13 @@ const userCredentials = ref<LoginParams>({
 
 const handleSubmit = async (e: Event) => {
   e.preventDefault()
-  await loginUser(userCredentials.value)
-  emit('redirect', 'dashboard')
+
+  try {
+    await loginUser(userCredentials.value)
+    emit('redirect', 'dashboard')
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error)
+  }
 }
 </script>
 

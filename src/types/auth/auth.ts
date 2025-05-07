@@ -32,3 +32,15 @@ export interface LoginResponse {
 export interface MeUserResponse {
   data: User
 }
+
+export interface RegisterParams {
+  first_name: string
+  last_name: string
+  email: string
+  username: string
+  password: string
+}
+
+export interface RegisterResponse {
+  data: User
+}

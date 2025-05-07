@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import DefaultLayout from '@/components/core/shared/DefaultLayout/DefaultLayout.vue'
 import { isAuthenticatedGuard } from './auth'
 
 const router = createRouter({
@@ -7,19 +7,25 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      beforeEnter: [isAuthenticatedGuard],
-      component: () => import('../views/DashboardView.vue'),
-    },
-    {
-      path: '/auth',
-      name: 'auth',
-      component: () => import('../views/AuthView.vue'),
+      component: DefaultLayout,
+      children: [
+        {
+          path: '',
+          name: 'home',
+          component: () => import('../views/HomeView.vue'),
+        },
+        {
+          path: '/dashboard',
+          name: 'dashboard',
+          beforeEnter: [isAuthenticatedGuard],
+          component: () => import('../views/DashboardView.vue'),
+        },
+        {
+          path: '/auth',
+          name: 'auth',
+          component: () => import('../views/AuthView.vue'),
+        },
+      ],
     },
   ],
 })

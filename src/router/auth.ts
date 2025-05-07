@@ -8,8 +8,13 @@ export const isAuthenticatedGuard = async (
 ) => {
   const { meUser, isMeUserSuccess } = useAuth()
 
-  await meUser()
+  try {
+    await meUser()
+  } catch (error) {
+    console.error('Error al verificar sesión:', error)
+    next({ name: 'auth' })
+  }
 
   if (isMeUserSuccess.value) next()
-  else next({ name: 'login' })
+  else next({ name: 'auth' })
 }

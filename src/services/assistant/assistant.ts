@@ -7,7 +7,7 @@ import type {
 
 export const addAssistant = async (assistantProfile: AssistantProfileParams) => {
   const api = server({
-    baseURL: 'http://assistant.localhost',
+    baseURL: import.meta.env.VITE_ASSISTANT_BASE_URL,
   })
 
   try {
@@ -20,7 +20,7 @@ export const addAssistant = async (assistantProfile: AssistantProfileParams) => 
 
 export const getAssistant = async (): Promise<AssistantProfileResponse> => {
   const api = server({
-    baseURL: 'http://assistant.localhost',
+    baseURL: import.meta.env.VITE_ASSISTANT_BASE_URL,
   })
 
   try {
@@ -33,7 +33,7 @@ export const getAssistant = async (): Promise<AssistantProfileResponse> => {
 
 export const updateAssistant = async (assistantProfile: AssistantProfileUpdateParams) => {
   const api = server({
-    baseURL: 'http://assistant.localhost',
+    baseURL: import.meta.env.VITE_ASSISTANT_BASE_URL,
   })
 
   try {
