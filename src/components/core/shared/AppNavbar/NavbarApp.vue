@@ -7,13 +7,13 @@ import { useAuth } from '@/composables/useAuth'
 const { logoutUser, user, meUser } = useAuth()
 const router = useRouter()
 
-onMounted(() => {
-  meUser()
+onMounted(async () => {
+  await meUser()
 })
 
-onUpdated(() => {
+onUpdated(async () => {
   if (!user.value) return
-  meUser()
+  await meUser()
 })
 
 const routerLinks = [
@@ -48,8 +48,10 @@ const logoutUseHandler = async () => {
     <div class="navbar-center">
       <template v-for="link in routerLinks" :key="link.url">
         <RouterLink :to="link.url" class="nav-item">
-          <i :class="link.icon" />
-          <span class="ml-1 font-light">{{ link.label }}</span>
+          <div :style="{ display: link.label === 'Panel' && !user ? 'none' : 'block' }">
+            <i :class="link.icon" />
+            <span class="ml-1 font-light">{{ link.label }}</span>
+          </div>
         </RouterLink>
         <span class="mx-2">/</span>
       </template>
@@ -72,7 +74,7 @@ const logoutUseHandler = async () => {
   </nav>
 
   <Popover ref="op">
-    <div class="flex flex-col gap-4 w-[25rem]">
+    <div class="flex flex-col gap-2 w-[25rem]">
       <div class="flex flex-column gap-2">
         <ul class="list-none">
           <li class="border-t border-gray-200 mt-4"></li>

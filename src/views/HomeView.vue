@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import TextPlugin from 'gsap/TextPlugin'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
-
 import AppFooter from '@/components/core/shared/AppFooter/AppFooter.vue'
+
+const router = useRouter()
+
 gsap.registerPlugin(ScrollTrigger, TextPlugin)
 
 const hero = ref<HTMLElement | null>(null)
@@ -16,6 +19,7 @@ const featuresText2 = ref<HTMLElement | null>(null)
 const howItWorks = ref<HTMLElement | null>(null)
 const cta = ref<HTMLElement | null>(null)
 const plans = ref<HTMLElement | null>(null)
+const arrow = ref<HTMLElement | null>(null)
 
 const featuresList = [
   {
@@ -150,9 +154,31 @@ onMounted(() => {
     })
   }
 
+  if (arrow.value) {
+    gsap.from(arrow.value, {
+      opacity: 0,
+      y: 30,
+      duration: 1,
+      ease: 'power2.out',
+      onComplete: () => {
+        gsap.to(arrow.value, {
+          y: '+=10',
+          duration: 0.8,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+        })
+      },
+    })
+  }
+
   fadeUp(howItWorks.value!)
   fadeUp(cta.value!)
 })
+
+function scrollToSection() {
+  features.value?.scrollIntoView({ behavior: 'smooth' })
+}
 </script>
 
 <template>
@@ -166,11 +192,13 @@ onMounted(() => {
         Impulsa tu eCommerce con <code class="font-light">Seely</code>
       </h1>
       <p class="text-xl mb-6">El asistente virtual que aumenta tus ventas y automatiza tu tienda</p>
-      <Button
-        label="Ver más"
-        class="p-button-warning font-bold max-w-25"
-        @click="$el.scrollIntoView()"
-      />
+      <div
+        class="flex flex-column gap-2 absolute bottom-0 right-0 left-0 mb-8 pb-8"
+        @click="scrollToSection()"
+      >
+        <label for="scrollToSection" class="font-bold cursor-pointer">Ver más</label>
+        <i ref="arrow" class="pi pi-arrow-down font-bold text-1sm cursor-pointer"></i>
+      </div>
     </section>
 
     <!-- FEATURES -->
@@ -277,6 +305,26 @@ onMounted(() => {
       >
         <Card class="text-center card p-4">
           <template #title>
+            <h3 class="text-xl font-bold">Free Beta</h3>
+          </template>
+          <template #content>
+            <p class="text-lg font-light mb-4">Ideal para probar Seely.</p>
+            <p class="text-2xl font-bold mb-4">$0/mes</p>
+            <ul class="text-left mb-4">
+              <li>✔ 1 Bot de soporte</li>
+              <li>✔ Hasta 100 interacciones</li>
+              <li>✔ Integración básica</li>
+            </ul>
+            <Button
+              label="Probar gratis"
+              class="p-button-success font-bold"
+              @click="router.push('/auth')"
+            />
+          </template>
+        </Card>
+
+        <Card class="text-center card p-4 bg-black-alpha-10 text-gray-400">
+          <template #title>
             <h3 class="text-xl font-bold">Básico</h3>
           </template>
           <template #content>
@@ -287,11 +335,11 @@ onMounted(() => {
               <li>✔ Hasta 1,000 interacciones</li>
               <li>✔ Integración básica</li>
             </ul>
-            <Button label="Elegir plan" class="p-button-success font-bold" />
+            <Button label="Elegir plan" class="p-button-success font-bold" disabled />
           </template>
         </Card>
 
-        <Card class="text-center card p-4">
+        <Card class="text-center card p-4 bg-black-alpha-10 text-gray-400">
           <template #title>
             <h3 class="text-xl font-bold">Pro</h3>
           </template>
@@ -303,11 +351,11 @@ onMounted(() => {
               <li>✔ Hasta 10,000 interacciones</li>
               <li>✔ Integración avanzada</li>
             </ul>
-            <Button label="Elegir plan" class="p-button-warning font-bold" />
+            <Button label="Elegir plan" class="p-button-warning font-bold" disabled />
           </template>
         </Card>
 
-        <Card class="text-center card p-4">
+        <Card class="text-center card p-4 bg-black-alpha-10 text-gray-400">
           <template #title>
             <h3 class="text-xl font-bold">Premium</h3>
           </template>
@@ -318,8 +366,9 @@ onMounted(() => {
               <li>✔ Bots ilimitados</li>
               <li>✔ Interacciones ilimitadas</li>
               <li>✔ Soporte prioritario</li>
+              <li>✔ Integración con WhatsApp Business</li>
             </ul>
-            <Button label="Elegir plan" class="p-button-danger font-bold" />
+            <Button label="Elegir plan" class="p-button-danger font-bold" disabled />
           </template>
         </Card>
       </div>

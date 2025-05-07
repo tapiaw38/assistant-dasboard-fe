@@ -6,11 +6,10 @@ export const isAuthenticatedGuard = async (
   from: RouteLocationNormalized,
   next: NavigationGuardNext,
 ) => {
-  const { user } = useAuth()
+  const { meUser, isMeUserSuccess } = useAuth()
 
-  if (!user.value && to.name === 'dashboard') {
-    return next({ name: 'auth' })
-  }
+  await meUser()
 
-  return next()
+  if (isMeUserSuccess.value) next()
+  else next({ name: 'login' })
 }
