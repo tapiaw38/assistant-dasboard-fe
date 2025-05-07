@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, reactive } from 'vue'
+import { onMounted, ref, reactive, watch } from 'vue'
 import Panel from 'primevue/panel'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
@@ -7,24 +7,37 @@ import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import LoadingSpinner from '@/components/core/LoadingSpinner/LoadingSpinner.vue'
 import DefaultModal from '@/components/core/shared/DefaultModal/DefaultModal.vue'
-import type { AssistantProfileParams } from '@/types/assistant/assistant'
+import type {
+  AssistantProfileParams,
+  AssistantProfileUpdateParams,
+} from '@/types/assistant/assistant'
 import { useAuth } from '@/composables/useAuth'
 import { useToogle } from '@/composables/useToogle'
 import { useAssistant } from '@/composables/useAssistant'
 
 const { meUser, isMeUserPending, isMeUserSuccess, isMeUserError, meUserError, user } = useAuth()
 const { toogleValue: isVisible } = useToogle(false)
+const { toogleValue: isVisibleUpdate } = useToogle(false)
 const {
   addAssistantProfile,
   getAssistantProfile,
+  updateAssistantProfile,
+
   isAddAssistantProfilePending,
-  /*isAddAssistantProfileSuccess,*/
+  isAddAssistantProfileSuccess,
   isAddAssistantProfileError,
   addAssistantProfileError,
+
   isGetAssistantProfilePending,
   isGetAssistantProfileSuccess,
   isGetAssistantProfileError,
   getAssistantProfileError,
+
+  isUpdateAssistantProfilePending,
+  isUpdateAssistantProfileSuccess,
+  isUpdateAssistantProfileError,
+  updateAssistantProfileError,
+
   assistantProfile,
 } = useAssistant()
 
@@ -47,18 +60,56 @@ const assistantProfileParams = reactive<AssistantProfileParams>({
 
 const addAssistant = async () => {
   addAssistantProfile(assistantProfileParams)
-  getAssistantProfile()
+
+  if (isAddAssistantProfileSuccess.value) {
+    getAssistantProfile()
+  }
+
   isVisible.value = false
 }
+
+const modalTitleUpdate = ref('Editar Asistente')
+const updateAssistantProfileParams = reactive<AssistantProfileUpdateParams>({
+  assistant_name: '',
+  business_name: '',
+  functions: '',
+  business_context: '',
+})
+
+const changeUpdateVisible = (value: boolean) => {
+  isVisibleUpdate.value = value
+}
+
+const updateAssistan = async () => {
+  updateAssistantProfile(updateAssistantProfileParams)
+
+  if (isUpdateAssistantProfileSuccess.value) {
+    getAssistantProfile()
+  }
+
+  isVisibleUpdate.value = false
+}
+
+watch(
+  isVisibleUpdate,
+  () => {
+    if (assistantProfile && isVisibleUpdate.value) {
+      updateAssistantProfileParams.assistant_name = assistantProfile?.value?.assistant_name || ''
+      updateAssistantProfileParams.business_name = assistantProfile?.value?.business_name || ''
+      updateAssistantProfileParams.functions = assistantProfile?.value?.functions || ''
+      updateAssistantProfileParams.business_context =
+        assistantProfile?.value?.business_context || ''
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
   <div class="dashboard md:col-6" v-if="!isMeUserPending && isMeUserSuccess">
     <h1 class="text-3xl font-bold mb-4 mt-4 text-200 text-primary">Perfile del Negocio</h1>
     <Panel :header="'Hola ' + user?.first_name">
-      <p class="text-md font-bold mb-4">
-        Aqui podras configurar tu Asistente ademas del perfil de tu negocio
-      </p>
+      <p class="text-md font-bold mb-4">Agregar y editar asistentes para tu negocio</p>
 
       <div class="col-12 md:col-6" v-if="isAddAssistantProfileError">
         <p class="text-danger font-bold">
@@ -66,13 +117,16 @@ const addAssistant = async () => {
         </p>
       </div>
 
-      <Button
-        label="Agregar"
-        icon="pi pi-plus"
-        class="p-button-success"
-        @click="isVisible = true"
-      />
+      <div class="col-12 md:col-6" v-if="isUpdateAssistantProfileError">
+        <p class="text-danger font-bold">
+          Error al actualizar el asistente: {{ updateAssistantProfileError }}
+        </p>
+      </div>
+
+      <Button label="" icon="pi pi-plus" class="p-button-success" @click="isVisible = true" />
     </Panel>
+
+    <!-- Assistant Profile Data -->
     <div class="grid mt-3 gap-2">
       <div class="col-12 md:col-6" v-if="assistantProfile || isGetAssistantProfileSuccess">
         <Card>
@@ -81,7 +135,12 @@ const addAssistant = async () => {
               <span class="font-bold text-2xl text-primary">{{
                 assistantProfile?.assistant_name
               }}</span>
-              <Button label="Editar" icon="pi pi-pencil" class="p-button-success" />
+              <Button
+                label=""
+                icon="pi pi-pencil"
+                class="p-button-success"
+                @click="isVisibleUpdate = true"
+              />
             </div>
           </template>
           <template #content>
@@ -143,6 +202,52 @@ const addAssistant = async () => {
         label="Guardar"
         v-if="!isAddAssistantProfilePending"
         @click="addAssistant"
+      ></Button>
+      <LoadingSpinner v-else />
+    </div>
+  </DefaultModal>
+
+  <!-- Update Assistant Profile Modal -->
+  <DefaultModal
+    @update:visible="changeUpdateVisible"
+    :isVisible="isVisibleUpdate"
+    :title="modalTitleUpdate"
+  >
+    <div class="flex flex-column items-center gap-2 mb-2">
+      <label for="assistant_name" class="font-light w-24">Nombre del Asistente</label>
+      <InputText
+        id="assistant_name"
+        class="flex-auto"
+        autocomplete="off"
+        v-model="updateAssistantProfileParams.assistant_name"
+      />
+    </div>
+    <div class="flex flex-column items-center gap-2 mb-2">
+      <label for="business_name" class="font-light w-24">Nombre de la Empresa</label>
+      <InputText
+        id="business_name"
+        class="flex-auto"
+        autocomplete="off"
+        v-model="updateAssistantProfileParams.business_name"
+      />
+    </div>
+    <div class="flex flex-column items-center gap-2 mb-4">
+      <label for="business_context" class="font-light w-24">Contexto de Negocio</label>
+      <Textarea v-model="updateAssistantProfileParams.business_context" rows="5" cols="30" />
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <Button
+        type="button"
+        label="Cerrar"
+        severity="secondary"
+        @click="isVisibleUpdate = false"
+      ></Button>
+      <Button
+        type="button"
+        label="Guardar"
+        v-if="!isUpdateAssistantProfilePending"
+        @click="updateAssistan"
       ></Button>
       <LoadingSpinner v-else />
     </div>

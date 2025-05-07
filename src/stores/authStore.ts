@@ -9,18 +9,17 @@ export const useAuthStore = defineStore('auth', () => {
 
   const { loginMutation, meUserQuery } = useAuthQueries()
 
-  const loginUser = (params: LoginParams) => {
-    loginMutation.mutate(params, {
+  const loginUser = async (params: LoginParams) => {
+    await loginMutation.mutateAsync(params, {
       onSuccess: (response: LoginResponse) => {
         user.value = response.data
         token.value = response.token
         localStorage.setItem('token', response.token)
-        localStorage.setItem('user', JSON.stringify(response.data))
       },
     })
   }
 
-  const logoutUser = () => {
+  const logoutUser = async () => {
     user.value = null
     token.value = null
     localStorage.removeItem('token')

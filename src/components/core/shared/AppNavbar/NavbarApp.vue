@@ -1,5 +1,20 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { onMounted, onUpdated, ref } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+import Popover from 'primevue/popover'
+import { useAuth } from '@/composables/useAuth'
+
+const { logoutUser, user, meUser } = useAuth()
+const router = useRouter()
+
+onMounted(() => {
+  meUser()
+})
+
+onUpdated(() => {
+  if (!user.value) return
+  meUser()
+})
 
 const routerLinks = [
   {
@@ -13,6 +28,18 @@ const routerLinks = [
     url: '/dashboard',
   },
 ]
+
+const op = ref()
+
+const togglePopover = (event: Event) => {
+  op.value.toggle(event)
+}
+
+const logoutUseHandler = async () => {
+  await logoutUser()
+  op.value.hide()
+  router.push('/')
+}
 </script>
 
 <template>
@@ -29,12 +56,35 @@ const routerLinks = [
     </div>
 
     <!-- Right icons -->
-    <div class="navbar-end">
+    <div class="navbar-end" v-if="!user">
       <RouterLink to="/auth" class="nav-icon">
         <i class="pi pi-user" />
       </RouterLink>
     </div>
+    <div class="navbar-end" v-else @click="togglePopover">
+      <div class="flex flex-row gap-2 justify-content-center align-items-center cursor-pointer">
+        <span class="text-primary font-medium block">{{ user?.first_name }}</span>
+        <div class="nav-icon cursor-pointer text-primary">
+          <i class="pi pi-user" />
+        </div>
+      </div>
+    </div>
   </nav>
+
+  <Popover ref="op">
+    <div class="flex flex-col gap-4 w-[25rem]">
+      <div class="flex flex-column gap-2">
+        <ul class="list-none">
+          <li class="border-t border-gray-200 mt-4"></li>
+          <li class="flex justify-between items-center">
+            <div class="text-sm cursor-pointer" @click="logoutUseHandler">
+              <span class="text-primary">Cerrar Sesión</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </Popover>
 </template>
 
 <style scoped>

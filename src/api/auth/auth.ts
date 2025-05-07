@@ -4,7 +4,6 @@ import { login, meUser } from '@/services/auth/auth'
 export const loginHandler = async (LoginParams: LoginParams) => {
   try {
     const response: LoginResponse = await login(LoginParams)
-    debugger
     return response
   } catch (error) {
     return Promise.reject(error)

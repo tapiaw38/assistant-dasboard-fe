@@ -1,6 +1,14 @@
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { addAssistantProfileHandler, getAssistantProfileHandler } from '@/api/assistant/assistant'
-import type { AssistantProfileParams, AssistantProfileResponse } from '@/types/assistant/assistant'
+import {
+  addAssistantProfileHandler,
+  getAssistantProfileHandler,
+  updateAssistantProfileHandler,
+} from '@/api/assistant/assistant'
+import type {
+  AssistantProfileParams,
+  AssistantProfileResponse,
+  AssistantProfileUpdateParams,
+} from '@/types/assistant/assistant'
 
 export const useAssistantQueries = () => {
   const addAssistantProfileMutation = useMutation<
@@ -16,8 +24,17 @@ export const useAssistantQueries = () => {
     queryFn: getAssistantProfileHandler,
   })
 
+  const updateAssistantProfileMutation = useMutation<
+    AssistantProfileResponse,
+    Error,
+    AssistantProfileUpdateParams
+  >({
+    mutationFn: updateAssistantProfileHandler,
+  })
+
   return {
     addAssistantProfileMutation,
     getAssistantProfileQuery,
+    updateAssistantProfileMutation,
   }
 }

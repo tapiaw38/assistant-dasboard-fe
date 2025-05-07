@@ -5,6 +5,13 @@ export interface AssistantProfileParams {
   business_context: string
 }
 
+export interface AssistantProfileUpdateParams {
+  assistant_name: string
+  business_name: string
+  functions: string
+  business_context: string
+}
+
 export interface AssistantProfile {
   id: string
   assistant_name: string

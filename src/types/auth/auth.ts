@@ -18,8 +18,10 @@ export interface User {
 }
 
 export interface LoginParams {
-  email: string
-  password: string
+  email?: string
+  password?: string
+  ssoType?: string
+  ssoCode?: string
 }
 
 export interface LoginResponse {

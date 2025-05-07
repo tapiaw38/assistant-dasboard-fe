@@ -5,15 +5,17 @@ import type {
   AssistantProfileParams,
   AssistantProfile,
   AssistantProfileResponse,
+  AssistantProfileUpdateParams,
 } from '@/types/assistant/assistant'
 
 export const useAssistantStore = defineStore('assistant', () => {
   const assistantProfile = ref<AssistantProfile | null | undefined>(null)
 
-  const { addAssistantProfileMutation, getAssistantProfileQuery } = useAssistantQueries()
+  const { addAssistantProfileMutation, getAssistantProfileQuery, updateAssistantProfileMutation } =
+    useAssistantQueries()
 
   const addAssistantProfile = (params: AssistantProfileParams) => {
-    addAssistantProfileMutation.mutate(params, {
+    addAssistantProfileMutation.mutateAsync(params, {
       onSuccess: (response: AssistantProfileResponse) => {
         assistantProfile.value = response.data
       },
@@ -32,10 +34,20 @@ export const useAssistantStore = defineStore('assistant', () => {
     }
   }
 
+  const updateAssistantProfile = async (params: AssistantProfileUpdateParams) => {
+    try {
+      const data = await updateAssistantProfileMutation.mutateAsync(params)
+      assistantProfile.value = data?.data
+    } catch (error) {
+      console.error('Failed to update assistant profile:', error)
+    }
+  }
+
   return {
     assistantProfile,
     addAssistantProfile,
     getAssistantProfile,
+    updateAssistantProfile,
     isAddAssistantProfilePending: addAssistantProfileMutation.isPending,
     isAddAssistantProfileSuccess: addAssistantProfileMutation.isSuccess,
     isAddAssistantProfileError: addAssistantProfileMutation.isError,
@@ -45,5 +57,10 @@ export const useAssistantStore = defineStore('assistant', () => {
     isGetAssistantProfileSuccess: getAssistantProfileQuery.isSuccess,
     isGetAssistantProfileError: getAssistantProfileQuery.isError,
     getAssistantProfileError: getAssistantProfileQuery.error,
+
+    isUpdateAssistantProfilePending: updateAssistantProfileMutation.isPending,
+    isUpdateAssistantProfileSuccess: updateAssistantProfileMutation.isSuccess,
+    isUpdateAssistantProfileError: updateAssistantProfileMutation.isError,
+    updateAssistantProfileError: updateAssistantProfileMutation.error,
   }
 })

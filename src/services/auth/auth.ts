@@ -1,7 +1,7 @@
 import { server } from '@/api/request/server'
 import type { LoginParams, LoginResponse, MeUserResponse } from '@/types/auth/auth'
 
-export const login = async ({ email, password }: LoginParams) => {
+export const login = async ({ email, password, ssoType, ssoCode }: LoginParams) => {
   const api = server({
     baseURL: 'http://auth.localhost',
   })
@@ -10,6 +10,8 @@ export const login = async ({ email, password }: LoginParams) => {
     const { data } = await api.post<LoginResponse>('/auth/login', {
       email,
       password,
+      sso_type: ssoType,
+      code: ssoCode,
     })
     return data
   } catch (error) {

@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
-import Button from 'primevue/button'
 import AuthLogin from '@/components/core/AuthLogin/AuthLogin.vue'
 import AuthRegister from '@/components/core/AuthRegister/AuthRegister.vue'
+import GoogleButton from '@/components/core/GoogleButton/GoogleButton.vue'
+import { useAuth } from '@/composables/useAuth'
+import LoadingSpinner from '@/components/core/LoadingSpinner/LoadingSpinner.vue'
+
+const { loginUser, isLoginPending, isLoginError } = useAuth()
+
+const router = useRouter()
 
 const isLogin = ref(true)
 const isLoginMessage = ref('Iniciar Sesión')
@@ -11,6 +18,15 @@ const isRegisterMessage = ref('Crear cuenta')
 
 const toggleView = () => {
   isLogin.value = !isLogin.value
+}
+
+const loginWithGoogle = async (code: string) => {
+  await loginUser({ ssoType: 'google', ssoCode: code })
+  handleRedirect('dashboard')
+}
+
+const handleRedirect = async (to: string) => {
+  return router.push(to)
 }
 </script>
 
@@ -22,18 +38,14 @@ const toggleView = () => {
           <div class="w-full flex flex-column align-items-center justify-content-center gap-3 py-5">
             <i class="pi pi-user text-4xl font-light text-gray-500"></i>
             <template v-if="isLogin">
-              <AuthLogin />
+              <AuthLogin @redirect="handleRedirect" />
             </template>
             <template v-else>
               <AuthRegister />
             </template>
-            <div class="flex mt-3">
-              <Button
-                label="Iniciar con Google"
-                icon="pi pi-google"
-                severity="info"
-                class="w-full max-w-[17.35rem] mx-auto"
-              ></Button>
+            <div class="flex flex-row mt-3 justify-content-center flex-column align-content-center">
+              <GoogleButton @code="loginWithGoogle" v-if="!isLoginPending" />
+              <LoadingSpinner v-else class="w-full" />
             </div>
           </div>
         </div>
@@ -42,6 +54,8 @@ const toggleView = () => {
         </p>
       </template>
     </Card>
+
+    <p class="font-bold" v-if="isLoginError">Error al iniciar sesión</p>
   </div>
 </template>
 
