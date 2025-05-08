@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import type { LoginParams } from '@/types/auth/auth'
-
 import { useAuth } from '@/composables/useAuth'
+import { useForm, useField } from 'vee-validate'
+import { z } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
 
 const { loginUser, loginError, isLoginError, isLoginPending } = useAuth()
 
@@ -12,33 +13,45 @@ const emit = defineEmits<{
   (e: 'redirect', to: string): void
 }>()
 
-const userCredentials = ref<LoginParams>({
-  email: '',
-  password: '',
+const schema = z.object({
+  email: z.string().email('Email inválido'),
+  password: z.string().min(1, 'Contraseña requerida'),
 })
 
-const handleSubmit = async (e: Event) => {
-  e.preventDefault()
+const { handleSubmit, errors } = useForm({
+  validationSchema: toTypedSchema(schema),
+})
+
+const { value: email } = useField<string>('email')
+const { value: password } = useField<string>('password')
+
+const onSubmit = handleSubmit(async (values) => {
+  const loginParams: LoginParams = {
+    email: values.email,
+    password: values.password,
+  }
 
   try {
-    await loginUser(userCredentials.value)
+    await loginUser(loginParams)
     emit('redirect', 'dashboard')
   } catch (error) {
     console.error('Error al iniciar sesión:', error)
   }
-}
+})
 </script>
 
 <template>
-  <form @submit="handleSubmit">
+  <form @submit.prevent="onSubmit">
     <div class="flex flex-column align-items-start justify-content-center gap-2">
       <div class="flex flex-column gap-2 justify-content-center">
         <label for="username">Email</label>
-        <InputText id="email" type="text" v-model="userCredentials.email" />
+        <InputText id="email" type="text" v-model="email" />
+        <small class="text-red-500">{{ errors.email }}</small>
       </div>
       <div class="flex flex-column gap-2 justify-content-center">
         <label for="password">Password</label>
-        <InputText id="password" type="password" v-model="userCredentials.password" />
+        <InputText id="password" type="password" v-model="password" />
+        <small class="text-red-500">{{ errors.password }}</small>
       </div>
     </div>
     <div class="flex mt-4">
