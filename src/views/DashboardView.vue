@@ -10,6 +10,7 @@ import DefaultModal from '@/components/core/shared/DefaultModal/DefaultModal.vue
 import type {
   AssistantProfileParams,
   AssistantProfileUpdateParams,
+  ApiKeyParams,
 } from '@/types/assistant/assistant'
 import { useAuth } from '@/composables/useAuth'
 import { useToogle } from '@/composables/useToogle'
@@ -18,10 +19,14 @@ import { useAssistant } from '@/composables/useAssistant'
 const { meUser, isMeUserPending, isMeUserSuccess, isMeUserError, meUserError, user } = useAuth()
 const { toogleValue: isVisible } = useToogle(false)
 const { toogleValue: isVisibleUpdate } = useToogle(false)
+const { toogleValue: isVisibleAddApiKey } = useToogle(false)
+const { toogleValue: isVisibleRemoveApiKey } = useToogle(false)
 const {
   addAssistantProfile,
   getAssistantProfile,
   updateAssistantProfile,
+  addApiKey,
+  removeApiKey,
 
   isAddAssistantProfilePending,
   isAddAssistantProfileSuccess,
@@ -37,6 +42,16 @@ const {
   isUpdateAssistantProfileSuccess,
   isUpdateAssistantProfileError,
   updateAssistantProfileError,
+
+  isAddApiKeyPending,
+  isAddApiKeySuccess,
+  isAddApiKeyError,
+  addApiKeyError,
+
+  isRemoveApiKeyPending,
+  isRemoveApiKeyError,
+  isRemoveApiKeySuccess,
+  removeApiKeyError,
 
   assistantProfile,
 } = useAssistant()
@@ -103,11 +118,65 @@ watch(
   },
   { immediate: true },
 )
+
+const modalTitleAddApiKey = ref('Agregar Api Key')
+const changeAddApiKeyVisible = (value: boolean) => {
+  isVisibleAddApiKey.value = value
+}
+
+const addApiKeyParams = reactive<ApiKeyParams>({
+  description: '',
+})
+
+const addApiKeyHandler = async () => {
+  try {
+    await addApiKey(addApiKeyParams)
+    if (isAddApiKeySuccess.value) {
+      getAssistantProfile()
+    }
+    addApiKeyParams.description = ''
+    isVisibleAddApiKey.value = false
+  } catch (error) {
+    console.error('Error al agregar el api key:', error)
+  }
+}
+
+const copyApiKey = (apiKey: string) => {
+  navigator.clipboard.writeText(apiKey)
+}
+
+const removeApiKeyOpenModal = (apiKeyID: string) => {
+  console.log('apiKeyID', apiKeyID)
+  removeApiKeyDeleteData.value = apiKeyID
+  isVisibleRemoveApiKey.value = true
+}
+
+const removeApiKeyHandler = async () => {
+  if (!removeApiKeyDeleteData.value) {
+    return
+  }
+  try {
+    await removeApiKey(removeApiKeyDeleteData.value)
+    if (isRemoveApiKeySuccess.value) {
+      getAssistantProfile()
+    }
+    isVisibleRemoveApiKey.value = false
+  } catch (error) {
+    console.error('Error al eliminar el api key:', error)
+  }
+}
+
+const removeApiKeyDeleteData = ref<string | null>(null)
+
+const modalTitleRemoveApiKey = ref('Eliminar Api Key')
+const changeRemoveApiKeyVisible = (value: boolean) => {
+  isVisibleRemoveApiKey.value = value
+}
 </script>
 
 <template>
   <div class="dashboard md:col-6" v-if="!isMeUserPending && isMeUserSuccess">
-    <h1 class="text-3xl font-bold mb-4 mt-4 text-200 text-primary">Perfil del Negocio</h1>
+    <h1 class="text-3xl font-bold mb-4 mt-4 text-200 text-gray-500">Perfil del Negocio</h1>
     <Panel :header="'Hola ' + user?.first_name">
       <p class="text-md font-bold mb-4">Agregar y editar asistentes para tu negocio</p>
 
@@ -126,13 +195,13 @@ watch(
       <Button label="" icon="pi pi-plus" class="p-button-success" @click="isVisible = true" />
     </Panel>
 
-    <!-- Assistant Profile Data -->
     <div class="grid mt-3 gap-2">
+      <!-- Assistant Profile Data -->
       <div class="col-12 md:col-6" v-if="assistantProfile || isGetAssistantProfileSuccess">
         <Card>
           <template #title>
             <div class="flex justify-content-between flex-row">
-              <span class="font-bold text-2xl text-primary">{{
+              <span class="font-bold text-2xl text-dark-500">{{
                 assistantProfile?.assistant_name
               }}</span>
               <Button
@@ -144,16 +213,67 @@ watch(
             </div>
           </template>
           <template #content>
-            <span class="text-xl font-bold text-primary"> Nombre de la Empresa: </span>
+            <span class="text-xl font-bold text-dark-500"> Nombre de la Empresa: </span>
             <p>{{ assistantProfile?.business_name }}</p>
-            <span class="text-xl font-bold text-primary"> Contexto de Negocio: </span>
+            <span class="text-xl font-bold text-dark-500"> Contexto de Negocio: </span>
             <p>{{ assistantProfile?.business_context }}</p>
+          </template>
+        </Card>
+      </div>
+      <!-- Api Key Generate -->
+      <div class="col-12 md:col-6" v-if="assistantProfile || isGetAssistantProfileSuccess">
+        <Card>
+          <template #title>
+            <div
+              class="flex justify-content-between justify-content-center align-content-center flex-row"
+            >
+              <span class="font-bold text-2xl text-dark-500">Api keys</span>
+              <Button
+                label=""
+                icon="pi pi-key"
+                class="p-button-success"
+                @click="isVisibleAddApiKey = true"
+              />
+            </div>
+          </template>
+          <template #content>
+            <div
+              class="flex flex-row gap-2 align-content-center align-items-center"
+              v-for="apiKey in assistantProfile?.api_keys"
+              :key="apiKey.id"
+            >
+              <div class="flex flex-column gap-2">
+                <span class="text-2xl text font-light text-dark-500">
+                  {{ apiKey.description }}
+                </span>
+                <div class="flex flex-row gap-2 align-content-center align-items-center">
+                  <span class="text-md font-bold text-dark-500 api-value">{{ apiKey.value }}</span>
+                  <div class="flex flex-row gap-2">
+                    <Button
+                      label=""
+                      icon="pi pi-copy"
+                      class="p-button-warning"
+                      @click="copyApiKey(apiKey.value)"
+                    />
+                    <Button
+                      label=""
+                      icon="pi pi-trash"
+                      class="p-button-danger"
+                      @click="removeApiKeyOpenModal(apiKey.id)"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 md:col-6" v-if="isAddApiKeyError">
+              <p class="text-danger font-bold">Error al agregar el api key: {{ addApiKeyError }}</p>
+            </div>
           </template>
         </Card>
       </div>
       <div class="flex flex-col gap-2">
         <div class="col-12 md:col-6" v-if="!assistantProfile && !isGetAssistantProfilePending">
-          <p class="text-primary font-bold">No se encontraron asistentes</p>
+          <p class="text-gray-500 font-bold">No se encontraron asistentes</p>
         </div>
         <div class="col-12 md:col-6" v-if="!assistantProfile && isGetAssistantProfilePending">
           <LoadingSpinner />
@@ -253,8 +373,77 @@ watch(
     </div>
   </DefaultModal>
 
+  <!-- Add Api Key Modal -->
+  <DefaultModal
+    @update:visible="changeAddApiKeyVisible"
+    :isVisible="isVisibleAddApiKey"
+    :title="modalTitleAddApiKey"
+  >
+    <div class="flex flex-column items-center gap-2 mb-2">
+      <label for="api_key_name" class="font-light w-24">Descripción</label>
+      <InputText
+        id="api_key_name"
+        class="flex-auto"
+        autocomplete="off"
+        v-model="addApiKeyParams.description"
+      />
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <Button
+        type="button"
+        label="Cerrar"
+        severity="secondary"
+        @click="isVisibleAddApiKey = false"
+      ></Button>
+      <Button
+        type="button"
+        label="Guardar"
+        v-if="!isAddApiKeyPending"
+        @click="addApiKeyHandler"
+      ></Button>
+      <LoadingSpinner v-else />
+    </div>
+  </DefaultModal>
+
+  <!-- Remove Api Key Modal -->
+  <DefaultModal
+    @update:visible="changeRemoveApiKeyVisible"
+    :isVisible="isVisibleRemoveApiKey"
+    :title="modalTitleRemoveApiKey"
+  >
+    <div class="flex flex-column items-center gap-2 mb-2">
+      <label for="api_key_name" class="font-light w-24">
+        ¿Está seguro de que desea eliminar el api key?
+      </label>
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <Button
+        type="button"
+        label="Cerrar"
+        severity="secondary"
+        @click="isVisibleRemoveApiKey = false"
+      ></Button>
+      <Button
+        type="button"
+        label="Eliminar"
+        severity="danger"
+        v-if="!isRemoveApiKeyPending"
+        @click="removeApiKeyHandler"
+      ></Button>
+      <LoadingSpinner v-else />
+    </div>
+    <div class="col-12 md:col-6 mt-2" v-if="isRemoveApiKeyError">
+      <p class="text-danger font-bold">Error al eliminar el api key: {{ removeApiKeyError }}</p>
+    </div>
+  </DefaultModal>
+
   <!-- Error Message -->
   <p v-if="isMeUserError">Error: {{ meUserError?.message }}</p>
+
+  <!-- Error Message -->
+  <p v-if="isRemoveApiKeyError">Error: {{ removeApiKeyError?.message }}</p>
 </template>
 
 <style scoped>
@@ -282,5 +471,12 @@ watch(
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.api-value {
+  word-break: break-all;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 </style>

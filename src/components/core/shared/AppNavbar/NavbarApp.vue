@@ -12,7 +12,6 @@ onMounted(async () => {
 })
 
 onUpdated(async () => {
-  if (!user.value) return
   await meUser()
 })
 
@@ -65,8 +64,8 @@ const logoutUseHandler = async () => {
     </div>
     <div class="navbar-end" v-else @click="togglePopover">
       <div class="flex flex-row gap-2 justify-content-center align-items-center cursor-pointer">
-        <span class="text-primary font-medium block">{{ user?.first_name }}</span>
-        <div class="nav-icon cursor-pointer text-primary">
+        <span class="text-gray-500 font-bold block">{{ user?.first_name }}</span>
+        <div class="nav-icon cursor-pointer text-gray-500">
           <i class="pi pi-user" />
         </div>
       </div>
@@ -77,10 +76,14 @@ const logoutUseHandler = async () => {
     <div class="flex flex-col gap-2 w-[25rem]">
       <div class="flex flex-column gap-2">
         <ul class="list-none">
-          <li class="border-t border-gray-200 mt-4"></li>
-          <li class="flex justify-between items-center">
-            <div class="text-sm cursor-pointer" @click="logoutUseHandler">
-              <span class="text-primary">Cerrar Sesión</span>
+          <li class="border-t border-gray-200 my-1 text-gray-500">
+            <div class="cursor-pointer" @click="router.push('/profile')">
+              <span class="text-gray-500 font-bold">Mi cuenta</span>
+            </div>
+          </li>
+          <li class="border-t border-gray-200 my-1 text-gray-500">
+            <div class="cursor-pointer" @click="logoutUseHandler">
+              <span class="text-gray-500 font-bold">Cerrar Sesión</span>
             </div>
           </li>
         </ul>

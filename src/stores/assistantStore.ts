@@ -6,13 +6,21 @@ import type {
   AssistantProfile,
   AssistantProfileResponse,
   AssistantProfileUpdateParams,
+  ApiKeyResponse,
+  ApiKeyParams,
+  ApiKeyRemoveResponse,
 } from '@/types/assistant/assistant'
 
 export const useAssistantStore = defineStore('assistant', () => {
   const assistantProfile = ref<AssistantProfile | null | undefined>(null)
 
-  const { addAssistantProfileMutation, getAssistantProfileQuery, updateAssistantProfileMutation } =
-    useAssistantQueries()
+  const {
+    addAssistantProfileMutation,
+    getAssistantProfileQuery,
+    updateAssistantProfileMutation,
+    addApiKeyMutation,
+    removeApiKeyMutation,
+  } = useAssistantQueries()
 
   const addAssistantProfile = (params: AssistantProfileParams) => {
     addAssistantProfileMutation.mutateAsync(params, {
@@ -43,11 +51,35 @@ export const useAssistantStore = defineStore('assistant', () => {
     }
   }
 
+  const addApiKey = async (params: ApiKeyParams) => {
+    try {
+      const data: ApiKeyResponse = await addApiKeyMutation.mutateAsync(params)
+      assistantProfile.value!.api_keys = [...data?.data]
+    } catch (error) {
+      console.error('Failed to add api key:', error)
+    }
+  }
+
+  const removeApiKey = async (apiKeyId: string) => {
+    try {
+      const data: ApiKeyRemoveResponse = await removeApiKeyMutation.mutateAsync(apiKeyId)
+      const apiKeyIndex = assistantProfile.value!.api_keys.findIndex(
+        (apiKey) => apiKey.id === data?.data.id,
+      )
+      assistantProfile.value!.api_keys.splice(apiKeyIndex, 1)
+    } catch (error) {
+      console.error('Failed to remove api key:', error)
+    }
+  }
+
   return {
     assistantProfile,
     addAssistantProfile,
     getAssistantProfile,
     updateAssistantProfile,
+    addApiKey,
+    removeApiKey,
+
     isAddAssistantProfilePending: addAssistantProfileMutation.isPending,
     isAddAssistantProfileSuccess: addAssistantProfileMutation.isSuccess,
     isAddAssistantProfileError: addAssistantProfileMutation.isError,
@@ -62,5 +94,15 @@ export const useAssistantStore = defineStore('assistant', () => {
     isUpdateAssistantProfileSuccess: updateAssistantProfileMutation.isSuccess,
     isUpdateAssistantProfileError: updateAssistantProfileMutation.isError,
     updateAssistantProfileError: updateAssistantProfileMutation.error,
+
+    addApiKeyError: addApiKeyMutation.error,
+    isAddApiKeyPending: addApiKeyMutation.isPending,
+    isAddApiKeySuccess: addApiKeyMutation.isSuccess,
+    isAddApiKeyError: addApiKeyMutation.isError,
+
+    isRemoveApiKeyPending: removeApiKeyMutation.isPending,
+    isRemoveApiKeySuccess: removeApiKeyMutation.isSuccess,
+    isRemoveApiKeyError: removeApiKeyMutation.isError,
+    removeApiKeyError: removeApiKeyMutation.error,
   }
 })

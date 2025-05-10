@@ -3,11 +3,16 @@ import {
   addAssistantProfileHandler,
   getAssistantProfileHandler,
   updateAssistantProfileHandler,
+  addApiKeyHandler,
+  removeApiKeyHandler,
 } from '@/api/assistant/assistant'
 import type {
   AssistantProfileParams,
   AssistantProfileResponse,
   AssistantProfileUpdateParams,
+  ApiKeyParams,
+  ApiKeyResponse,
+  ApiKeyRemoveResponse,
 } from '@/types/assistant/assistant'
 
 export const useAssistantQueries = () => {
@@ -32,9 +37,19 @@ export const useAssistantQueries = () => {
     mutationFn: updateAssistantProfileHandler,
   })
 
+  const addApiKeyMutation = useMutation<ApiKeyResponse, Error, ApiKeyParams>({
+    mutationFn: addApiKeyHandler,
+  })
+
+  const removeApiKeyMutation = useMutation<ApiKeyRemoveResponse, Error, string>({
+    mutationFn: removeApiKeyHandler,
+  })
+
   return {
     addAssistantProfileMutation,
     getAssistantProfileQuery,
     updateAssistantProfileMutation,
+    addApiKeyMutation,
+    removeApiKeyMutation,
   }
 }

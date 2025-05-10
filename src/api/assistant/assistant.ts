@@ -2,8 +2,17 @@ import type {
   AssistantProfileParams,
   AssistantProfileResponse,
   AssistantProfileUpdateParams,
+  ApiKeyParams,
+  ApiKeyResponse,
+  ApiKeyRemoveResponse,
 } from '../../types/assistant/assistant'
-import { addAssistant, getAssistant, updateAssistant } from '@/services/assistant/assistant'
+import {
+  addAssistant,
+  getAssistant,
+  updateAssistant,
+  addApiKey,
+  removeApiKey,
+} from '@/services/assistant/assistant'
 
 export const addAssistantProfileHandler = async (assistantProfile: AssistantProfileParams) => {
   try {
@@ -28,6 +37,24 @@ export const updateAssistantProfileHandler = async (
 ) => {
   try {
     const response: AssistantProfileResponse = await updateAssistant(assistantProfile)
+    return response
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+export const addApiKeyHandler = async (apiKey: ApiKeyParams) => {
+  try {
+    const response: ApiKeyResponse = await addApiKey(apiKey)
+    return response
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+export const removeApiKeyHandler = async (apiKeyId: string) => {
+  try {
+    const response: ApiKeyRemoveResponse = await removeApiKey(apiKeyId)
     return response
   } catch (error) {
     return Promise.reject(error)

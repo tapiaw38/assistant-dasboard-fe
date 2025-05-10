@@ -20,9 +20,25 @@ export const useAssistant = () => {
     isUpdateAssistantProfileSuccess,
     isUpdateAssistantProfileError,
     updateAssistantProfileError,
+
+    isAddApiKeyError,
+    isAddApiKeyPending,
+    isAddApiKeySuccess,
+    addApiKeyError,
+
+    isRemoveApiKeyPending,
+    isRemoveApiKeySuccess,
+    isRemoveApiKeyError,
+    removeApiKeyError,
   } = storeToRefs(assistantStore)
 
-  const { addAssistantProfile, getAssistantProfile, updateAssistantProfile } = assistantStore
+  const {
+    addAssistantProfile,
+    getAssistantProfile,
+    updateAssistantProfile,
+    addApiKey,
+    removeApiKey,
+  } = assistantStore
 
   return {
     // Data
@@ -43,9 +59,21 @@ export const useAssistant = () => {
     isUpdateAssistantProfileError,
     updateAssistantProfileError,
 
+    addApiKeyError,
+    isAddApiKeyPending,
+    isAddApiKeySuccess,
+    isAddApiKeyError,
+
+    isRemoveApiKeyPending,
+    isRemoveApiKeySuccess,
+    isRemoveApiKeyError,
+    removeApiKeyError,
+
     // Methods
     addAssistantProfile,
     getAssistantProfile,
     updateAssistantProfile,
+    addApiKey,
+    removeApiKey,
   }
 }
