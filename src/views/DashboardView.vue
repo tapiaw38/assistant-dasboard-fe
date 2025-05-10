@@ -242,7 +242,7 @@ const changeRemoveApiKeyVisible = (value: boolean) => {
               v-for="apiKey in assistantProfile?.api_keys"
               :key="apiKey.id"
             >
-              <div class="flex flex-column gap-2">
+              <div class="flex flex-column gap-2" v-if="apiKey?.is_active">
                 <span class="text-2xl text font-light text-dark-500">
                   {{ apiKey.description }}
                 </span>

@@ -63,10 +63,10 @@ export const useAssistantStore = defineStore('assistant', () => {
   const removeApiKey = async (apiKeyId: string) => {
     try {
       const data: ApiKeyRemoveResponse = await removeApiKeyMutation.mutateAsync(apiKeyId)
-      const apiKeyIndex = assistantProfile.value!.api_keys.findIndex(
-        (apiKey) => apiKey.id === data?.data.id,
-      )
-      assistantProfile.value!.api_keys.splice(apiKeyIndex, 1)
+      const apiKey = assistantProfile.value!.api_keys.find((apiKey) => apiKey.id === data?.data.id)
+      if (apiKey) {
+        apiKey.is_active = false
+      }
     } catch (error) {
       console.error('Failed to remove api key:', error)
     }
