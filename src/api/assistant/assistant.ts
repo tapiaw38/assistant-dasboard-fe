@@ -5,14 +5,14 @@ import type {
   ApiKeyParams,
   ApiKeyResponse,
   ApiKeyRemoveResponse,
-} from '../../types/assistant/assistant'
+} from '../../types/assistant.ts'
 import {
   addAssistant,
   getAssistant,
   updateAssistant,
   addApiKey,
   removeApiKey,
-} from '@/services/assistant/assistant'
+} from '@/services/assistant.ts'
 
 export const addAssistantProfileHandler = async (assistantProfile: AssistantProfileParams) => {
   try {

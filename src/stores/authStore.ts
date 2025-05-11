@@ -7,7 +7,7 @@ import type {
   RegisterParams,
   RegisterResponse,
   User,
-} from '@/types/auth/auth'
+} from '@/types/auth.ts'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null | undefined>(null)

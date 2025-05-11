@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
-import type { LoginParams } from '@/types/auth/auth'
+import type { LoginParams } from '@/types/auth.ts'
 import { useAuth } from '@/composables/useAuth'
 import { useForm, useField } from 'vee-validate'
 import { z } from 'zod'

@@ -1,15 +1,17 @@
-import { server } from '@/api/request/server'
+import { server } from '@/api/request/server.ts'
 import type {
   LoginParams,
   LoginResponse,
   MeUserResponse,
   RegisterParams,
   RegisterResponse,
-} from '@/types/auth/auth'
+} from '@/types/auth.ts'
+
+const BASE_URL = 'http://auth.localhost' //import.meta.env.VITE_AUTH_BASE_URL
 
 export const login = async ({ email, password, ssoType, ssoCode }: LoginParams) => {
   const api = server({
-    baseURL: import.meta.env.VITE_AUTH_BASE_URL,
+    baseURL: BASE_URL,
   })
 
   try {
@@ -27,7 +29,7 @@ export const login = async ({ email, password, ssoType, ssoCode }: LoginParams) 
 
 export const meUser = async () => {
   const api = server({
-    baseURL: import.meta.env.VITE_AUTH_BASE_URL,
+    baseURL: BASE_URL,
   })
 
   try {
@@ -46,7 +48,7 @@ export const register = async ({
   password,
 }: RegisterParams) => {
   const api = server({
-    baseURL: import.meta.env.VITE_AUTH_BASE_URL,
+    baseURL: BASE_URL,
   })
 
   try {

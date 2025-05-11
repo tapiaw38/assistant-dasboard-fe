@@ -25,6 +25,12 @@ const router = createRouter({
           name: 'auth',
           component: () => import('../views/AuthView.vue'),
         },
+        {
+          path: '/my-account',
+          name: 'my-account',
+          beforeEnter: [isAuthenticatedGuard],
+          component: () => import('../views/MyAccount.vue'),
+        },
       ],
     },
   ],

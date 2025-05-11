@@ -13,7 +13,7 @@ import type {
   ApiKeyParams,
   ApiKeyResponse,
   ApiKeyRemoveResponse,
-} from '@/types/assistant/assistant'
+} from '@/types/assistant.ts'
 
 export const useAssistantQueries = () => {
   const addAssistantProfileMutation = useMutation<

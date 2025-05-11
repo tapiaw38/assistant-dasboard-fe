@@ -9,7 +9,7 @@ import type {
   ApiKeyResponse,
   ApiKeyParams,
   ApiKeyRemoveResponse,
-} from '@/types/assistant/assistant'
+} from '@/types/assistant.ts'
 
 export const useAssistantStore = defineStore('assistant', () => {
   const assistantProfile = ref<AssistantProfile | null | undefined>(null)

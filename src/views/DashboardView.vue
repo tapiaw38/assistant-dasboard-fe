@@ -4,6 +4,7 @@ import Panel from 'primevue/panel'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
+import Tag from 'primevue/tag'
 import Textarea from 'primevue/textarea'
 import LoadingSpinner from '@/components/core/LoadingSpinner/LoadingSpinner.vue'
 import DefaultModal from '@/components/core/shared/DefaultModal/DefaultModal.vue'
@@ -11,7 +12,7 @@ import type {
   AssistantProfileParams,
   AssistantProfileUpdateParams,
   ApiKeyParams,
-} from '@/types/assistant/assistant'
+} from '@/types/assistant.ts'
 import { useAuth } from '@/composables/useAuth'
 import { useToogle } from '@/composables/useToogle'
 import { useAssistant } from '@/composables/useAssistant'
@@ -175,111 +176,115 @@ const changeRemoveApiKeyVisible = (value: boolean) => {
 </script>
 
 <template>
-  <div class="dashboard md:col-6" v-if="!isMeUserPending && isMeUserSuccess">
-    <h1 class="text-3xl font-bold mb-4 mt-4 text-200 text-gray-500">Perfil del Negocio</h1>
-    <Panel :header="'Hola ' + user?.first_name">
-      <p class="text-md font-bold mb-4">Agregar y editar asistentes para tu negocio</p>
+  <div class="dashboard flex flex-column w-full" v-if="!isMeUserPending && isMeUserSuccess">
+    <h1 class="text-2xl font-bold mb-2 pl-2 mt-4 text-200 text-gray-500">Perfil</h1>
+    <div class="flex md:flex-row flex-column w-100">
+      <div class="flex flex-column col-12 md:col-6 gap-2">
+        <Panel :header="'Hola ' + user?.first_name" class="text-2xl">
+          <p class="font-semibold mb-4">Agrega un asistente de ventas</p>
+          <Button label="" icon="pi pi-plus" class="p-button-success" @click="isVisible = true" />
+        </Panel>
+        <div class="col-12 md:col-6" v-if="isAddAssistantProfileError">
+          <p class="text-red-500 font-bold">
+            Error al agregar el asistente: Ya existe un perfil {{ addAssistantProfileError }}
+          </p>
+        </div>
 
-      <div class="col-12 md:col-6" v-if="isAddAssistantProfileError">
-        <p class="text-danger font-bold">
-          Error al agregar el asistente: Ya existe un perfil {{ addAssistantProfileError }}
-        </p>
-      </div>
-
-      <div class="col-12 md:col-6" v-if="isUpdateAssistantProfileError">
-        <p class="text-danger font-bold">
-          Error al actualizar el asistente: {{ updateAssistantProfileError }}
-        </p>
-      </div>
-
-      <Button label="" icon="pi pi-plus" class="p-button-success" @click="isVisible = true" />
-    </Panel>
-
-    <div class="grid mt-3 gap-2">
-      <!-- Assistant Profile Data -->
-      <div class="col-12 md:col-6" v-if="assistantProfile || isGetAssistantProfileSuccess">
-        <Card>
-          <template #title>
-            <div class="flex justify-content-between flex-row">
-              <span class="font-bold text-2xl text-dark-500">{{
-                assistantProfile?.assistant_name
-              }}</span>
-              <Button
-                label=""
-                icon="pi pi-pencil"
-                class="p-button-success"
-                @click="isVisibleUpdate = true"
-              />
-            </div>
-          </template>
-          <template #content>
-            <span class="text-xl font-bold text-dark-500"> Nombre de la Empresa: </span>
-            <p>{{ assistantProfile?.business_name }}</p>
-            <span class="text-xl font-bold text-dark-500"> Contexto de Negocio: </span>
-            <p>{{ assistantProfile?.business_context }}</p>
-          </template>
-        </Card>
-      </div>
-      <!-- Api Key Generate -->
-      <div class="col-12 md:col-6" v-if="assistantProfile || isGetAssistantProfileSuccess">
-        <Card>
-          <template #title>
-            <div
-              class="flex justify-content-between justify-content-center align-content-center flex-row"
-            >
-              <span class="font-bold text-2xl text-dark-500">Api keys</span>
-              <Button
-                label=""
-                icon="pi pi-key"
-                class="p-button-success"
-                @click="isVisibleAddApiKey = true"
-              />
-            </div>
-          </template>
-          <template #content>
-            <div
-              class="flex flex-row gap-2 align-content-center align-items-center"
-              v-for="apiKey in assistantProfile?.api_keys"
-              :key="apiKey.id"
-            >
-              <div class="flex flex-column gap-2" v-if="apiKey?.is_active">
-                <span class="text-2xl text font-light text-dark-500">
-                  {{ apiKey.description }}
+        <div class="col-12 md:col-6" v-if="isUpdateAssistantProfileError">
+          <p class="text-red-500 font-bold">
+            Error al actualizar el asistente: {{ updateAssistantProfileError }}
+          </p>
+        </div>
+        <!-- Assistant Profile Data -->
+        <div class="flex" v-if="assistantProfile || isGetAssistantProfileSuccess">
+          <Card>
+            <template #title>
+              <div class="flex justify-content-between flex-row">
+                <span class="font-bold text-2xl text-primary text-center gap-2"
+                  >{{ assistantProfile?.assistant_name }}
+                  <i class="pi pi-sparkles text-primary text-2xl"></i>
                 </span>
-                <div class="flex flex-row gap-2 align-content-center align-items-center">
-                  <span class="text-md font-bold text-dark-500 api-value">{{ apiKey.value }}</span>
+                <Button
+                  label=""
+                  icon="pi pi-pencil"
+                  class="p-button-success"
+                  @click="isVisibleUpdate = true"
+                />
+              </div>
+            </template>
+            <template #content>
+              <span class="text-xl font-bold text-dark-500"> Nombre de la Empresa: </span>
+              <p>{{ assistantProfile?.business_name }}</p>
+              <span class="text-xl font-bold text-dark-500"> Contexto de Negocio: </span>
+              <p>{{ assistantProfile?.business_context }}</p>
+            </template>
+          </Card>
+        </div>
+      </div>
+      <div class="flex flex-column col-12 md:col-6 gap-2">
+        <!-- Api Key Generate -->
+        <template v-if="assistantProfile || isGetAssistantProfileSuccess">
+          <Card>
+            <template #title>
+              <div
+                class="flex justify-content-between justify-content-center align-content-center flex-row"
+              >
+                <span class="font-bold text-2xl text-gray-500">Api keys</span>
+                <Button
+                  label=""
+                  icon="pi pi-key"
+                  class="p-button-success"
+                  @click="isVisibleAddApiKey = true"
+                />
+              </div>
+            </template>
+            <template #content>
+              <div
+                class="flex flex-row gap-2 align-content-center align-items-center"
+                v-for="apiKey in assistantProfile?.api_keys"
+                :key="apiKey.id"
+              >
+                <div class="flex flex-column gap-2" v-if="apiKey?.is_active">
+                  <Tag :value="apiKey.description" severity="info" rounded class="w-full" />
                   <div class="flex flex-row gap-2">
-                    <Button
-                      label=""
-                      icon="pi pi-copy"
-                      class="p-button-warning"
-                      @click="copyApiKey(apiKey.value)"
-                    />
-                    <Button
-                      label=""
-                      icon="pi pi-trash"
-                      class="p-button-danger"
-                      @click="removeApiKeyOpenModal(apiKey.id)"
-                    />
+                    <span class="text-sm font-bold text-gray-500 api-value">{{
+                      apiKey.value
+                    }}</span>
+                    <div class="flex flex-row gap-2 align-content-center align-items-center">
+                      <Button
+                        label=""
+                        icon="pi pi-copy"
+                        class="p-button-warning"
+                        @click="copyApiKey(apiKey.value)"
+                      />
+                      <Button
+                        label=""
+                        icon="pi pi-trash"
+                        class="p-button-danger"
+                        @click="removeApiKeyOpenModal(apiKey.id)"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-12 md:col-6" v-if="isAddApiKeyError">
-              <p class="text-danger font-bold">Error al agregar el api key: {{ addApiKeyError }}</p>
-            </div>
-          </template>
-        </Card>
-      </div>
-      <div class="flex flex-col gap-2">
-        <div class="col-12 md:col-6" v-if="!assistantProfile && !isGetAssistantProfilePending">
-          <p class="text-gray-500 font-bold">No se encontraron asistentes</p>
-        </div>
-        <div class="col-12 md:col-6" v-if="!assistantProfile && isGetAssistantProfilePending">
-          <LoadingSpinner />
-        </div>
-        <div class="col-12 md:col-6" v-if="isGetAssistantProfileError">
-          <p class="text-danger font-bold">Error: {{ getAssistantProfileError }}</p>
+              <div class="col-12 md:col-6" v-if="isAddApiKeyError">
+                <p class="text-danger font-bold">
+                  Error al agregar el api key: {{ addApiKeyError }}
+                </p>
+              </div>
+            </template>
+          </Card>
+        </template>
+        <div class="flex flex-col gap-2">
+          <div class="col-12 md:col-6" v-if="!assistantProfile && !isGetAssistantProfilePending">
+            <p class="text-gray-500 font-bold">No se encontraron asistentes</p>
+          </div>
+          <div class="col-12 md:col-6" v-if="!assistantProfile && isGetAssistantProfilePending">
+            <LoadingSpinner />
+          </div>
+          <div class="col-12 md:col-6" v-if="isGetAssistantProfileError">
+            <p class="text-danger font-bold">Error: {{ getAssistantProfileError }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -449,7 +454,7 @@ const changeRemoveApiKeyVisible = (value: boolean) => {
 <style scoped>
 .dashboard {
   padding: 2rem;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .grid {

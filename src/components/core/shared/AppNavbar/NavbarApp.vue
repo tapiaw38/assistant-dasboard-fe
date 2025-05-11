@@ -76,14 +76,14 @@ const logoutUseHandler = async () => {
     <div class="flex flex-col gap-2 w-[25rem]">
       <div class="flex flex-column gap-2">
         <ul class="list-none">
-          <li class="border-t border-gray-200 my-1 text-gray-500">
-            <div class="cursor-pointer" @click="router.push('/profile')">
-              <span class="text-gray-500 font-bold">Mi cuenta</span>
+          <li class="border-t border-gray-200 mt-1 mb-2 text-gray-500">
+            <div class="cursor-pointer" @click="router.push('/my-account')">
+              <span class="text-gray-500 font-light">Mi cuenta</span>
             </div>
           </li>
           <li class="border-t border-gray-200 my-1 text-gray-500">
             <div class="cursor-pointer" @click="logoutUseHandler">
-              <span class="text-gray-500 font-bold">Cerrar Sesión</span>
+              <span class="text-gray-500 font-light">Cerrar Sesión</span>
             </div>
           </li>
         </ul>

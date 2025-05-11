@@ -1,4 +1,4 @@
-import { server } from '@/api/request/server'
+import { server } from '@/api/request/server.ts'
 import type {
   AssistantProfileParams,
   AssistantProfileResponse,
@@ -6,11 +6,13 @@ import type {
   ApiKeyResponse,
   ApiKeyParams,
   ApiKeyRemoveResponse,
-} from '@/types/assistant/assistant'
+} from '@/types/assistant.ts'
+
+const BASE_URL = 'http://assistant.localhost' //import.meta.env.VITE_ASSISTANT_BASE_URL
 
 export const addAssistant = async (assistantProfile: AssistantProfileParams) => {
   const api = server({
-    baseURL: import.meta.env.VITE_ASSISTANT_BASE_URL,
+    baseURL: BASE_URL,
   })
 
   try {
@@ -23,7 +25,7 @@ export const addAssistant = async (assistantProfile: AssistantProfileParams) => 
 
 export const getAssistant = async (): Promise<AssistantProfileResponse> => {
   const api = server({
-    baseURL: import.meta.env.VITE_ASSISTANT_BASE_URL,
+    baseURL: BASE_URL,
   })
 
   try {
@@ -36,7 +38,7 @@ export const getAssistant = async (): Promise<AssistantProfileResponse> => {
 
 export const updateAssistant = async (assistantProfile: AssistantProfileUpdateParams) => {
   const api = server({
-    baseURL: import.meta.env.VITE_ASSISTANT_BASE_URL,
+    baseURL: BASE_URL,
   })
 
   try {
@@ -49,7 +51,7 @@ export const updateAssistant = async (assistantProfile: AssistantProfileUpdatePa
 
 export const addApiKey = async (apiKey: ApiKeyParams) => {
   const api = server({
-    baseURL: import.meta.env.VITE_ASSISTANT_BASE_URL,
+    baseURL: BASE_URL,
   })
 
   try {
@@ -62,7 +64,7 @@ export const addApiKey = async (apiKey: ApiKeyParams) => {
 
 export const removeApiKey = async (apiKeyId: string) => {
   const api = server({
-    baseURL: import.meta.env.VITE_ASSISTANT_BASE_URL,
+    baseURL: BASE_URL,
   })
 
   try {

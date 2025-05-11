@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { login, meUser, register } from '@/services/auth/auth'
+import { login, meUser, register } from '@/services/auth.ts'
 import type {
   LoginParams,
   LoginResponse,
   MeUserResponse,
   RegisterParams,
   RegisterResponse,
-} from '@/types/auth/auth'
+} from '@/types/auth.ts'
 
 export const useAuthQueries = () => {
   const loginMutation = useMutation<LoginResponse, Error, LoginParams>({

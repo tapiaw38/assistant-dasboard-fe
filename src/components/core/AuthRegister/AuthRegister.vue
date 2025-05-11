@@ -4,7 +4,7 @@ import Button from 'primevue/button'
 import { useForm, useField } from 'vee-validate'
 import { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
-import type { RegisterParams } from '@/types/auth/auth'
+import type { RegisterParams } from '@/types/auth.ts'
 import { useAuth } from '@/composables/useAuth'
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.vue'
 
