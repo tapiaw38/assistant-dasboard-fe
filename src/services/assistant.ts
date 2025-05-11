@@ -8,7 +8,7 @@ import type {
   ApiKeyRemoveResponse,
 } from '@/types/assistant.ts'
 
-const BASE_URL = 'http://assistant.localhost' //import.meta.env.VITE_ASSISTANT_BASE_URL
+const BASE_URL = import.meta.env.VITE_ASSISTANT_BASE_URL
 
 export const addAssistant = async (assistantProfile: AssistantProfileParams) => {
   const api = server({

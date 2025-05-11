@@ -196,7 +196,7 @@ const changeRemoveApiKeyVisible = (value: boolean) => {
           </p>
         </div>
         <!-- Assistant Profile Data -->
-        <div class="flex" v-if="assistantProfile || isGetAssistantProfileSuccess">
+        <div class="flex col-12 md:col-8" v-if="assistantProfile || isGetAssistantProfileSuccess">
           <Card>
             <template #title>
               <div class="flex justify-content-between flex-row">

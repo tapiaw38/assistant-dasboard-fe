@@ -7,7 +7,7 @@ import type {
   RegisterResponse,
 } from '@/types/auth.ts'
 
-const BASE_URL = 'http://auth.localhost' //import.meta.env.VITE_AUTH_BASE_URL
+const BASE_URL = import.meta.env.VITE_AUTH_BASE_URL
 
 export const login = async ({ email, password, ssoType, ssoCode }: LoginParams) => {
   const api = server({

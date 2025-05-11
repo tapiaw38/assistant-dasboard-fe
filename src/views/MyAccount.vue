@@ -29,6 +29,7 @@ import Button from 'primevue/button'
                   icon=""
                   class="p-button-outlined"
                   severity="success"
+                  disabled
                   @click="console.log('Edit')"
                 />
                 <Button
@@ -36,12 +37,14 @@ import Button from 'primevue/button'
                   icon=""
                   severity="danger"
                   class="p-button-outlined"
+                  disabled
                   @click="console.log('Delete')"
                 />
                 <Button
                   label="Cancelar"
                   icon=""
                   class="p-button-danger"
+                  disabled
                   @click="console.log('Delete')"
                 />
               </div>
@@ -60,6 +63,7 @@ import Button from 'primevue/button'
                   label=""
                   icon="pi pi-refresh"
                   class="p-button-success"
+                  disabled
                   @click="console.log('Refresh')"
                 />
               </div>
@@ -114,6 +118,7 @@ import Button from 'primevue/button'
                   icon=""
                   class="p-button-outlined w-full"
                   severity="success"
+                  disabled
                   @click="console.log('Edit')"
                 />
               </div>
