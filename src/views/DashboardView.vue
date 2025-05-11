@@ -181,7 +181,7 @@ const changeRemoveApiKeyVisible = (value: boolean) => {
     <div class="flex md:flex-row flex-column w-100">
       <div class="flex flex-column col-12 md:col-6 gap-2">
         <Panel :header="'Hola ' + user?.first_name" class="text-2xl">
-          <p class="font-semibold mb-4">Agrega un asistente de ventas</p>
+          <p class="font-semibold mb-4">Agrega un asistente</p>
           <Button label="" icon="pi pi-plus" class="p-button-success" @click="isVisible = true" />
         </Panel>
         <div class="col-12 md:col-6" v-if="isAddAssistantProfileError">
