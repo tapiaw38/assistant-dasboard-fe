@@ -4,7 +4,7 @@ import type {
   MeUserResponse,
   RegisterParams,
   RegisterResponse,
-} from '../../types/auth.ts'
+} from '../types/auth.ts'
 import { login, meUser, register } from '@/services/auth.ts'
 
 export const loginHandler = async (LoginParams: LoginParams) => {

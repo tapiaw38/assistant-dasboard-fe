@@ -5,7 +5,7 @@ import {
   updateAssistantProfileHandler,
   addApiKeyHandler,
   removeApiKeyHandler,
-} from '@/api/assistant/assistant'
+} from '@/api/assistant.ts'
 import type {
   AssistantProfileParams,
   AssistantProfileResponse,

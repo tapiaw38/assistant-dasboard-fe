@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref, reactive, watch } from 'vue'
+import { onMounted, ref, reactive, watch, computed } from 'vue'
 import Panel from 'primevue/panel'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Tag from 'primevue/tag'
 import Textarea from 'primevue/textarea'
+import Badge from 'primevue/badge'
 import LoadingSpinner from '@/components/core/LoadingSpinner/LoadingSpinner.vue'
 import DefaultModal from '@/components/core/shared/DefaultModal/DefaultModal.vue'
+import ScrollPanel from 'primevue/scrollpanel'
 import type {
   AssistantProfileParams,
   AssistantProfileUpdateParams,
@@ -16,12 +18,21 @@ import type {
 import { useAuth } from '@/composables/useAuth'
 import { useToogle } from '@/composables/useToogle'
 import { useAssistant } from '@/composables/useAssistant'
+import { useConversation } from '@/composables/useConversation'
 
 const { meUser, isMeUserPending, isMeUserSuccess, isMeUserError, meUserError, user } = useAuth()
 const { toogleValue: isVisible } = useToogle(false)
 const { toogleValue: isVisibleUpdate } = useToogle(false)
 const { toogleValue: isVisibleAddApiKey } = useToogle(false)
 const { toogleValue: isVisibleRemoveApiKey } = useToogle(false)
+const {
+  conversations,
+  getUserConversation,
+  isGetUserConversationError,
+  isGetUserConversationSuccess,
+  isGetUserConversationPending,
+  getUserConversationError,
+} = useConversation()
 const {
   addAssistantProfile,
   getAssistantProfile,
@@ -60,6 +71,7 @@ const {
 onMounted(async () => {
   await meUser()
   await getAssistantProfile()
+  await getUserConversation()
 })
 
 const modalTitle = ref('Agregar Asistente')
@@ -173,55 +185,113 @@ const modalTitleRemoveApiKey = ref('Eliminar Api Key')
 const changeRemoveApiKeyVisible = (value: boolean) => {
   isVisibleRemoveApiKey.value = value
 }
+
+const totalMessagesInConversation = computed(() => {
+  return conversations.value?.reduce((acc, curr) => {
+    return acc + curr.messages.length
+  }, 0)
+})
 </script>
 
 <template>
   <div class="dashboard flex flex-column w-full" v-if="!isMeUserPending && isMeUserSuccess">
     <h1 class="text-2xl font-bold mb-2 pl-2 mt-4 text-200 text-gray-500">Perfil</h1>
-    <div class="flex md:flex-row flex-column w-100">
-      <div class="flex flex-column col-12 md:col-6 gap-2">
-        <Panel :header="'Hola ' + user?.first_name" class="text-2xl">
-          <p class="font-semibold mb-4">Agrega un asistente</p>
-          <Button label="" icon="pi pi-plus" class="p-button-success" @click="isVisible = true" />
-        </Panel>
-        <div class="col-12 md:col-6" v-if="isAddAssistantProfileError">
-          <p class="text-red-500 font-bold">
-            Error al agregar el asistente: Ya existe un perfil {{ addAssistantProfileError }}
-          </p>
-        </div>
+    <div class="flex md:flex-row flex-column w-full">
+      <div class="flex flex-column col-12 md:col-8 gap-2">
+        <div class="flex flex-column col-12">
+          <Panel :header="'Hola ' + user?.first_name" class="text-2xl">
+            <p class="font-semibold mb-4">Agrega un asistente</p>
+            <Button label="" icon="pi pi-plus" class="p-button-success" @click="isVisible = true" />
+          </Panel>
+          <div class="col-12 md:col-6" v-if="isAddAssistantProfileError">
+            <p class="text-red-500 font-bold">
+              Error al agregar el asistente: Ya existe un perfil {{ addAssistantProfileError }}
+            </p>
+          </div>
 
-        <div class="col-12 md:col-6" v-if="isUpdateAssistantProfileError">
-          <p class="text-red-500 font-bold">
-            Error al actualizar el asistente: {{ updateAssistantProfileError }}
-          </p>
+          <div class="col-12 md:col-6" v-if="isUpdateAssistantProfileError">
+            <p class="text-red-500 font-bold">
+              Error al actualizar el asistente: {{ updateAssistantProfileError }}
+            </p>
+          </div>
         </div>
-        <!-- Assistant Profile Data -->
-        <div class="flex col-12 md:col-8" v-if="assistantProfile || isGetAssistantProfileSuccess">
-          <Card>
-            <template #title>
-              <div class="flex justify-content-between flex-row">
-                <span class="font-bold text-2xl text-primary text-center gap-2"
-                  >{{ assistantProfile?.assistant_name }}
-                  <i class="pi pi-sparkles text-primary text-2xl"></i>
-                </span>
-                <Button
-                  label=""
-                  icon="pi pi-pencil"
-                  class="p-button-success"
-                  @click="isVisibleUpdate = true"
-                />
-              </div>
-            </template>
-            <template #content>
-              <span class="text-xl font-bold text-dark-500"> Nombre de la Empresa: </span>
-              <p>{{ assistantProfile?.business_name }}</p>
-              <span class="text-xl font-bold text-dark-500"> Contexto de Negocio: </span>
-              <p>{{ assistantProfile?.business_context }}</p>
-            </template>
-          </Card>
+        <div class="flex md:flex-column xl:flex-row flex-column">
+          <!-- Assistant Profile Data -->
+          <div
+            class="flex col-12 md:col-12 sm:col-12 xl:col-6"
+            v-if="assistantProfile || isGetAssistantProfileSuccess"
+          >
+            <Card>
+              <template #title>
+                <div class="flex justify-content-between flex-row">
+                  <span class="font-bold text-2xl text-primary text-center gap-2"
+                    >{{ assistantProfile?.assistant_name }}
+                    <i class="pi pi-sparkles text-primary text-2xl"></i>
+                  </span>
+                  <Button
+                    label=""
+                    icon="pi pi-pencil"
+                    class="p-button-success"
+                    @click="isVisibleUpdate = true"
+                  />
+                </div>
+              </template>
+              <template #content>
+                <span class="text-xl font-bold text-dark-500"> Nombre de la Empresa: </span>
+                <p>{{ assistantProfile?.business_name }}</p>
+                <span class="text-xl font-bold text-dark-500"> Contexto de Negocio: </span>
+                <ScrollPanel style="height: 150px">
+                  <p>{{ assistantProfile?.business_context }}</p>
+                </ScrollPanel>
+              </template>
+            </Card>
+          </div>
+          <!-- Assistant Conversations -->
+          <div class="flex col-12 md:col-12 w-full">
+            <Card>
+              <template #title>
+                <div class="flex justify-content-center flex-row">
+                  <span class="font-bold text-2xl text-primary text-center gap-2"
+                    >Conversaciones
+                    <i class="pi pi-comments text-primary text-2xl"></i>
+                  </span>
+                </div>
+              </template>
+              <template #content>
+                <div
+                  class="flex flex-row gap-2 align-content-center align-items-center justify-content-center"
+                  v-if="!isGetUserConversationPending && isGetUserConversationSuccess"
+                >
+                  <div class="flex flex-column gap-2">
+                    <div
+                      class="gap-2 mt-4 mb-2 flex flex-row justify-content-center align-items-center"
+                    >
+                      <span class="text-md font-bold text-center text-gray-500 text-start">
+                        Cantidad:
+                      </span>
+                      <Badge :value="conversations?.length" severity="info"></Badge>
+                    </div>
+                    <div class="gap-2 mb-4 flex flex-row justify-content-center align-items-center">
+                      <span class="text-md font-bold text-center text-gray-500">Mensajes </span>
+                      <Badge :value="totalMessagesInConversation" severity="info"></Badge>
+                    </div>
+                    <Button
+                      label="Ver más"
+                      severity="success"
+                      class="p-button w-full"
+                      @click="console.log('Ver conversaciones')"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 md:col-6" v-if="isGetUserConversationError">
+                  <p class="text-danger font-bold">Error: {{ getUserConversationError }}</p>
+                </div>
+              </template>
+            </Card>
+          </div>
         </div>
       </div>
-      <div class="flex flex-column col-12 md:col-6 gap-2">
+      <div class="flex flex-column col-12 md:col-4 gap-2">
         <!-- Api Key Generate -->
         <template v-if="assistantProfile || isGetAssistantProfileSuccess">
           <Card>
@@ -453,22 +523,9 @@ const changeRemoveApiKeyVisible = (value: boolean) => {
 
 <style scoped>
 .dashboard {
+  max-width: 1400px;
   padding: 2rem;
   min-height: 100vh;
-}
-
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.col-12 {
-  flex: 1 1 100%;
-}
-
-.md\:col-6 {
-  flex: 1 1 48%;
 }
 
 .loading-container {

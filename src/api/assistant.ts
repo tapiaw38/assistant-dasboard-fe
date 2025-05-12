@@ -5,7 +5,7 @@ import type {
   ApiKeyParams,
   ApiKeyResponse,
   ApiKeyRemoveResponse,
-} from '../../types/assistant.ts'
+} from '../types/assistant.ts'
 import {
   addAssistant,
   getAssistant,
