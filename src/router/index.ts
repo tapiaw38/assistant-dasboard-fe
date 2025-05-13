@@ -31,6 +31,12 @@ const router = createRouter({
           beforeEnter: [isAuthenticatedGuard],
           component: () => import('../views/MyAccount.vue'),
         },
+        {
+          path: '/conversation',
+          name: 'conversation',
+          beforeEnter: [isAuthenticatedGuard],
+          component: () => import('../views/ConversationView.vue'),
+        },
       ],
     },
   ],

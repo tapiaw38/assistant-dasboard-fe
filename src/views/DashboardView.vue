@@ -196,8 +196,8 @@ const totalMessagesInConversation = computed(() => {
 <template>
   <div class="dashboard flex flex-column w-full" v-if="!isMeUserPending && isMeUserSuccess">
     <h1 class="text-2xl font-bold mb-2 pl-2 mt-4 text-200 text-gray-500">Perfil</h1>
-    <div class="flex md:flex-row flex-column w-full">
-      <div class="flex flex-column col-12 md:col-8 gap-2">
+    <div class="dashboard-container w-full">
+      <div class="flex flex-column w-full">
         <div class="flex flex-column col-12">
           <Panel :header="'Hola ' + user?.first_name" class="text-2xl">
             <p class="font-semibold mb-4">Agrega un asistente</p>
@@ -275,12 +275,9 @@ const totalMessagesInConversation = computed(() => {
                       <span class="text-md font-bold text-center text-gray-500">Mensajes </span>
                       <Badge :value="totalMessagesInConversation" severity="info"></Badge>
                     </div>
-                    <Button
-                      label="Ver más"
-                      severity="success"
-                      class="p-button w-full"
-                      @click="console.log('Ver conversaciones')"
-                    />
+                    <RouterLink class="p-button w-full" :to="{ name: 'conversation' }">
+                      Ver más
+                    </RouterLink>
                   </div>
                 </div>
                 <div class="col-12 md:col-6" v-if="isGetUserConversationError">
@@ -291,7 +288,7 @@ const totalMessagesInConversation = computed(() => {
           </div>
         </div>
       </div>
-      <div class="flex flex-column col-12 md:col-4 gap-2">
+      <div class="flex flex-column w-full">
         <!-- Api Key Generate -->
         <template v-if="assistantProfile || isGetAssistantProfileSuccess">
           <Card>
@@ -526,6 +523,16 @@ const totalMessagesInConversation = computed(() => {
   max-width: 1400px;
   padding: 2rem;
   min-height: 100vh;
+
+  .dashboard-container {
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
 }
 
 .loading-container {

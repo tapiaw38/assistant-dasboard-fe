@@ -19,6 +19,7 @@
     "@tanstack/vue-query": "^5.75.1",
     "@vee-validate/zod": "^4.15.0",
     "axios": "^1.9.0",
+    "dayjs": "^1.11.13",
     "gsap": "^3.13.0",
     "pinia": "^3.0.1",
     "primeflex": "^4.0.0",
