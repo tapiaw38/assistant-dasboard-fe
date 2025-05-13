@@ -188,7 +188,7 @@ const changeRemoveApiKeyVisible = (value: boolean) => {
 
 const totalMessagesInConversation = computed(() => {
   return conversations.value?.reduce((acc, curr) => {
-    return acc + curr.messages.length
+    return acc + (curr?.messages?.length || 0)
   }, 0)
 })
 </script>

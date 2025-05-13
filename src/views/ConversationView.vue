@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Button from 'primevue/button'
@@ -41,11 +41,13 @@ const reloadMessagesHandler = async () => {
 
 const conversationSelected = ref<AssistantConversation | undefined>()
 
-const conversationSelectedHandler = (conversationID: string) => {
-  conversationSelected.value = conversations?.value?.find(
-    (conversation) => conversation.id === conversationID,
-  )
-}
+const conversationSelectedHandler = computed(() => {
+  return (conversationID: string) => {
+    conversationSelected.value = conversations?.value?.find(
+      (conversation) => conversation.id === conversationID,
+    )
+  }
+})
 </script>
 
 <template>
@@ -72,7 +74,7 @@ const conversationSelectedHandler = (conversationID: string) => {
           </Column>
           <Column field="messages" header="Mensajes">
             <template #body="slotProps">
-              {{ slotProps.data.messages.length }}
+              {{ slotProps.data?.messages?.length || 0 }}
             </template>
           </Column>
           <Column field="extra" header="Acciones">

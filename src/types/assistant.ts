@@ -22,6 +22,7 @@ export interface AssistantProfile {
   created_at: string
   updated_at: string
   is_active: boolean
+  iteration_limit: number
   api_keys: ApiKey[]
 }
 

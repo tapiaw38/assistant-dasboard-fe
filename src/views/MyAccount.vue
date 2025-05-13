@@ -1,12 +1,28 @@
 <script setup lang="ts">
 import Card from 'primevue/card'
 import Button from 'primevue/button'
+import { useAssistant } from '@/composables/useAssistant'
+import LoadingSpinner from '@/components/core/LoadingSpinner/LoadingSpinner.vue'
+import { onMounted } from 'vue'
+
+const {
+  assistantProfile,
+  getAssistantProfile,
+  isGetAssistantProfileSuccess,
+  isGetAssistantProfileError,
+  getAssistantProfileError,
+  isGetAssistantProfilePending,
+} = useAssistant()
+
+onMounted(async () => {
+  await getAssistantProfile()
+})
 </script>
 
 <template>
   <div class="account-me">
     <h1 class="text-2xl font-bold mb-4 mt-4 text-200 text-gray-500">Mi Cuenta</h1>
-    <div class="flex flex-row gap-2">
+    <div class="flex flex-row gap-2" v-if="isGetAssistantProfileSuccess">
       <!-- my subscriptions -->
       <div class="flex flex-column md:col-6 col-12">
         <Card class="flex flex-column gap-2">
@@ -52,12 +68,13 @@ import Button from 'primevue/button'
             <div class="flex flex-column gap-2 justify-content-center align-items-center">
               <div class="flex flex-row gap-2 mb-2 align-content-center align-items-center">
                 <span class="text-md font-light text-gray-500">
-                  Limite de <b class="font-bold text-dark">1000</b> solicitudes por mes
+                  Limite de <b class="font-bold text-dark">100</b> solicitudes por mes
                 </span>
               </div>
               <div class="flex flex-row gap-2 align-content-center align-items-center">
                 <span class="text-md font-light text-gray-500">
-                  Solicitudes restantes: <b class="font-bold text-dark">1000</b>
+                  Solicitudes restantes:
+                  <b class="font-bold text-dark">{{ assistantProfile?.iteration_limit }}</b>
                 </span>
                 <Button
                   label=""
@@ -126,6 +143,14 @@ import Button from 'primevue/button'
           </template>
         </Card>
       </div>
+    </div>
+    <div class="flex flex-row gap-2" v-else-if="isGetAssistantProfilePending">
+      <LoadingSpinner />
+    </div>
+    <div class="flex flex-row gap-2" v-else-if="isGetAssistantProfileError">
+      <p class="text-danger font-bold">
+        Error al obtener el perfil: {{ getAssistantProfileError }}
+      </p>
     </div>
   </div>
 </template>
