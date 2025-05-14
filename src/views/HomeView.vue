@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
@@ -7,6 +7,7 @@ import TextPlugin from 'gsap/TextPlugin'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import AppFooter from '@/components/core/shared/AppFooter/AppFooter.vue'
+import { createAssistant } from 'seely-ai-assistant'
 
 const router = useRouter()
 
@@ -174,6 +175,48 @@ onMounted(() => {
 
   fadeUp(howItWorks.value!)
   fadeUp(cta.value!)
+})
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let assistant: any = null
+
+onMounted(() => {
+  const initializeAssistant = () => {
+    assistant = createAssistant({
+      apiKey: import.meta.env.VITE_SEELY_API_KEY,
+
+      title: 'Seely',
+      placeholder: 'Escribe tu mensaje aquí...',
+      position: 'bottom-right',
+      initialMessage: 'Hola, ¿en qué puedo ayudarte?',
+      buttonOptions: {
+        backgroundColor: '#9333ea',
+        color: '#ffffff',
+        icon: '<i class="pi pi-comments"></i>',
+        size: 'medium',
+      },
+      theme: {
+        primaryColor: '#9333ea',
+        textColor: '#424242',
+        backgroundColor: '#ffffff',
+        userMessageBgColor: '#9333ea',
+        userMessageTextColor: '#ffffff',
+        assistantMessageBgColor: '#f3e5f5',
+        assistantMessageTextColor: '#4a148c',
+        inputBorderColor: '#9333ea',
+        inputBgColor: '#f5f0ff',
+        inputTextColor: '#4a148c',
+      },
+    })
+  }
+
+  initializeAssistant()
+})
+
+onBeforeUnmount(() => {
+  if (assistant) {
+    assistant.unmount()
+  }
 })
 
 function scrollToSection() {
