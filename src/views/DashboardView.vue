@@ -264,16 +264,22 @@ const totalMessagesInConversation = computed(() => {
                 >
                   <div class="flex flex-column gap-2">
                     <div
-                      class="gap-2 mt-4 mb-2 flex flex-row justify-content-center align-items-center"
+                      class="gap-2 mt-4 mb-1 flex flex-row justify-content-center align-items-center"
                     >
                       <span class="text-md font-bold text-center text-gray-500 text-start">
                         Cantidad:
                       </span>
                       <Badge :value="conversations?.length" severity="info"></Badge>
                     </div>
-                    <div class="gap-2 mb-4 flex flex-row justify-content-center align-items-center">
+                    <div class="gap-2 mb-1 flex flex-row justify-content-center align-items-center">
                       <span class="text-md font-bold text-center text-gray-500">Mensajes </span>
                       <Badge :value="totalMessagesInConversation" severity="info"></Badge>
+                    </div>
+                    <div class="flex flex-row mb-4 gap-2 align-content-center align-items-center">
+                      <span class="text-md font-bold text-gray-500">
+                        Iteraciones restantes:
+                        <Badge :value="assistantProfile?.iteration_limit" severity="info"></Badge>
+                      </span>
                     </div>
                     <RouterLink class="p-button w-full" :to="{ name: 'conversation' }">
                       Ver más

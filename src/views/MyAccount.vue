@@ -108,7 +108,7 @@ onMounted(async () => {
               <div class="flex flex-column gap-2 justify-content-center align-items-center">
                 <div class="flex flex-row gap-2 mb-2">
                   <span class="text-md font-light text-gray-500">
-                    Limite de <b class="font-bold text-dark">1000</b> solicitudes por mes
+                    Limite de <b class="font-bold text-dark">100</b> solicitudes por mes
                   </span>
                 </div>
                 <div class="flex flex-row gap-2 align-content-center align-items-center">
