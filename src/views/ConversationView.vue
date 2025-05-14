@@ -65,7 +65,13 @@ const conversationSelectedHandler = computed(() => {
             ></i>
           </div>
         </div>
-        <DataTable class="flex" :value="conversations" v-if="isGetUserConversationSuccess">
+        <DataTable
+          :value="conversations"
+          paginator
+          :rows="5"
+          :rowsPerPageOptions="[5, 10]"
+          v-if="isGetUserConversationSuccess"
+        >
           <Column field="title" header="Titulo"></Column>
           <Column field="created_at" header="Creada">
             <template #body="slotProps">
