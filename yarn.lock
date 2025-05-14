@@ -4129,10 +4129,10 @@ saxes@^6.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
-seely-ai-assistant@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/seely-ai-assistant/-/seely-ai-assistant-0.2.0.tgz#459a1984b5ec71b6f491dabeebfd2832aa0376e4"
-  integrity sha512-UENSCXWVXHW/iA1wM+sto58vCR1/aZXcqOjo5FUot/AZh7eEkifE/J1w7oLa6GaZT/u5MuOAvSaW9jogDtMc4A==
+seely-ai-assistant@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/seely-ai-assistant/-/seely-ai-assistant-0.3.0.tgz#0b1759f0bfccc2205e0131281535ad08c2420c6f"
+  integrity sha512-kf/iXluKn1yGJUaGpKQqB9fgVxWeNesyKNRO+iA63Ngu0e0SYH5+IL9N1TwUtNUcelBvqf51c8hPMou6rRF8xA==
 
 semver@^6.3.1:
   version "6.3.1"

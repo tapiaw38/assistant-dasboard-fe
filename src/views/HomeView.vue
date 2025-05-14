@@ -184,7 +184,7 @@ onMounted(() => {
   const initializeAssistant = () => {
     assistant = createAssistant({
       apiKey: import.meta.env.VITE_SEELY_API_KEY,
-
+      apiBaseUrl: import.meta.env.VITE_SEELY_API_BASE_URL,
       title: 'Seely',
       placeholder: 'Escribe tu mensaje aquí...',
       position: 'bottom-right',

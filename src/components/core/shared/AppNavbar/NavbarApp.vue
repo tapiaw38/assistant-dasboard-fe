@@ -140,4 +140,8 @@ const logoutUseHandler = async () => {
   color: #333;
   text-decoration: none;
 }
+
+li {
+  list-style: none;
+}
 </style>
