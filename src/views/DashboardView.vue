@@ -205,7 +205,8 @@ const totalMessagesInConversation = computed(() => {
           </Panel>
           <div class="col-12 md:col-6" v-if="isAddAssistantProfileError">
             <p class="text-red-500 font-bold">
-              Error al agregar el asistente: Ya existe un perfil {{ addAssistantProfileError }}
+              Error al agregar el asistente: Ya existe un perfil
+              {{ addAssistantProfileError }}
             </p>
           </div>
 
@@ -526,6 +527,7 @@ const totalMessagesInConversation = computed(() => {
 
 <style scoped>
 .dashboard {
+  margin-top: 2rem;
   max-width: 1400px;
   padding: 2rem;
   min-height: 100vh;

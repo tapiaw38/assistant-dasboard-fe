@@ -22,9 +22,9 @@ onMounted(async () => {
 <template>
   <div class="account-me">
     <h1 class="text-2xl font-bold mb-4 mt-4 text-200 text-gray-500">Mi Cuenta</h1>
-    <div class="flex flex-row gap-2" v-if="isGetAssistantProfileSuccess">
+    <div class="grid container-account gap-2" v-if="isGetAssistantProfileSuccess">
       <!-- my subscriptions -->
-      <div class="flex flex-column md:col-6 col-12">
+      <div class="flex gap-2">
         <Card class="flex flex-column gap-2">
           <template #title>
             <div class="flex justify-content-center flex-row mb-2">
@@ -89,7 +89,7 @@ onMounted(async () => {
         </Card>
       </div>
       <!-- plan details -->
-      <div class="flex flex-column md:col-6 col-12 gap-2">
+      <div class="flex flex-column gap-2">
         <Card class="flex flex-column gap-2">
           <template #title>
             <div class="flex justify-content-center flex-row mb-1">
@@ -158,7 +158,22 @@ onMounted(async () => {
 <style scoped>
 .account-me {
   width: 100%;
+  margin-top: 2rem;
   padding: 2rem;
   min-height: 100vh;
+
+  .container-account {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .container-account {
+      grid-template-columns: 1fr;
+    }
+  }
 }
 </style>

@@ -225,22 +225,31 @@ function scrollToSection() {
 </script>
 
 <template>
-  <div class="surface-ground text-color font-sans">
+  <div class="surface-ground text-color font-sans home-view">
     <!-- HERO -->
     <section
       ref="hero"
       class="min-h-screen flex flex-column align-items-center justify-content-center text-center p-6 hero-bg"
     >
       <h1 class="text-5xl font-bold mb-4">
-        Impulsa tu eCommerce con <code class="font-light">Seely</code>
+        Automatiza tu negocio con <code class="font-light">Seely</code>
       </h1>
-      <p class="text-xl mb-6">El asistente virtual que aumenta tus ventas y automatiza tu tienda</p>
+      <p class="text-xl mb-6">
+        El asistente virtual que aumenta productividad y automatiza tu negocio
+      </p>
       <div
-        class="flex flex-column gap-2 absolute bottom-0 right-0 left-0 mb-8 pb-8"
+        class="flex flex-column gap-2 absolute bottom-0 right-0 left-0 mb-5"
         @click="scrollToSection()"
       >
-        <label for="scrollToSection" class="font-bold cursor-pointer">Ver más</label>
-        <i ref="arrow" class="pi pi-arrow-down font-bold text-1sm cursor-pointer"></i>
+        <label
+          for="scrollToSection"
+          class="absolute left-0 bottom-100 right-0 font-bold cursor-pointer"
+          >Ver más</label
+        >
+        <i
+          ref="arrow"
+          class="pi pi-arrow-down left-0 bottom-0 right-0 font-bold text-1sm cursor-pointer"
+        ></i>
       </div>
     </section>
 
@@ -252,13 +261,13 @@ function scrollToSection() {
       <h2 class="text-3xl text-center mb-8">¿Por qué elegir Seely?</h2>
 
       <p class="text-lg font-bold mb-2 mx-3" ref="featuresText1">
-        Seely, es un asistente virtual que puedes integrar a tu aplicacion web de manera simple y
-        responde a tus clientes de manera más eficiente sobre productos y servicios que ofreces.
+        Seely, es un asistente virtual que puedes integrar a tu aplicacion web de manera simple e
+        interactiva.
       </p>
 
       <p class="text-lg font-bold mb-8 mx-3" ref="featuresText2">
-        Seely tambien puede enviarte preguntas de los clientes que no esten en el contexto de tu
-        negocio, mediante un chatbot que sera intermediario entre tus clientes y tu.
+        Con Seely puedes automatizar tu negocio y aumentar la productividad de tu equipo, puedes
+        adaptar el asistente y personalizarlo para que se ajuste a tus necesidades.
       </p>
 
       <div class="flex flex-wrap justify-content-center gap-4">
@@ -304,7 +313,7 @@ function scrollToSection() {
       class="cta text-center bg-purple-900 text-white p-8 rounded-xl mx-4 md:mx-auto md:max-w-4xl mt-12"
     >
       <div class="flex flex-column align-items-center mt-5 mb-5">
-        <h2 class="text-3xl font-bold mb-6">¿Listo para vender más con IA?</h2>
+        <h2 class="text-3xl font-bold mb-6">¿Listo para integrar IA en tu aplicación?</h2>
         <p class="text-lg mb-6 font-light">
           Prueba gratis por un mes con el plan Básico y descubre cómo Seely puede transformar tu
           negocio.
@@ -316,21 +325,19 @@ function scrollToSection() {
         <div class="flex align-items-center gap-3">
           <span class="text-4xl">🤖</span>
           <p class="text-lg font-light">
-            La IA es el futuro de las ventas, transformando tu negocio para adaptarse y prosperar.
+            La IA de Seely está diseñada para aprender y adaptarse a las necesidades de tu negocio.
           </p>
         </div>
         <div class="flex align-items-center gap-3">
           <span class="text-4xl">🚀</span>
           <p class="text-lg font-light">
-            Impulsa tus ventas con recomendaciones inteligentes y personalizadas que conectan con
-            tus clientes.
+            Impulsa tu negocio con la integración de IA y automatiza tareas repetitivas.
           </p>
         </div>
         <div class="flex align-items-center gap-3">
           <span class="text-4xl">💼</span>
           <p class="text-lg font-light">
-            Haz más efectivas tus ventas con la funcionalidad de chatear con los usuarios para
-            responder preguntas específicas.
+            Haz más efectivo tu equipo y mejora la experiencia del cliente con Seely.
           </p>
         </div>
       </div>
@@ -346,7 +353,7 @@ function scrollToSection() {
         class="plans grid grid-cols-1 md:grid-cols-3 gap-6 justify-content-center align-content-center"
         ref="plans"
       >
-        <Card class="text-center card p-4">
+        <Card class="text-center plan-card p-4">
           <template #title>
             <h3 class="text-xl font-bold">Free Beta</h3>
           </template>
@@ -366,7 +373,7 @@ function scrollToSection() {
           </template>
         </Card>
 
-        <Card class="text-center card p-4 bg-black-alpha-10 text-gray-400">
+        <Card class="text-center plan-card p-4 bg-black-alpha-10 text-gray-400">
           <template #title>
             <h3 class="text-xl font-bold">Básico</h3>
           </template>
@@ -382,7 +389,7 @@ function scrollToSection() {
           </template>
         </Card>
 
-        <Card class="text-center card p-4 bg-black-alpha-10 text-gray-400">
+        <Card class="text-center plan-card p-4 bg-black-alpha-10 text-gray-400">
           <template #title>
             <h3 class="text-xl font-bold">Pro</h3>
           </template>
@@ -398,7 +405,7 @@ function scrollToSection() {
           </template>
         </Card>
 
-        <Card class="text-center card p-4 bg-black-alpha-10 text-gray-400">
+        <Card class="text-center plan-card p-4 bg-black-alpha-10 text-gray-400">
           <template #title>
             <h3 class="text-xl font-bold">Premium</h3>
           </template>
@@ -499,24 +506,27 @@ function scrollToSection() {
     display: flex;
     flex-direction: column;
     gap: 10px !important;
+  }
 
-    .card {
-      max-width: 70% !important;
-      padding: 10px !important;
-      margin: 0 !important;
-      width: 100% !important;
+  .plan-card {
+    max-width: 70%;
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+    max-width: 320px;
+    min-width: 280px;
 
-      h3 {
-        font-size: 1rem !important;
-      }
+    h3 {
+      font-size: 1rem;
+    }
 
-      p {
-        font-size: 1rem !important;
-      }
+    p {
+      font-size: 1rem;
+    }
 
-      li {
-        font-size: 1rem !important;
-      }
+    li {
+      font-size: 1rem;
+      list-style: none !important;
     }
   }
 }
