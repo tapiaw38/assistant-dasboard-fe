@@ -279,7 +279,10 @@ const totalMessagesInConversation = computed(() => {
                     <div class="flex flex-row mb-4 gap-2 align-content-center align-items-center">
                       <span class="text-md font-bold text-gray-500">
                         Iteraciones restantes:
-                        <Badge :value="assistantProfile?.iteration_limit" severity="info"></Badge>
+                        <Badge
+                          :value="assistantProfile?.iteration_limit || 0"
+                          severity="info"
+                        ></Badge>
                       </span>
                     </div>
                     <RouterLink class="p-button w-full" :to="{ name: 'conversation' }">

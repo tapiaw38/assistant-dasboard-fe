@@ -147,7 +147,10 @@ onMounted(async () => {
     <div class="flex flex-row gap-2" v-else-if="isGetAssistantProfilePending">
       <LoadingSpinner />
     </div>
-    <div class="flex flex-row gap-2" v-else-if="isGetAssistantProfileError">
+    <div class="flex flex-row gap-2 text-gray-500" v-else-if="!isGetAssistantProfileSuccess">
+      <p class="text-danger font-bold">No se encontraron asistentes</p>
+    </div>
+    <div class="flex flex-row gap-2" v-if="isGetAssistantProfileError">
       <p class="text-danger font-bold">
         Error al obtener el perfil: {{ getAssistantProfileError }}
       </p>
