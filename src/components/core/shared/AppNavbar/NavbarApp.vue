@@ -2,9 +2,10 @@
 import { onMounted, onUpdated, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import Popover from 'primevue/popover'
+import GoogleButton from '@/components/core/GoogleButton/GoogleButton.vue'
 import { useAuth } from '@/composables/useAuth'
 
-const { logoutUser, user, meUser } = useAuth()
+const { logoutUser, user, meUser, loginUser } = useAuth()
 const router = useRouter()
 
 onMounted(async () => {
@@ -39,6 +40,11 @@ const logoutUseHandler = async () => {
   op.value.hide()
   router.push('/')
 }
+
+const loginWithGoogle = async (code: string) => {
+  await loginUser({ ssoType: 'google', ssoCode: code })
+  router.push('/dashboard')
+}
 </script>
 
 <template>
@@ -58,6 +64,9 @@ const logoutUseHandler = async () => {
 
     <!-- Right icons -->
     <div class="navbar-end" v-if="!user">
+      <div class="flex flex-row gap-2 justify-content-center align-items-center">
+        <GoogleButton @code="loginWithGoogle" />
+      </div>
       <RouterLink to="/auth" class="nav-icon">
         <i class="pi pi-user" />
       </RouterLink>

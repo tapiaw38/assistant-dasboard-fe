@@ -4,11 +4,10 @@ import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
 import AuthLogin from '@/components/core/AuthLogin/AuthLogin.vue'
 import AuthRegister from '@/components/core/AuthRegister/AuthRegister.vue'
-import GoogleButton from '@/components/core/GoogleButton/GoogleButton.vue'
 import { useAuth } from '@/composables/useAuth'
 import LoadingSpinner from '@/components/core/LoadingSpinner/LoadingSpinner.vue'
 
-const { loginUser, isLoginPending, isLoginError } = useAuth()
+const { isLoginPending, isLoginError } = useAuth()
 
 const router = useRouter()
 
@@ -20,11 +19,6 @@ const toggleView = () => {
   isLogin.value = !isLogin.value
 }
 
-const loginWithGoogle = async (code: string) => {
-  await loginUser({ ssoType: 'google', ssoCode: code })
-  handleRedirect('dashboard')
-}
-
 const handleRedirect = async (to: string) => {
   if (to === 'auth') {
     toggleView()
@@ -34,7 +28,7 @@ const handleRedirect = async (to: string) => {
 </script>
 
 <template>
-  <div class="auth-view flex justify-content-center align-items-center">
+  <div class="auth-view flex flex-column justify-content-center align-items-center">
     <Card>
       <template #content>
         <div class="flex flex-row">
@@ -46,10 +40,6 @@ const handleRedirect = async (to: string) => {
             <template v-else>
               <AuthRegister @redirect="handleRedirect" />
             </template>
-            <div class="flex flex-row mt-3 justify-content-center flex-column align-content-center">
-              <GoogleButton @code="loginWithGoogle" v-if="!isLoginPending" />
-              <LoadingSpinner v-else class="w-full" />
-            </div>
           </div>
         </div>
         <p class="text-center text-sm text-gray-500 cursor-pointer" @click="toggleView">
@@ -57,7 +47,9 @@ const handleRedirect = async (to: string) => {
         </p>
       </template>
     </Card>
-
+    <div class="flex flex-row mt-3 justify-content-center flex-column align-content-center">
+      <LoadingSpinner v-if="isLoginPending" class="w-full" />
+    </div>
     <p class="font-bold" v-if="isLoginError">Error al iniciar sesión</p>
   </div>
 </template>

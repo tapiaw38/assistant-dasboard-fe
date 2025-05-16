@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Button from 'primevue/button'
+import { gsap } from 'gsap'
 
 const emit = defineEmits<{
   (e: 'code', authCode: string): void
@@ -9,6 +10,11 @@ const emit = defineEmits<{
 const googleClient = ref<{
   requestCode: () => void
 } | null>(null)
+
+const buttonRef = ref<HTMLButtonElement | null>(null)
+const showText = ref(false)
+const buttonText = ref('Iniciar con Google')
+const displayedText = ref('')
 
 onMounted(() => {
   const google = window.google
@@ -28,14 +34,64 @@ onMounted(() => {
 const loginWithGoogle = () => {
   googleClient.value?.requestCode()
 }
+
+const handleMouseEnter = () => {
+  gsap.to(buttonRef.value, {
+    duration: 0.2,
+    width: '17.35rem',
+    padding: '0.75rem',
+    onComplete: () => {
+      showText.value = true
+      displayedText.value = ''
+      let i = 0
+      const intervalId = setInterval(() => {
+        displayedText.value += buttonText.value[i]
+        i++
+        if (i >= buttonText.value.length) {
+          clearInterval(intervalId)
+        }
+      }, 10)
+    },
+  })
+}
+
+const handleMouseLeave = () => {
+  gsap.to(buttonRef.value, {
+    duration: 0.2,
+    width: '3rem',
+    padding: '0.75rem',
+    onComplete: () => {
+      showText.value = false
+      displayedText.value = ''
+    },
+  })
+}
 </script>
 
 <template>
   <Button
-    label="Iniciar con Google"
+    ref="buttonRef"
     icon="pi pi-google"
-    severity="info"
-    class="w-full max-w-[17.35rem] mx-auto"
+    class="w-full max-w-[17.35rem] mx-auto google-button px-2 py-2"
     @click="loginWithGoogle"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+    :label="showText ? displayedText : ''"
   />
 </template>
+
+<style scoped>
+.google-button {
+  background-color: #9333ea;
+  color: #ffffff;
+  border: none;
+  width: 3rem;
+  overflow: hidden;
+  transition: width 0.2s ease-in-out;
+}
+
+.google-button:hover {
+  background-color: #7e22ce !important;
+  border: none !important;
+}
+</style>
