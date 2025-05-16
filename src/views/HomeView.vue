@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
@@ -7,7 +7,6 @@ import TextPlugin from 'gsap/TextPlugin'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import AppFooter from '@/components/core/shared/AppFooter/AppFooter.vue'
-import { createAssistant } from 'seely-ai-assistant'
 
 const router = useRouter()
 
@@ -25,26 +24,26 @@ const arrow = ref<HTMLElement | null>(null)
 const featuresList = [
   {
     icon: '🧠',
-    title: 'Recomendaciones inteligentes',
-    text: 'Aumenta la conversión con sugerencias personalizadas.',
+    title: 'Conversaciones inteligentes',
+    text: 'Respuestas precisas y relevantes para tus clientes.',
   },
   {
     icon: '🤖',
     title: 'Soporte automatizado',
-    text: 'Chatbot 24/7 que responde y asiste a tus clientes.',
+    text: 'Resuelve problemas comunes sin intervención humana.',
   },
   {
     icon: '⚙️',
     title: 'Fácil integración',
-    text: 'Instala el paquete npm y actívalo en minutos.',
+    text: 'Conéctalo a tu sitio web o aplicación en minutos.',
   },
 ]
 
 const steps = [
   'Regístrate y configura tu cuenta.',
-  'Configura el bot de soporte.',
-  'Instala el paquete npm y listo.',
-  'Observa cómo aumentan tus ventas.',
+  'Crea tu asistente virtual.',
+  'Instala el paquete para tu aplicación.',
+  'Deja que Seely trabaje por ti.',
 ]
 
 onMounted(() => {
@@ -177,48 +176,6 @@ onMounted(() => {
   fadeUp(cta.value!)
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let assistant: any = null
-
-onMounted(() => {
-  const initializeAssistant = () => {
-    assistant = createAssistant({
-      apiKey: import.meta.env.VITE_SEELY_API_KEY,
-      apiBaseUrl: import.meta.env.VITE_SEELY_API_BASE_URL,
-      title: 'Seely',
-      placeholder: 'Escribe tu mensaje aquí...',
-      position: 'bottom-right',
-      initialMessage: 'Hola, ¿en qué puedo ayudarte?',
-      buttonOptions: {
-        backgroundColor: '#9333ea',
-        color: '#ffffff',
-        icon: '<i class="pi pi-comments"></i>',
-        size: 'medium',
-      },
-      theme: {
-        primaryColor: '#9333ea',
-        textColor: '#424242',
-        backgroundColor: '#ffffff',
-        userMessageBgColor: '#9333ea',
-        userMessageTextColor: '#ffffff',
-        assistantMessageBgColor: '#f3e5f5',
-        assistantMessageTextColor: '#4a148c',
-        inputBorderColor: '#9333ea',
-        inputBgColor: '#f5f0ff',
-        inputTextColor: '#4a148c',
-      },
-    })
-  }
-
-  initializeAssistant()
-})
-
-onBeforeUnmount(() => {
-  if (assistant) {
-    assistant.unmount()
-  }
-})
-
 function scrollToSection() {
   features.value?.scrollIntoView({ behavior: 'smooth' })
 }
@@ -235,7 +192,8 @@ function scrollToSection() {
         Automatiza tu negocio con <code class="font-light">Seely</code>
       </h1>
       <p class="text-xl mb-6">
-        El asistente virtual que aumenta productividad y automatiza tu negocio
+        El asistente virtual que aumenta productividad y mejora la experiencia de tu equipo y
+        clientes.
       </p>
       <div
         class="flex flex-column gap-2 absolute bottom-0 right-0 left-0 mb-5"
@@ -261,13 +219,13 @@ function scrollToSection() {
       <h2 class="text-3xl text-center mb-8">¿Por qué elegir Seely?</h2>
 
       <p class="text-lg font-bold mb-2 mx-3" ref="featuresText1">
-        Seely, es un asistente virtual que puedes integrar a tu aplicacion web de manera simple e
-        interactiva.
+        En <code>Seely</code>, brindamos una plataforma y servicios diseñados para que puedas
+        integrar inteligencia artificial en tu sitio web, canales de atención o sistemas de trabajo.
       </p>
 
       <p class="text-lg font-bold mb-8 mx-3" ref="featuresText2">
-        Con Seely puedes automatizar tu negocio y aumentar la productividad de tu equipo, puedes
-        adaptar el asistente y personalizarlo para que se ajuste a tus necesidades.
+        Nuestro enfoque se basa en automatizar tareas, mejorar la experiencia del cliente y aumentar
+        la eficiencia operativa mediante soluciones adaptadas a tu industria y forma de trabajo.
       </p>
 
       <div class="flex flex-wrap justify-content-center gap-4">
@@ -315,7 +273,7 @@ function scrollToSection() {
       <div class="flex flex-column align-items-center mt-5 mb-5">
         <h2 class="text-3xl font-bold mb-6">¿Listo para integrar IA en tu aplicación?</h2>
         <p class="text-lg mb-6 font-light">
-          Prueba gratis por un mes con el plan Básico y descubre cómo Seely puede transformar tu
+          Prueba gratis por 15 dias el plan Básico y descubre cómo Seely puede transformar tu
           negocio.
         </p>
       </div>
@@ -361,7 +319,8 @@ function scrollToSection() {
             <p class="text-lg font-light mb-4">Ideal para probar Seely.</p>
             <p class="text-2xl font-bold mb-4">$0/mes</p>
             <ul class="text-left mb-4">
-              <li>✔ 1 Bot de soporte</li>
+              <li>✔ Asistente inteligente</li>
+              <li>✔ Comprensión contextual</li>
               <li>✔ Hasta 100 interacciones</li>
               <li>✔ Integración básica</li>
             </ul>
@@ -381,7 +340,8 @@ function scrollToSection() {
             <p class="text-lg font-light mb-4">Ideal para pequeños negocios.</p>
             <p class="text-2xl font-bold mb-4">$9.99/mes</p>
             <ul class="text-left mb-4">
-              <li>✔ 1 Bot de soporte</li>
+              <li>✔ Asistente inteligente</li>
+              <li>✔ Comprensión contextual</li>
               <li>✔ Hasta 1,000 interacciones</li>
               <li>✔ Integración básica</li>
             </ul>
@@ -397,9 +357,11 @@ function scrollToSection() {
             <p class="text-lg font-light mb-4">Para negocios en crecimiento.</p>
             <p class="text-2xl font-bold mb-4">$29.99/mes</p>
             <ul class="text-left mb-4">
-              <li>✔ 3 Bots de soporte</li>
+              <li>✔ Asistentes inteligentes</li>
+              <li>✔ Comprensión contextual</li>
+              <li>✔ Procesamiento de datos</li>
               <li>✔ Hasta 10,000 interacciones</li>
-              <li>✔ Integración avanzada</li>
+              <li>✔ Integración básica</li>
             </ul>
             <Button label="Elegir plan" class="p-button-warning font-bold" disabled />
           </template>
@@ -413,10 +375,12 @@ function scrollToSection() {
             <p class="text-lg font-light mb-4">Para grandes empresas.</p>
             <p class="text-2xl font-bold mb-4">$99.99/mes</p>
             <ul class="text-left mb-4">
-              <li>✔ Bots ilimitados</li>
+              <li>✔ Asistentes inteligentes</li>
+              <li>✔ Comprensión contextual</li>
+              <li>✔ Procesamiento de datos</li>
               <li>✔ Interacciones ilimitadas</li>
               <li>✔ Soporte prioritario</li>
-              <li>✔ Integración con WhatsApp Business</li>
+              <li>✔ WhatsApp Business</li>
             </ul>
             <Button label="Elegir plan" class="p-button-danger font-bold" disabled />
           </template>
