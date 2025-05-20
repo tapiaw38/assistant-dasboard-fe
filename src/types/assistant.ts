@@ -24,6 +24,7 @@ export interface AssistantProfile {
   is_active: boolean
   iteration_limit: number
   api_keys: ApiKey[]
+  files?: AssistantFile[]
 }
 
 export interface AssistantProfileResponse {
@@ -54,4 +55,22 @@ export interface ApiKeyRemoveID {
 
 export interface ApiKeyRemoveResponse {
   data: ApiKeyRemoveID
+}
+
+export interface AssistantFile {
+  id: string
+  name: string
+  url: string
+  created_at: string
+}
+
+export interface AssistantFileResponse {
+  data: AssistantFile[]
+}
+
+export interface AssistantFileRemoveID {
+  id: string
+}
+export interface AssistantFileRemoveResponse {
+  data: AssistantFileRemoveID
 }

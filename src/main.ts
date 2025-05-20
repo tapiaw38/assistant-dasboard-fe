@@ -13,6 +13,11 @@ import Aura from '@primevue/themes/aura'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 
+// PrismJS
+import 'prismjs'
+import 'prismjs/themes/prism.css'
+import 'prismjs/components/prism-javascript.js'
+
 const app = createApp(App)
 
 app.use(createPinia())

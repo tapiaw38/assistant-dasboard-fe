@@ -37,6 +37,18 @@ const router = createRouter({
           beforeEnter: [isAuthenticatedGuard],
           component: () => import('../views/ConversationView.vue'),
         },
+        {
+          path: '/web-integration',
+          name: 'web-integration',
+          beforeEnter: [isAuthenticatedGuard],
+          component: () => import('../views/WebIntegrationView.vue'),
+        },
+        {
+          path: '/store-integration',
+          name: 'store-integration',
+          beforeEnter: [isAuthenticatedGuard],
+          component: () => import('../views/StoreIntegrationView.vue'),
+        },
       ],
     },
   ],

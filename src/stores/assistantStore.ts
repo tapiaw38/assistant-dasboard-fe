@@ -20,6 +20,8 @@ export const useAssistantStore = defineStore('assistant', () => {
     updateAssistantProfileMutation,
     addApiKeyMutation,
     removeApiKeyMutation,
+    addFilesMutation,
+    removeFileByIdMutation,
   } = useAssistantQueries()
 
   const addAssistantProfile = (params: AssistantProfileParams) => {
@@ -72,6 +74,26 @@ export const useAssistantStore = defineStore('assistant', () => {
     }
   }
 
+  const addFiles = async (files: File[]) => {
+    try {
+      const data = await addFilesMutation.mutateAsync(files)
+      assistantProfile.value!.files = [...data?.data]
+    } catch (error) {
+      console.error('Failed to add files:', error)
+    }
+  }
+
+  const removeFileById = async (fileId: string) => {
+    try {
+      const data = await removeFileByIdMutation.mutateAsync(fileId)
+      assistantProfile.value!.files = assistantProfile.value!.files?.filter(
+        (file) => file.id !== data?.data.id,
+      )
+    } catch (error) {
+      console.error('Failed to remove file:', error)
+    }
+  }
+
   return {
     assistantProfile,
     addAssistantProfile,
@@ -79,6 +101,8 @@ export const useAssistantStore = defineStore('assistant', () => {
     updateAssistantProfile,
     addApiKey,
     removeApiKey,
+    addFiles,
+    removeFileById,
 
     isAddAssistantProfilePending: addAssistantProfileMutation.isPending,
     isAddAssistantProfileSuccess: addAssistantProfileMutation.isSuccess,
@@ -104,5 +128,15 @@ export const useAssistantStore = defineStore('assistant', () => {
     isRemoveApiKeySuccess: removeApiKeyMutation.isSuccess,
     isRemoveApiKeyError: removeApiKeyMutation.isError,
     removeApiKeyError: removeApiKeyMutation.error,
+
+    isAddFilesPending: addFilesMutation.isPending,
+    isAddFilesSuccess: addFilesMutation.isSuccess,
+    isAddFilesError: addFilesMutation.isError,
+    addFilesError: addFilesMutation.error,
+
+    isRemoveFileByIdPending: removeFileByIdMutation.isPending,
+    isRemoveFileByIdSuccess: removeFileByIdMutation.isSuccess,
+    isRemoveFileByIdError: removeFileByIdMutation.isError,
+    removeFileByIdError: removeFileByIdMutation.error,
   }
 })

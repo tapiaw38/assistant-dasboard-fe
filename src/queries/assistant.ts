@@ -5,6 +5,8 @@ import {
   updateAssistantProfileHandler,
   addApiKeyHandler,
   removeApiKeyHandler,
+  addFilesHandler,
+  removeFileByIdHandler,
 } from '@/api/assistant.ts'
 import type {
   AssistantProfileParams,
@@ -13,6 +15,8 @@ import type {
   ApiKeyParams,
   ApiKeyResponse,
   ApiKeyRemoveResponse,
+  AssistantFileResponse,
+  AssistantFileRemoveResponse,
 } from '@/types/assistant.ts'
 
 export const useAssistantQueries = () => {
@@ -45,11 +49,21 @@ export const useAssistantQueries = () => {
     mutationFn: removeApiKeyHandler,
   })
 
+  const addFilesMutation = useMutation<AssistantFileResponse, Error, File[]>({
+    mutationFn: addFilesHandler,
+  })
+
+  const removeFileByIdMutation = useMutation<AssistantFileRemoveResponse, Error, string>({
+    mutationFn: removeFileByIdHandler,
+  })
+
   return {
     addAssistantProfileMutation,
     getAssistantProfileQuery,
     updateAssistantProfileMutation,
     addApiKeyMutation,
     removeApiKeyMutation,
+    addFilesMutation,
+    removeFileByIdMutation,
   }
 }
