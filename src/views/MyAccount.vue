@@ -95,13 +95,13 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
 </script>
 
 <template>
-  <div class="account-me">
-    <h1 class="text-2xl font-bold mb-4 mt-4 text-200 text-gray-500">Mi Cuenta</h1>
-    <div class="grid container-account gap-2" v-if="isGetAssistantProfileSuccess">
+  <div class="account-me flex flex-column gap-4">
+    <h1 class="text-2xl font-bold text-200 my-4 text-gray-500">Mi Cuenta</h1>
+    <div class="grid container-account gap-4" v-if="isGetAssistantProfileSuccess">
       <!-- my subscriptions -->
       <div class="flex flex-column gap-2">
-        <div class="flex flex-row gap-2 w-full">
-          <Card class="flex flex-column gap-2">
+        <div class="flex flex-row gap-2 w-full justify-content-between">
+          <Card class="flex flex-column gap-2 w-full">
             <template #title>
               <div class="flex justify-content-center flex-row mb-2">
                 <span class="font-bold text-2xl text-gray-500">Suscripciones</span>
@@ -163,7 +163,7 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
               </div>
             </template>
           </Card>
-          <Card class="flex flex-column gap-2">
+          <Card class="flex flex-column gap-2 w-full">
             <template #title>
               <div class="flex justify-content-center flex-row mb-1">
                 <span class="font-bold text-2xl text-gray-500">Detalles del Plan</span>
@@ -360,7 +360,7 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
 
 <style scoped>
 .account-me {
-  width: 100%;
+  max-width: 1400px;
   margin-top: 2rem;
   padding: 2rem;
   min-height: 100vh;
@@ -369,8 +369,6 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
     width: 100%;
     grid-template-columns: 1fr 1fr;
     display: grid;
-    justify-items: center;
-    align-items: start;
   }
 
   @media (max-width: 768px) {

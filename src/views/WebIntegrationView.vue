@@ -90,11 +90,11 @@ watch(codeMethodsBlock, (newValue) => {
 </script>
 
 <template>
-  <div class="web-integration-view flex flex-row justify-content-center align-items-center">
-    <div class="flex flex-column gap-2 align-items-center justify-content-center">
+  <div class="web-integration-view flex flex-row">
+    <div class="flex flex-column gap-2 align-items-start justify-content-center">
       <span class="text-2xl text-gray-500 font-bold">Integración Web</span>
 
-      <Card class="mt-4 p-3 flex justify-content-center align-items-center">
+      <Card class="mt-4 p-3 flex justify-content-center align-items-center w-full">
         <template #header>
           <span class="text-lg font-bold">Integración con aplicaciones y sitios Web</span>
         </template>

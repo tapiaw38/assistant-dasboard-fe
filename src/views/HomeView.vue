@@ -42,7 +42,7 @@ const featuresList = [
 const steps = [
   'Regístrate y configura tu cuenta.',
   'Crea tu asistente virtual.',
-  'Instala el paquete para tu aplicación.',
+  'Elige las integraciones que necesitas.',
   'Deja que Seely trabaje por ti.',
 ]
 
