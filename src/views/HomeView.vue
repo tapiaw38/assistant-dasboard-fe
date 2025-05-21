@@ -7,6 +7,7 @@ import TextPlugin from 'gsap/TextPlugin'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import AppFooter from '@/components/core/shared/AppFooter/AppFooter.vue'
+import ContactForm from '@/components/core/ContactForm/ContactForm.vue'
 
 const router = useRouter()
 
@@ -386,6 +387,14 @@ function scrollToSection() {
           </template>
         </Card>
       </div>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section
+      class="flex flex-column justify-content-center align-items-center py-2 px-4 max-w-6xl mx-auto"
+    >
+      <h2 class="text-3xl text-center mb-8 font-bold">Contáctanos</h2>
+      <ContactForm />
     </section>
 
     <!-- FOOTER -->

@@ -83,13 +83,7 @@ const removeFile = (fileId: string) => {
             </template>
             <template #content>
               <div class="flex flex-column gap-4" v-if="isGetAssistantProfileSuccess">
-                <p class="text-gray-500">
-                  Aquí puedes ver los archivos que has subido. Puedes eliminarlos si lo deseas.
-                </p>
                 <div class="flex flex-column gap-2">
-                  <span class="text-gray-500"
-                    >El asistente tiene acceso para responder tomandolos en cuenta</span
-                  >
                   <ul class="list-none">
                     <li v-for="(file, index) in assistantProfile?.files" :key="index">
                       <div class="flex justify-content-between align-items-center">
