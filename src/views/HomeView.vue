@@ -193,8 +193,7 @@ function scrollToSection() {
         Automatiza tu negocio con <code class="font-light">Seely</code>
       </h1>
       <p class="text-xl mb-6">
-        El asistente virtual que aumenta productividad y mejora la experiencia de tu equipo y
-        clientes.
+        El asistente virtual que aumenta productividad y mejora la experiencia de tus clientes
       </p>
       <div
         class="flex flex-column gap-2 absolute bottom-0 right-0 left-0 mb-5"
