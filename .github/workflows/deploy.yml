@@ -1,0 +1,47 @@
+name: Deploy Vue to S3
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build Vue app
+        run: yarn build
+
+      - name: Install AWS CLI
+        run: sudo apt-get install -y awscli
+
+      - name: Upload assets with long-term cache
+        run: |
+          aws s3 cp dist/ s3://seely.com.ar/ --recursive \
+            --exclude "index.html" \
+            --cache-control "public, max-age=31536000, immutable"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'sa-east-1'
+
+      - name: Upload index.html with no cache
+        run: |
+          aws s3 cp dist/index.html s3://seely.com.ar/index.html \
+            --cache-control "no-cache, no-store, must-revalidate"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'sa-east-1'
