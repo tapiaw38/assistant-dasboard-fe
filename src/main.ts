@@ -18,6 +18,9 @@ import 'prismjs'
 import 'prismjs/themes/prism.css'
 import 'prismjs/components/prism-javascript.js'
 
+//services
+import services from './services'
+
 const app = createApp(App)
 
 app.use(createPinia())
@@ -32,4 +35,5 @@ app.use(PrimeVue, {
   },
 })
 
+app.provide('services', services)
 app.mount('#app')

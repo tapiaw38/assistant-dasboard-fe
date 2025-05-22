@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import type { LoginParams } from '@/types/auth.ts'
@@ -6,12 +7,10 @@ import { useAuth } from '@/composables/useAuth'
 import { useForm, useField } from 'vee-validate'
 import { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
+import { watchEffect } from 'vue'
 
-const { loginUser, loginError, isLoginError, isLoginPending } = useAuth()
-
-const emit = defineEmits<{
-  (e: 'redirect', to: string): void
-}>()
+const router = useRouter()
+const { loginUser, loginError, isLoginError, isLoginPending, isLoginSuccess } = useAuth()
 
 const schema = z.object({
   email: z.string().email('Email inválido'),
@@ -33,9 +32,14 @@ const onSubmit = handleSubmit(async (values) => {
 
   try {
     await loginUser(loginParams)
-    emit('redirect', 'dashboard')
   } catch (error) {
     console.error('Error al iniciar sesión:', error)
+  }
+})
+
+watchEffect(() => {
+  if (isLoginSuccess.value) {
+    router.push('/dashboard')
   }
 })
 </script>

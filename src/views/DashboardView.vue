@@ -309,7 +309,9 @@ const integrations = [
                 </p>
                 <RouterLink
                   class="p-button w-full"
-                  :to="{ name: integration.to }"
+                  :to="{
+                    name: integration.to,
+                  }"
                   :class="integration.enabled ? '' : 'p-disabled'"
                   :tabindex="integration.enabled ? 0 : -1"
                   >Ver más</RouterLink

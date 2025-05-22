@@ -1,8 +1,16 @@
+import { inject } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAssistantStore } from '@/stores/assistantStore'
+import type { IAssistantService } from '../services/assistant/assistantService'
 
 export const useAssistant = () => {
-  const assistantStore = useAssistantStore()
+  const services = inject<{ assistantService: IAssistantService }>('services')
+  if (!services) throw new Error('Services not provided')
+
+  const assistantService = services.assistantService
+
+  const store = useAssistantStore(assistantService)
+  const assistantStore = store()
 
   const {
     assistantProfile,

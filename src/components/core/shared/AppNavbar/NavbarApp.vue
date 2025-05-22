@@ -1,19 +1,23 @@
 <script setup lang="ts">
-import { onMounted, onUpdated, ref } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import Popover from 'primevue/popover'
 import GoogleButton from '@/components/core/GoogleButton/GoogleButton.vue'
 import { useAuth } from '@/composables/useAuth'
 
-const { logoutUser, user, meUser, loginUser } = useAuth()
+const { logoutUser, user, meUser, loginUser, isAuthenticated } = useAuth()
 const router = useRouter()
 
 onMounted(async () => {
-  await meUser()
+  if (isAuthenticated.value) {
+    await meUser()
+  }
 })
 
-onUpdated(async () => {
-  await meUser()
+watchEffect(async () => {
+  if (isAuthenticated.value) {
+    await meUser()
+  }
 })
 
 const routerLinks = [
@@ -43,7 +47,6 @@ const logoutUseHandler = async () => {
 
 const loginWithGoogle = async (code: string) => {
   await loginUser({ ssoType: 'google', ssoCode: code })
-  router.push('/dashboard')
 }
 </script>
 

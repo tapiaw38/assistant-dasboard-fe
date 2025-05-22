@@ -1,12 +1,21 @@
+import { inject } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/authStore'
+import type { IAuthService } from '@/services/auth/authService'
 
 export const useAuth = () => {
-  const authStore = useAuthStore()
+  const services = inject<{ authService: IAuthService }>('services')
+  if (!services) throw new Error('Services not provided')
+
+  const authService = services.authService
+
+  const store = useAuthStore(authService)
+  const authStore = store()
 
   const {
     user,
     token,
+    isAuthenticated,
 
     isLoginPending,
     isLoginSuccess,
@@ -30,6 +39,7 @@ export const useAuth = () => {
     // Data
     user,
     token,
+    isAuthenticated,
 
     isLoginPending,
     isLoginSuccess,

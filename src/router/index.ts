@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DefaultLayout from '@/components/core/shared/DefaultLayout/DefaultLayout.vue'
-import { isAuthenticatedGuard } from './auth'
+import { createAuthGuard, IsAuthenticated } from './auth-guard'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,7 +17,7 @@ const router = createRouter({
         {
           path: '/dashboard',
           name: 'dashboard',
-          beforeEnter: [isAuthenticatedGuard],
+          beforeEnter: [createAuthGuard(new IsAuthenticated())],
           component: () => import('../views/DashboardView.vue'),
         },
         {
@@ -28,25 +28,25 @@ const router = createRouter({
         {
           path: '/my-account',
           name: 'my-account',
-          beforeEnter: [isAuthenticatedGuard],
+          beforeEnter: [createAuthGuard(new IsAuthenticated())],
           component: () => import('../views/MyAccount.vue'),
         },
         {
           path: '/conversation',
           name: 'conversation',
-          beforeEnter: [isAuthenticatedGuard],
+          beforeEnter: [createAuthGuard(new IsAuthenticated())],
           component: () => import('../views/ConversationView.vue'),
         },
         {
           path: '/web-integration',
           name: 'web-integration',
-          beforeEnter: [isAuthenticatedGuard],
+          beforeEnter: [createAuthGuard(new IsAuthenticated())],
           component: () => import('../views/WebIntegrationView.vue'),
         },
         {
           path: '/store-integration',
           name: 'store-integration',
-          beforeEnter: [isAuthenticatedGuard],
+          beforeEnter: [createAuthGuard(new IsAuthenticated())],
           component: () => import('../views/StoreIntegrationView.vue'),
         },
       ],

@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/vue-query'
-import { getUserConversationHandler } from '@/api/conversation.ts'
 import type { AssistantConversationResponse } from '@/types/conversation'
+import type { IConversationService } from '@/services/conversation/conversationService'
 
-export const useConversationQueries = () => {
+export const useConversationQueries = (conversationService: IConversationService) => {
   const getUserConversationQuery = useQuery<AssistantConversationResponse, Error>({
     queryKey: ['getUserConversation'],
-    queryFn: getUserConversationHandler,
+    queryFn: conversationService.getUserConversation.bind(conversationService),
   })
 
   return {

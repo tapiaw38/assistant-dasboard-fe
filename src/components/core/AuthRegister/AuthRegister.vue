@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import { useForm, useField } from 'vee-validate'
@@ -7,12 +8,11 @@ import { toTypedSchema } from '@vee-validate/zod'
 import type { RegisterParams } from '@/types/auth.ts'
 import { useAuth } from '@/composables/useAuth'
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.vue'
+import { watchEffect } from 'vue'
 
-const { registerUser, registerError, isRegisterError, isRegisterPending } = useAuth()
-
-const emit = defineEmits<{
-  (e: 'redirect', to: string): void
-}>()
+const router = useRouter()
+const { registerUser, registerError, isRegisterError, isRegisterPending, isRegisterSuccess } =
+  useAuth()
 
 const schema = z
   .object({
@@ -50,9 +50,14 @@ const onSubmit = handleSubmit(async (values) => {
 
   try {
     await registerUser(registerParams)
-    emit('redirect', 'auth')
   } catch (error) {
     console.error('Error en registro:', error)
+  }
+})
+
+watchEffect(() => {
+  if (isRegisterSuccess.value) {
+    router.push('/auth')
   }
 })
 </script>

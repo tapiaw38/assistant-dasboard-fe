@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Card from 'primevue/card'
 import FileUpload from '@/components/core/FileUpload/FileUpload.vue'
+import LoadingSpinner from '@/components/core/LoadingSpinner/LoadingSpinner.vue'
 import { useAssistant } from '@/composables/useAssistant'
 import { onMounted } from 'vue'
 

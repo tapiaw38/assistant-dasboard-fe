@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
 import AuthLogin from '@/components/core/AuthLogin/AuthLogin.vue'
 import AuthRegister from '@/components/core/AuthRegister/AuthRegister.vue'
@@ -9,21 +8,12 @@ import LoadingSpinner from '@/components/core/LoadingSpinner/LoadingSpinner.vue'
 
 const { isLoginPending, isLoginError } = useAuth()
 
-const router = useRouter()
-
 const isLogin = ref(true)
 const isLoginMessage = ref('Iniciar Sesión')
 const isRegisterMessage = ref('Crear cuenta')
 
 const toggleView = () => {
   isLogin.value = !isLogin.value
-}
-
-const handleRedirect = async (to: string) => {
-  if (to === 'auth') {
-    toggleView()
-  }
-  return router.push(to)
 }
 </script>
 
@@ -35,10 +25,10 @@ const handleRedirect = async (to: string) => {
           <div class="w-full flex flex-column align-items-center justify-content-center gap-3 py-5">
             <i class="pi pi-user text-4xl font-light text-gray-500"></i>
             <template v-if="isLogin">
-              <AuthLogin @redirect="handleRedirect" />
+              <AuthLogin />
             </template>
             <template v-else>
-              <AuthRegister @redirect="handleRedirect" />
+              <AuthRegister />
             </template>
           </div>
         </div>

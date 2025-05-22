@@ -1,25 +1,25 @@
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { login, meUser, register } from '@/services/auth.ts'
+import type { IAuthService } from '@/services/auth/authService'
 import type {
   LoginParams,
   LoginResponse,
   MeUserResponse,
   RegisterParams,
   RegisterResponse,
-} from '@/types/auth.ts'
+} from '@/types/auth'
 
-export const useAuthQueries = () => {
+export function useAuthQueries(authService: IAuthService) {
   const loginMutation = useMutation<LoginResponse, Error, LoginParams>({
-    mutationFn: login,
+    mutationFn: authService.login.bind(authService),
   })
 
   const meUserQuery = useQuery<MeUserResponse, Error>({
     queryKey: ['meUser'],
-    queryFn: meUser,
+    queryFn: authService.meUser.bind(authService),
   })
 
   const registerMutation = useMutation<RegisterResponse, Error, RegisterParams>({
-    mutationFn: register,
+    mutationFn: authService.register.bind(authService),
   })
 
   return {

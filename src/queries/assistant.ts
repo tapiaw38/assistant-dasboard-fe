@@ -1,13 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import {
-  addAssistantProfileHandler,
-  getAssistantProfileHandler,
-  updateAssistantProfileHandler,
-  addApiKeyHandler,
-  removeApiKeyHandler,
-  addFilesHandler,
-  removeFileByIdHandler,
-} from '@/api/assistant.ts'
+import type { IAssistantService } from '@/services/assistant/assistantService'
 import type {
   AssistantProfileParams,
   AssistantProfileResponse,
@@ -19,18 +11,18 @@ import type {
   AssistantFileRemoveResponse,
 } from '@/types/assistant.ts'
 
-export const useAssistantQueries = () => {
+export const useAssistantQueries = (assistantService: IAssistantService) => {
   const addAssistantProfileMutation = useMutation<
     AssistantProfileResponse,
     Error,
     AssistantProfileParams
   >({
-    mutationFn: addAssistantProfileHandler,
+    mutationFn: assistantService.addAssistant.bind(assistantService),
   })
 
   const getAssistantProfileQuery = useQuery<AssistantProfileResponse, Error>({
     queryKey: ['getAssistantProfile'],
-    queryFn: getAssistantProfileHandler,
+    queryFn: assistantService.getAssistant.bind(assistantService),
   })
 
   const updateAssistantProfileMutation = useMutation<
@@ -38,23 +30,23 @@ export const useAssistantQueries = () => {
     Error,
     AssistantProfileUpdateParams
   >({
-    mutationFn: updateAssistantProfileHandler,
+    mutationFn: assistantService.updateAssistant.bind(assistantService),
   })
 
   const addApiKeyMutation = useMutation<ApiKeyResponse, Error, ApiKeyParams>({
-    mutationFn: addApiKeyHandler,
+    mutationFn: assistantService.addApiKey.bind(assistantService),
   })
 
   const removeApiKeyMutation = useMutation<ApiKeyRemoveResponse, Error, string>({
-    mutationFn: removeApiKeyHandler,
+    mutationFn: assistantService.removeApiKey.bind(assistantService),
   })
 
   const addFilesMutation = useMutation<AssistantFileResponse, Error, File[]>({
-    mutationFn: addFilesHandler,
+    mutationFn: assistantService.addFiles.bind(assistantService),
   })
 
   const removeFileByIdMutation = useMutation<AssistantFileRemoveResponse, Error, string>({
-    mutationFn: removeFileByIdHandler,
+    mutationFn: assistantService.removeFileById.bind(assistantService),
   })
 
   return {
