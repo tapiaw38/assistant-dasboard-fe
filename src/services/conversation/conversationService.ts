@@ -6,7 +6,9 @@ export interface IConversationService {
 }
 
 export class ConversationService implements IConversationService {
-  constructor(private readonly api: AxiosInstance) {}
+  constructor(private readonly api: AxiosInstance) {
+    this.api = api
+  }
 
   async getUserConversation(): Promise<AssistantConversationResponse> {
     const { data } = await this.api.get<AssistantConversationResponse>('/conversation/user')

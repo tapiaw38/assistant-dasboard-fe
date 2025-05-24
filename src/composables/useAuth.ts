@@ -1,4 +1,4 @@
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/authStore'
 import type { IAuthService } from '@/services/auth/authService'
@@ -15,7 +15,6 @@ export const useAuth = () => {
   const {
     user,
     token,
-    isAuthenticated,
 
     isLoginPending,
     isLoginSuccess,
@@ -39,7 +38,10 @@ export const useAuth = () => {
     // Data
     user,
     token,
-    isAuthenticated,
+    isAuthenticated: computed<boolean>(() => {
+      const localToken = localStorage.getItem('token')
+      return localToken !== null
+    }),
 
     isLoginPending,
     isLoginSuccess,
@@ -61,5 +63,6 @@ export const useAuth = () => {
     logoutUser,
     meUser,
     registerUser,
+    reset: () => authStore.$reset(),
   }
 }

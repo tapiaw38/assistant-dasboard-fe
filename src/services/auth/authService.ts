@@ -14,7 +14,9 @@ export interface IAuthService {
 }
 
 export class AuthService implements IAuthService {
-  constructor(private readonly api: AxiosInstance) {}
+  constructor(private readonly api: AxiosInstance) {
+    this.api = api
+  }
 
   async login({ email, password, ssoType, ssoCode }: LoginParams): Promise<LoginResponse> {
     const { data } = await this.api.post<LoginResponse>('/auth/login', {

@@ -12,9 +12,9 @@ const googleClient = ref<{
 } | null>(null)
 
 const buttonRef = ref<HTMLButtonElement | null>(null)
-const showText = ref(false)
-//const buttonText = ref('Iniciar con Google')
-const displayedText = ref('')
+const showText = ref(true)
+const buttonText = ref('Iniciar con Google')
+const displayedText = ref(buttonText.value)
 
 onMounted(() => {
   const google = window.google
