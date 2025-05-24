@@ -21,7 +21,9 @@ export interface IAssistantService {
 }
 
 export class AssistantService implements IAssistantService {
-  constructor(private readonly api: AxiosInstance) {}
+  constructor(private readonly api: AxiosInstance) {
+    this.api = api
+  }
 
   async addAssistant(assistantProfile: AssistantProfileParams): Promise<AssistantProfileResponse> {
     const { data } = await this.api.post<AssistantProfileResponse>('/profile/', assistantProfile)

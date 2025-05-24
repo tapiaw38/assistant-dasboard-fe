@@ -33,5 +33,6 @@ export const useConversation = () => {
 
     // Methods
     getUserConversation,
+    reset: conversationStore.$reset,
   }
 }

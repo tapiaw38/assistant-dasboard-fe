@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, reactive, watch, computed } from 'vue'
+import { ref, reactive, watch, computed, onMounted, watchEffect } from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
@@ -14,7 +14,8 @@ import { useToogle } from '@/composables/useToogle'
 import { useAssistant } from '@/composables/useAssistant'
 import { useConversation } from '@/composables/useConversation'
 
-const { meUser, isMeUserPending, isMeUserSuccess, isMeUserError, meUserError } = useAuth()
+const { meUser, isMeUserPending, isMeUserSuccess, isMeUserError, meUserError, isAuthenticated } =
+  useAuth()
 const { toogleValue: isVisible } = useToogle(false)
 const { toogleValue: isVisibleUpdate } = useToogle(false)
 
@@ -50,9 +51,14 @@ const {
 } = useAssistant()
 
 onMounted(async () => {
+  if (!isAuthenticated.value) return
   await meUser()
-  await getAssistantProfile()
-  await getUserConversation()
+})
+
+watchEffect(() => {
+  if (!isAuthenticated.value) return
+  getAssistantProfile()
+  getUserConversation()
 })
 
 const modalTitle = ref('Agregar Asistente')
@@ -69,11 +75,9 @@ const assistantProfileParams = reactive<AssistantProfileParams>({
 
 const addAssistant = async () => {
   addAssistantProfile(assistantProfileParams)
-
   if (isAddAssistantProfileSuccess.value) {
     getAssistantProfile()
   }
-
   isVisible.value = false
 }
 
@@ -91,11 +95,9 @@ const changeUpdateVisible = (value: boolean) => {
 
 const updateAssistan = async () => {
   updateAssistantProfile(updateAssistantProfileParams)
-
   if (isUpdateAssistantProfileSuccess.value) {
     getAssistantProfile()
   }
-
   isVisibleUpdate.value = false
 }
 
@@ -156,7 +158,7 @@ const integrations = [
 </script>
 
 <template>
-  <div class="dashboard flex flex-column w-full" v-if="!isMeUserPending && isMeUserSuccess">
+  <div class="dashboard flex flex-column w-full" v-if="isMeUserSuccess && isAuthenticated">
     <h1 class="text-2xl font-bold mb-2 pl-2 mt-4 text-200 text-gray-500">Mi Perfil</h1>
     <div class="dashboard-container w-full">
       <div class="flex flex-column w-full">
@@ -181,10 +183,7 @@ const integrations = [
         </div>
         <div class="container-profile-data">
           <!-- Assistant Profile Data -->
-          <div
-            class="flex flex-column col-12 md:col-6 w-full"
-            v-if="assistantProfile || isGetAssistantProfileSuccess"
-          >
+          <div class="flex flex-column col-12 md:col-6 w-full" v-if="isGetAssistantProfileSuccess">
             <Card>
               <template #title>
                 <div class="flex justify-content-between flex-row">

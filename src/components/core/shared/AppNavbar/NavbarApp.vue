@@ -2,22 +2,20 @@
 import { onMounted, ref, watchEffect } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import Popover from 'primevue/popover'
-import GoogleButton from '@/components/core/GoogleButton/GoogleButton.vue'
 import { useAuth } from '@/composables/useAuth'
 
-const { logoutUser, user, meUser, loginUser, isAuthenticated } = useAuth()
+const { logoutUser, user, meUser, isAuthenticated } = useAuth()
+
 const router = useRouter()
 
 onMounted(async () => {
-  if (isAuthenticated.value) {
-    await meUser()
-  }
+  if (!isAuthenticated.value) return
+  await meUser()
 })
 
 watchEffect(async () => {
-  if (isAuthenticated.value) {
-    await meUser()
-  }
+  if (!isAuthenticated.value) return
+  await meUser()
 })
 
 const routerLinks = [
@@ -44,10 +42,6 @@ const logoutUseHandler = async () => {
   op.value.hide()
   router.push('/')
 }
-
-const loginWithGoogle = async (code: string) => {
-  await loginUser({ ssoType: 'google', ssoCode: code })
-}
 </script>
 
 <template>
@@ -67,9 +61,6 @@ const loginWithGoogle = async (code: string) => {
 
     <!-- Right icons -->
     <div class="navbar-end" v-if="!user">
-      <div class="flex flex-row gap-2 justify-content-center align-items-center">
-        <GoogleButton @code="loginWithGoogle" />
-      </div>
       <RouterLink to="/auth" class="nav-icon">
         <i class="pi pi-user" />
       </RouterLink>

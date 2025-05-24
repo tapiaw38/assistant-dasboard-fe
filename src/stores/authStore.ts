@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useAuthQueries } from '@/queries/auth'
 import type { IAuthService } from '@/services/auth/authService'
@@ -14,7 +14,6 @@ export const useAuthStore = (authService: IAuthService) =>
   defineStore('auth', () => {
     const user = ref<User | null | undefined>(null)
     const token = ref<string | null>(localStorage.getItem('token'))
-    const isAuthenticated = computed(() => !!token.value)
 
     const { loginMutation, meUserQuery, registerMutation } = useAuthQueries(authService)
 
@@ -32,9 +31,10 @@ export const useAuthStore = (authService: IAuthService) =>
     }
 
     const logoutUser = async () => {
+      localStorage.removeItem('token')
+      sessionStorage.clear()
       user.value = null
       token.value = null
-      localStorage.removeItem('token')
     }
 
     const meUser = async () => {
@@ -60,7 +60,6 @@ export const useAuthStore = (authService: IAuthService) =>
     return {
       user,
       token,
-      isAuthenticated,
 
       loginUser,
       logoutUser,

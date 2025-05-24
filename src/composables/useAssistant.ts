@@ -107,5 +107,6 @@ export const useAssistant = () => {
     removeApiKey,
     addFiles,
     removeFileById,
+    reset: assistantStore.$reset,
   }
 }
