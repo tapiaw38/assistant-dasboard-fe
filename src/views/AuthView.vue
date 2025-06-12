@@ -10,7 +10,7 @@ import GoogleButton from '@/components/core/GoogleButton/GoogleButton.vue'
 
 const router = useRouter()
 
-const { isLoginPending, isLoginError, loginUser, isLoginSuccess } = useAuth()
+const { isLoginPending, isLoginError, loginUser, isLoginSuccess, isAuthenticated } = useAuth()
 
 const isLogin = ref(true)
 const isLoginMessage = ref('Iniciar Sesión')
@@ -25,7 +25,7 @@ const loginWithGoogle = async (code: string) => {
 }
 
 watchEffect(() => {
-  if (isLoginSuccess.value) {
+  if (isAuthenticated.value && isLoginSuccess.value) {
     router.push('/dashboard')
   }
 })

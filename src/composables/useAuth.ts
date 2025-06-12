@@ -38,11 +38,7 @@ export const useAuth = () => {
     // Data
     user,
     token,
-    isAuthenticated: computed<boolean>(() => {
-      const localToken = localStorage.getItem('token')
-      return localToken !== null
-    }),
-
+    isAuthenticated: computed<boolean>(() => token.value !== null),
     isLoginPending,
     isLoginSuccess,
     isLoginError,

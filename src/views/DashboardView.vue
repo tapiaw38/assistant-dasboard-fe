@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, watch, computed, onMounted, watchEffect } from 'vue'
+import { ref, reactive, watch, computed, watchEffect } from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
@@ -8,16 +8,25 @@ import Badge from 'primevue/badge'
 import LoadingSpinner from '@/components/core/LoadingSpinner/LoadingSpinner.vue'
 import DefaultModal from '@/components/core/shared/DefaultModal/DefaultModal.vue'
 import ScrollPanel from 'primevue/scrollpanel'
+import Toast from 'primevue/toast'
 import type { AssistantProfileParams, AssistantProfileUpdateParams } from '@/types/assistant.ts'
 import { useAuth } from '@/composables/useAuth'
 import { useToogle } from '@/composables/useToogle'
 import { useAssistant } from '@/composables/useAssistant'
 import { useConversation } from '@/composables/useConversation'
 
-const { meUser, isMeUserPending, isMeUserSuccess, isMeUserError, meUserError, isAuthenticated } =
-  useAuth()
+const {
+  meUser,
+  isMeUserPending,
+  isMeUserSuccess,
+  isMeUserError,
+  meUserError,
+  isAuthenticated,
+  isLoginSuccess,
+} = useAuth()
 const { toogleValue: isVisible } = useToogle(false)
 const { toogleValue: isVisibleUpdate } = useToogle(false)
+import { useToast } from 'primevue/usetoast'
 
 const {
   conversations,
@@ -50,14 +59,13 @@ const {
   assistantProfile,
 } = useAssistant()
 
-onMounted(async () => {
-  if (!isAuthenticated.value) return
-  await meUser()
-})
+const toast = useToast()
 
 watchEffect(() => {
-  if (!isAuthenticated.value) return
+  if (!isAuthenticated.value && !isLoginSuccess) return
+  meUser()
   getAssistantProfile()
+  if (!isGetAssistantProfileSuccess.value) return
   getUserConversation()
 })
 
@@ -155,6 +163,42 @@ const integrations = [
     enabled: false,
   },
 ]
+
+const errorWatchers = [
+  {
+    flag: isAddAssistantProfileError,
+    summary: 'Error al agregar asistente',
+    detail: addAssistantProfileError,
+  },
+  {
+    flag: isUpdateAssistantProfileError,
+    summary: 'Error al actualizar asistente',
+    detail: updateAssistantProfileError,
+  },
+  {
+    flag: isGetAssistantProfileError,
+    summary: 'Error al obtener perfil de asistente',
+    detail: getAssistantProfileError,
+  },
+  {
+    flag: isGetUserConversationError,
+    summary: 'Error al obtener conversaciones',
+    detail: getUserConversationError,
+  },
+]
+
+errorWatchers.forEach(({ flag, summary, detail }) => {
+  watch(flag, (value) => {
+    if (value) {
+      toast.add({
+        severity: 'error',
+        summary,
+        detail: detail.value,
+        life: 3000,
+      })
+    }
+  })
+})
 </script>
 
 <template>
@@ -168,17 +212,6 @@ const integrations = [
           >
             <p class="text-green-500 font-bold mb-2">Comienza agregando un asistente</p>
             <Button label="" icon="pi pi-plus" class="p-button-success" @click="isVisible = true" />
-          </div>
-          <div class="col-12 md:col-6" v-if="isAddAssistantProfileError">
-            <p class="text-red-500 font-bold">
-              Error al agregar el asistente: Ya existe un perfil
-              {{ addAssistantProfileError }}
-            </p>
-          </div>
-          <div class="col-12 md:col-6" v-if="isUpdateAssistantProfileError">
-            <p class="text-red-500 font-bold">
-              Error al actualizar el asistente: {{ updateAssistantProfileError }}
-            </p>
           </div>
         </div>
         <div class="container-profile-data">
@@ -266,9 +299,6 @@ const integrations = [
           </div>
           <div class="col-12 md:col-6" v-if="!assistantProfile && isGetAssistantProfilePending">
             <LoadingSpinner />
-          </div>
-          <div class="col-12 md:col-6" v-if="isGetAssistantProfileError">
-            <p class="text-danger font-bold">Error: {{ getAssistantProfileError }}</p>
           </div>
         </div>
 
@@ -410,6 +440,9 @@ const integrations = [
       <LoadingSpinner v-else />
     </div>
   </DefaultModal>
+
+  <!-- Toast for Notifications -->
+  <Toast position="top-right" />
 </template>
 
 <style scoped>

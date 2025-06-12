@@ -18,16 +18,14 @@ export const useAuthStore = (authService: IAuthService) =>
     const { loginMutation, meUserQuery, registerMutation } = useAuthQueries(authService)
 
     const loginUser = async (params: LoginParams) => {
-      await loginMutation.mutateAsync(params, {
-        onSuccess: (response: LoginResponse) => {
-          user.value = response.data
-          token.value = response.token
-          localStorage.setItem('token', response.token)
-        },
-        onError: (error) => {
-          console.error('Failed to login:', error)
-        },
-      })
+      try {
+        const response: LoginResponse = await loginMutation.mutateAsync(params)
+        localStorage.setItem('token', response.token)
+        user.value = response.data
+        token.value = response.token
+      } catch (error) {
+        console.error('Failed to login:', error)
+      }
     }
 
     const logoutUser = async () => {
@@ -47,14 +45,12 @@ export const useAuthStore = (authService: IAuthService) =>
     }
 
     const registerUser = async (params: RegisterParams) => {
-      await registerMutation.mutateAsync(params, {
-        onSuccess: (response: RegisterResponse) => {
-          console.log('Successfully registered:', response)
-        },
-        onError: (error) => {
-          console.error('Failed to register:', error)
-        },
-      })
+      try {
+        const response: RegisterResponse = await registerMutation.mutateAsync(params)
+        console.log('Successfully registered:', response)
+      } catch (error) {
+        console.error('Failed to register:', error)
+      }
     }
 
     return {

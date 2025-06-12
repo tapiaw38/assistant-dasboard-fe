@@ -10,6 +10,7 @@ import router from './router'
 // PrimeVue
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
+import ToastService from 'primevue/toastservice'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 
@@ -34,6 +35,6 @@ app.use(PrimeVue, {
     },
   },
 })
-
 app.provide('services', services)
+app.use(ToastService)
 app.mount('#app')
