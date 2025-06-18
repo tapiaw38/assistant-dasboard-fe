@@ -148,11 +148,11 @@ const integrations = [
   },
   {
     name: 'Whatsapp',
-    description: 'Integración Whatsapp',
+    description: 'Integración Whatsapp, envío de mensajes a través de la API',
     icon: 'pi pi-whatsapp',
     color: 'text-green-500',
-    to: 'dashboard',
-    enabled: false,
+    to: 'whatsapp-integration',
+    enabled: true,
   },
   {
     name: 'Google Calendar',

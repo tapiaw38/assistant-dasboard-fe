@@ -49,6 +49,12 @@ const router = createRouter({
           beforeEnter: [createAuthGuard(new IsAuthenticated())],
           component: () => import('../views/StoreIntegrationView.vue'),
         },
+        {
+          path: '/whatsapp-integration',
+          name: 'whatsapp-integration',
+          beforeEnter: [createAuthGuard(new IsAuthenticated())],
+          component: () => import('../views/WhatsappIntegrationView.vue'),
+        },
       ],
     },
   ],
