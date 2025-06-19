@@ -14,9 +14,20 @@ const whatsappIntegration = reactive<IntegrationParams>({
   },
 })
 
+const validationErrors = reactive({
+  phoneNumber: '',
+  whatsappToken: '',
+})
+
 const saveConfig = async () => {
-  if (!whatsappIntegration.config.phoneNumber || !whatsappIntegration.config.whatsappToken) {
-    console.error('Por favor, complete todos los campos requeridos.')
+  validationErrors.phoneNumber = !whatsappIntegration.config.phoneNumber
+    ? 'El número de teléfono es obligatorio.'
+    : ''
+  validationErrors.whatsappToken = !whatsappIntegration.config.whatsappToken
+    ? 'El token de WhatsApp es obligatorio.'
+    : ''
+
+  if (validationErrors.phoneNumber || validationErrors.whatsappToken) {
     return
   }
   try {
