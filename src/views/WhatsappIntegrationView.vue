@@ -1,37 +1,93 @@
 <script setup lang="ts">
-import { useChatflow } from '@/composables/useChatflow'
-import { onMounted } from 'vue'
+import type { IntegrationParams } from '@/types/assistant'
+import { onMounted, reactive, computed } from 'vue'
+import { useAssistant } from '@/composables/useAssistant'
 
-const { qrCode, getQRCode } = useChatflow()
+const { addIntegration, getAssistantProfile, assistantProfile } = useAssistant()
 
-onMounted(() => {
-  getQRCode()
+const whatsappIntegration = reactive<IntegrationParams>({
+  name: 'whatsapp',
+  type: 'integration',
+  config: {
+    phoneNumber: '',
+    whatsappToken: '',
+  },
+})
+
+const saveConfig = async () => {
+  if (!whatsappIntegration.config.phoneNumber || !whatsappIntegration.config.whatsappToken) {
+    console.error('Por favor, complete todos los campos requeridos.')
+    return
+  }
+  try {
+    await addIntegration(whatsappIntegration)
+    console.log('Configuración guardada:', whatsappIntegration)
+    await getAssistantProfile()
+  } catch (error) {
+    console.error('Error al guardar la configuración:', error)
+  }
+}
+
+const searchWhatsappIntegration = computed(() => {
+  return assistantProfile.value?.integrations?.find(
+    (integration) => integration.name === 'whatsapp',
+  )
+})
+
+onMounted(async () => {
+  getAssistantProfile()
 })
 </script>
 
 <template>
   <div class="p-4">
-    <h2 class="text-xl text-gray-500 font-bold mb-2">📥 Mensajes de WhatsApp</h2>
-    <div class="mb-4">
-      <p class="text-gray-500">Escanea este QR con WhatsApp Web:</p>
-      <p class="text-sm text-gray-400 mt-1">
-        Asegúrate de estar conectado a internet y tener sesión iniciada en tu teléfono para
-        completar la vinculación correctamente.
-      </p>
-      <div v-if="qrCode" class="flex justify-center my-4">
-        <img :src="qrCode" alt="QR de WhatsApp" class="qr-image w-48 h-48" />
+    <form
+      class="flex items-center justify-center mt-4 flex flex-column"
+      @submit.prevent="saveConfig"
+    >
+      <div class="mb-4 w-full max-w-md flex">
+        <label for="phoneNumber" class="block text-gray-700 text-sm font-bold mb-2"
+          >Número de Teléfono:</label
+        >
+        <input
+          id="phoneNumber"
+          type="text"
+          v-model="whatsappIntegration.config.phoneNumber"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="Ej: +1234567890"
+          required
+        />
       </div>
-      <div v-else class="text-gray-500 text-center my-4">Cargando QR...</div>
-    </div>
+      <div class="mb-4 w-full max-w-md flex">
+        <label for="whatsappToken" class="block text-gray-700 text-sm font-bold mb-2"
+          >Token de WhatsApp:</label
+        >
+        <input
+          id="whatsappToken"
+          type="text"
+          v-model="whatsappIntegration.config.whatsappToken"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="Ej: xxxxxxxxxxxxxxxxxxxxxx"
+          required
+        />
+      </div>
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Guardar Configuración
+      </button>
+    </form>
+    <h2 class="text-2xl font-bold mt-6 mb-4 text-primary">Configuración de WhatsApp</h2>
+    <span class="font-bold mt-6 mb-4 text-primary">
+      Número de Teléfono:
+      {{ searchWhatsappIntegration?.config.phoneNumber || 'No configurado' }}
+    </span>
+    <span class="font-bold mt-6 mb-4 text-primary">
+      Token de WhatsApp:
+      {{ searchWhatsappIntegration?.config.whatsappToken || 'No configurado' }}
+    </span>
   </div>
 </template>
 
-<style scoped>
-.qr-image {
-  width: 400px;
-  height: 400px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-}
-</style>
+<style scoped></style>

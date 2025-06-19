@@ -10,6 +10,7 @@ import type {
   ApiKeyResponse,
   ApiKeyParams,
   ApiKeyRemoveResponse,
+  IntegrationParams,
 } from '@/types/assistant.ts'
 
 export const useAssistantStore = (assistantService: IAssistantService) =>
@@ -24,6 +25,7 @@ export const useAssistantStore = (assistantService: IAssistantService) =>
       removeApiKeyMutation,
       addFilesMutation,
       removeFileByIdMutation,
+      addIntegrationMutation,
     } = useAssistantQueries(assistantService)
 
     const addAssistantProfile = (params: AssistantProfileParams) => {
@@ -98,6 +100,15 @@ export const useAssistantStore = (assistantService: IAssistantService) =>
       }
     }
 
+    const addIntegration = async (integration: IntegrationParams) => {
+      try {
+        const data = await addIntegrationMutation.mutateAsync(integration)
+        assistantProfile.value!.integrations = [...data?.data]
+      } catch (error) {
+        console.error('Failed to add integration:', error)
+      }
+    }
+
     return {
       assistantProfile,
       addAssistantProfile,
@@ -107,6 +118,7 @@ export const useAssistantStore = (assistantService: IAssistantService) =>
       removeApiKey,
       addFiles,
       removeFileById,
+      addIntegration,
 
       isAddAssistantProfilePending: addAssistantProfileMutation.isPending,
       isAddAssistantProfileSuccess: addAssistantProfileMutation.isSuccess,
@@ -142,5 +154,10 @@ export const useAssistantStore = (assistantService: IAssistantService) =>
       isRemoveFileByIdSuccess: removeFileByIdMutation.isSuccess,
       isRemoveFileByIdError: removeFileByIdMutation.isError,
       removeFileByIdError: removeFileByIdMutation.error,
+
+      isAddIntegrationPending: addIntegrationMutation.isPending,
+      isAddIntegrationSuccess: addIntegrationMutation.isSuccess,
+      isAddIntegrationError: addIntegrationMutation.isError,
+      addIntegrationError: addIntegrationMutation.error,
     }
   })

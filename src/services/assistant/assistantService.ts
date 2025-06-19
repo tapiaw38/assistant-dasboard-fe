@@ -8,6 +8,8 @@ import type {
   ApiKeyRemoveResponse,
   AssistantFileResponse,
   AssistantFileRemoveResponse,
+  IntegrationParams,
+  IntegrationResponse,
 } from '@/types/assistant.ts'
 
 export interface IAssistantService {
@@ -18,6 +20,7 @@ export interface IAssistantService {
   removeApiKey(apiKeyId: string): Promise<ApiKeyRemoveResponse>
   addFiles(files: File[]): Promise<AssistantFileResponse>
   removeFileById(fileId: string): Promise<AssistantFileRemoveResponse>
+  addIntegration(integration: IntegrationParams): Promise<IntegrationResponse>
 }
 
 export class AssistantService implements IAssistantService {
@@ -68,6 +71,11 @@ export class AssistantService implements IAssistantService {
 
   async removeFileById(fileId: string): Promise<AssistantFileRemoveResponse> {
     const { data } = await this.api.delete<AssistantFileRemoveResponse>(`/profile/files/${fileId}`)
+    return data
+  }
+
+  async addIntegration(integration: IntegrationParams): Promise<IntegrationResponse> {
+    const { data } = await this.api.post<IntegrationResponse>('/profile/integrations', integration)
     return data
   }
 }
