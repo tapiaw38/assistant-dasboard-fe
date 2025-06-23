@@ -28,15 +28,14 @@ export const useAssistantStore = (assistantService: IAssistantService) =>
       addIntegrationMutation,
     } = useAssistantQueries(assistantService)
 
-    const addAssistantProfile = (params: AssistantProfileParams) => {
-      addAssistantProfileMutation.mutateAsync(params, {
-        onSuccess: (response: AssistantProfileResponse) => {
-          assistantProfile.value = response.data
-        },
-        onError: (error) => {
-          console.error('Failed to add assistant profile:', error)
-        },
-      })
+    const addAssistantProfile = async (params: AssistantProfileParams) => {
+      try {
+        const response: AssistantProfileResponse =
+          await addAssistantProfileMutation.mutateAsync(params)
+        assistantProfile.value = response.data
+      } catch (error) {
+        console.error('Failed to add assistant profile:', error)
+      }
     }
 
     const getAssistantProfile = async () => {

@@ -25,7 +25,7 @@ const socialLinks = [
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <p>&copy; {{ currentYear }} Seely App. All rights reserved.</p>
+          <p>&copy; {{ currentYear }} Nymia App. All rights reserved.</p>
         </div>
         <div class="footer-section">
           <ul class="social-links">

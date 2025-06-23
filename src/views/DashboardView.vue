@@ -61,12 +61,12 @@ const {
 
 const toast = useToast()
 
-watchEffect(() => {
+watchEffect(async () => {
   if (!isAuthenticated.value && !isLoginSuccess) return
-  meUser()
-  getAssistantProfile()
+  await meUser()
+  await getAssistantProfile()
   if (!isGetAssistantProfileSuccess.value) return
-  getUserConversation()
+  await getUserConversation()
 })
 
 const modalTitle = ref('Agregar Asistente')
@@ -82,9 +82,9 @@ const assistantProfileParams = reactive<AssistantProfileParams>({
 })
 
 const addAssistant = async () => {
-  addAssistantProfile(assistantProfileParams)
+  await addAssistantProfile(assistantProfileParams)
   if (isAddAssistantProfileSuccess.value) {
-    getAssistantProfile()
+    await getAssistantProfile()
   }
   isVisible.value = false
 }
@@ -102,9 +102,9 @@ const changeUpdateVisible = (value: boolean) => {
 }
 
 const updateAssistan = async () => {
-  updateAssistantProfile(updateAssistantProfileParams)
+  await updateAssistantProfile(updateAssistantProfileParams)
   if (isUpdateAssistantProfileSuccess.value) {
-    getAssistantProfile()
+    await getAssistantProfile()
   }
   isVisibleUpdate.value = false
 }

@@ -22,8 +22,8 @@ jobs:
           echo "VITE_AUTH_BASE_URL=${{ secrets.VITE_AUTH_BASE_URL }}" >> .env.production
           echo "VITE_ASSISTANT_BASE_URL=${{ secrets.VITE_ASSISTANT_BASE_URL }}" >> .env.production
           echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}" >> .env.production
-          echo "VITE_SEELY_API_KEY=${{ secrets.VITE_SEELY_API_KEY }}" >> .env.production
-          echo "VITE_SEELY_API_BASE_URL=${{ secrets.VITE_SEELY_API_BASE_URL }}" >> .env.production
+          echo "VITE_ASSISTANT_API_KEY=${{ secrets.VITE_ASSISTANT_API_KEY }}" >> .env.production
+          echo "VITE_ASSISTANT_API_BASE_URL=${{ secrets.VITE_ASSISTANT_API_BASE_URL }}" >> .env.production
           echo "VITE_EMAILJS_SERVICE_ID=${{ secrets.VITE_EMAILJS_SERVICE_ID }}" >> .env.production
           echo "VITE_EMAILJS_TEMPLATE_ID=${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}" >> .env.production
           echo "VITE_EMAILJS_PUBLIC_KEY=${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}" >> .env.production
@@ -41,7 +41,7 @@ jobs:
 
       - name: Clean S3 bucket
         run: |
-          aws s3 rm s3://seely.com.ar/ --recursive
+          aws s3 rm s3://nymia.com.ar/ --recursive
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -49,7 +49,7 @@ jobs:
 
       - name: Upload assets with long-term cache
         run: |
-          aws s3 cp dist/ s3://seely.com.ar/ --recursive \
+          aws s3 cp dist/ s3://nymia.com.ar/ --recursive \
             --exclude "index.html" \
             --cache-control "public, max-age=31536000, immutable"
         env:
@@ -59,7 +59,7 @@ jobs:
 
       - name: Upload index.html with no cache
         run: |
-          aws s3 cp dist/index.html s3://seely.com.ar/index.html \
+          aws s3 cp dist/index.html s3://nymia.com.ar/index.html \
             --cache-control "no-cache, no-store, must-revalidate"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
