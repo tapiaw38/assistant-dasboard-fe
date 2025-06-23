@@ -121,7 +121,7 @@ watch(codeMethodsBlock, (newValue) => {
               <div class="flex flex-column gap-2">
                 <p class="text-1xl text-bold text-gray-500">
                   Base URL:
-                  <code class="text-sm font-bold text-primary">assistant.seely.com.ar</code>
+                  <code class="text-sm font-bold text-primary">assistant.nymia.com.ar</code>
                 </p>
               </div>
 
@@ -132,7 +132,7 @@ watch(codeMethodsBlock, (newValue) => {
                     href="https://www.npmjs.com/package/seely-ai-assistant"
                     target="_blank"
                     class="font-ligth"
-                    >seely assistant</a
+                    >nymia assistant</a
                   >
                 </p>
               </div>

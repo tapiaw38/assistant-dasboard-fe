@@ -9,6 +9,8 @@ import type {
   ApiKeyRemoveResponse,
   AssistantFileResponse,
   AssistantFileRemoveResponse,
+  IntegrationResponse,
+  IntegrationParams,
 } from '@/types/assistant.ts'
 
 export const useAssistantQueries = (assistantService: IAssistantService) => {
@@ -49,6 +51,10 @@ export const useAssistantQueries = (assistantService: IAssistantService) => {
     mutationFn: assistantService.removeFileById.bind(assistantService),
   })
 
+  const addIntegrationMutation = useMutation<IntegrationResponse, Error, IntegrationParams>({
+    mutationFn: assistantService.addIntegration.bind(assistantService),
+  })
+
   return {
     addAssistantProfileMutation,
     getAssistantProfileQuery,
@@ -57,5 +63,6 @@ export const useAssistantQueries = (assistantService: IAssistantService) => {
     removeApiKeyMutation,
     addFilesMutation,
     removeFileByIdMutation,
+    addIntegrationMutation,
   }
 }

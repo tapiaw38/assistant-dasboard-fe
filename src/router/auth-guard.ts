@@ -20,9 +20,9 @@ export const createAuthGuard = (strategy: AuthStrategy) => {
   ) => {
     const allowed = await strategy.check()
     if (allowed) {
-      next()
+      return next()
     } else {
-      next({ name: 'auth' })
+      return next({ name: 'auth' })
     }
   }
 }

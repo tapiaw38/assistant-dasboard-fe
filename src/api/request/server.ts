@@ -1,11 +1,10 @@
 import axios from 'axios'
+import type { AxiosInstance } from 'axios'
 
 type ServerParams = {
   timeout?: number
   baseURL?: string
 }
-
-import type { AxiosInstance } from 'axios'
 
 export const server = ({ timeout, baseURL }: ServerParams): AxiosInstance =>
   axios.create({

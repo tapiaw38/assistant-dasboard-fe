@@ -44,7 +44,7 @@ const steps = [
   'Regístrate y configura tu cuenta.',
   'Crea tu asistente virtual.',
   'Elige las integraciones que necesitas.',
-  'Deja que Seely trabaje por ti.',
+  'Deja que Nymia trabaje por ti.',
 ]
 
 onMounted(() => {
@@ -190,7 +190,7 @@ function scrollToSection() {
       class="min-h-screen flex flex-column align-items-center justify-content-center text-center p-6 hero-bg"
     >
       <h1 class="text-5xl font-bold mb-4">
-        Automatiza tu negocio con <code class="font-light">Seely</code>
+        Automatiza tu negocio con <code class="font-light">Nymia</code>
       </h1>
       <p class="text-xl mb-6">
         El asistente virtual que aumenta productividad y mejora la experiencia de tus clientes
@@ -216,10 +216,10 @@ function scrollToSection() {
       ref="features"
       class="flex flex-column py-8 px-4 max-w-6xl mx-auto justify-content-center align-items-center"
     >
-      <h2 class="text-3xl text-center mb-8">¿Por qué elegir Seely?</h2>
+      <h2 class="text-3xl text-center mb-8">¿Por qué elegir Nymia?</h2>
 
       <p class="text-lg font-bold mb-2 mx-3" ref="featuresText1">
-        En <code>Seely</code>, brindamos una plataforma y servicios diseñados para que puedas
+        En <code>Nymia</code>, brindamos una plataforma y servicios diseñados para que puedas
         integrar inteligencia artificial en tu sitio web, canales de atención o sistemas de trabajo.
       </p>
 
@@ -273,7 +273,7 @@ function scrollToSection() {
       <div class="flex flex-column align-items-center mt-5 mb-5">
         <h2 class="text-3xl font-bold mb-6">¿Listo para integrar IA en tu aplicación?</h2>
         <p class="text-lg mb-6 font-light">
-          Prueba gratis por 15 dias el plan Básico y descubre cómo Seely puede transformar tu
+          Prueba gratis por 15 dias el plan Básico y descubre cómo Nymia puede transformar tu
           negocio.
         </p>
       </div>
@@ -283,7 +283,7 @@ function scrollToSection() {
         <div class="flex align-items-center gap-3">
           <span class="text-4xl">🤖</span>
           <p class="text-lg font-light">
-            La IA de Seely está diseñada para aprender y adaptarse a las necesidades de tu negocio.
+            La IA de Nymia está diseñada para aprender y adaptarse a las necesidades de tu negocio.
           </p>
         </div>
         <div class="flex align-items-center gap-3">
@@ -295,7 +295,7 @@ function scrollToSection() {
         <div class="flex align-items-center gap-3">
           <span class="text-4xl">💼</span>
           <p class="text-lg font-light">
-            Haz más efectivo tu equipo y mejora la experiencia del cliente con Seely.
+            Haz más efectivo tu equipo y mejora la experiencia del cliente con Nymia.
           </p>
         </div>
       </div>
@@ -316,7 +316,7 @@ function scrollToSection() {
             <h3 class="text-xl font-bold">Free Beta</h3>
           </template>
           <template #content>
-            <p class="text-lg font-light mb-4">Ideal para probar Seely.</p>
+            <p class="text-lg font-light mb-4">Ideal para probar Nymia.</p>
             <p class="text-2xl font-bold mb-4">$0/mes</p>
             <ul class="text-left mb-4">
               <li>✔ Asistente inteligente</li>

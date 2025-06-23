@@ -25,6 +25,7 @@ export interface AssistantProfile {
   iteration_limit: number
   api_keys: ApiKey[]
   files?: AssistantFile[]
+  integrations?: Integration[]
 }
 
 export interface AssistantProfileResponse {
@@ -71,6 +72,26 @@ export interface AssistantFileResponse {
 export interface AssistantFileRemoveID {
   id: string
 }
+
 export interface AssistantFileRemoveResponse {
   data: AssistantFileRemoveID
+}
+
+export interface Integration {
+  id: string
+  name: string
+  type: string
+  config: Record<string, string | number | boolean>
+  created_at?: string
+  updated_at?: string
+}
+
+export interface IntegrationParams {
+  name: string
+  type: string
+  config: Record<string, string | number | boolean>
+}
+
+export interface IntegrationResponse {
+  data: Integration[]
 }

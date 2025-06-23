@@ -10,6 +10,7 @@ import type {
   ApiKeyResponse,
   ApiKeyParams,
   ApiKeyRemoveResponse,
+  IntegrationParams,
 } from '@/types/assistant.ts'
 
 export const useAssistantStore = (assistantService: IAssistantService) =>
@@ -24,17 +25,17 @@ export const useAssistantStore = (assistantService: IAssistantService) =>
       removeApiKeyMutation,
       addFilesMutation,
       removeFileByIdMutation,
+      addIntegrationMutation,
     } = useAssistantQueries(assistantService)
 
-    const addAssistantProfile = (params: AssistantProfileParams) => {
-      addAssistantProfileMutation.mutateAsync(params, {
-        onSuccess: (response: AssistantProfileResponse) => {
-          assistantProfile.value = response.data
-        },
-        onError: (error) => {
-          console.error('Failed to add assistant profile:', error)
-        },
-      })
+    const addAssistantProfile = async (params: AssistantProfileParams) => {
+      try {
+        const response: AssistantProfileResponse =
+          await addAssistantProfileMutation.mutateAsync(params)
+        assistantProfile.value = response.data
+      } catch (error) {
+        console.error('Failed to add assistant profile:', error)
+      }
     }
 
     const getAssistantProfile = async () => {
@@ -98,6 +99,15 @@ export const useAssistantStore = (assistantService: IAssistantService) =>
       }
     }
 
+    const addIntegration = async (integration: IntegrationParams) => {
+      try {
+        const data = await addIntegrationMutation.mutateAsync(integration)
+        assistantProfile.value!.integrations = [...data?.data]
+      } catch (error) {
+        console.error('Failed to add integration:', error)
+      }
+    }
+
     return {
       assistantProfile,
       addAssistantProfile,
@@ -107,6 +117,7 @@ export const useAssistantStore = (assistantService: IAssistantService) =>
       removeApiKey,
       addFiles,
       removeFileById,
+      addIntegration,
 
       isAddAssistantProfilePending: addAssistantProfileMutation.isPending,
       isAddAssistantProfileSuccess: addAssistantProfileMutation.isSuccess,
@@ -142,5 +153,10 @@ export const useAssistantStore = (assistantService: IAssistantService) =>
       isRemoveFileByIdSuccess: removeFileByIdMutation.isSuccess,
       isRemoveFileByIdError: removeFileByIdMutation.isError,
       removeFileByIdError: removeFileByIdMutation.error,
+
+      isAddIntegrationPending: addIntegrationMutation.isPending,
+      isAddIntegrationSuccess: addIntegrationMutation.isSuccess,
+      isAddIntegrationError: addIntegrationMutation.isError,
+      addIntegrationError: addIntegrationMutation.error,
     }
   })
