@@ -181,6 +181,7 @@ watch(codeMethodsBlock, (newValue) => {
 <style scoped>
 .web-integration-view {
   margin-top: 2rem;
+  width: 100%;
   max-width: 1400px;
   padding: 2rem;
   min-height: 100vh;
