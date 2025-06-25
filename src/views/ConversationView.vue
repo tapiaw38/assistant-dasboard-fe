@@ -183,7 +183,10 @@ const conversationSelectedHandler = computed(() => {
 
   @media (max-width: 768px) {
     font-size: 0.9rem;
-    max-width: 310px !important;
+    max-width: 310px;
+    .conversation-view .table-container {
+      max-width: 310px;
+    }
   }
 }
 
