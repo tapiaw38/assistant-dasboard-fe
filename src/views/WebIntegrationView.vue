@@ -90,27 +90,27 @@ watch(codeMethodsBlock, (newValue) => {
 </script>
 
 <template>
-  <div class="web-integration-view flex flex-row">
-    <div class="flex flex-column gap-2 align-items-start justify-content-center">
-      <span class="text-2xl text-gray-500 font-bold">Integración Web</span>
+  <div class="web-integration-view">
+    <div class="content-container">
+      <div class="flex flex-column gap-2 align-items-start justify-content-center">
+        <span class="text-2xl text-gray-500 font-bold">Integración Web</span>
 
-      <Card class="mt-4 p-3 flex justify-content-center align-items-center w-full">
-        <template #header>
-          <span class="text-lg font-bold">Integración con aplicaciones y sitios Web</span>
-        </template>
-        <template #content>
-          <div class="flex flex-col gap-4">
-            <p class="text-gray-500">
-              La integración web consiste en agregar un chat a tu página web para interactuar con el
-              asistente. Puedes personalizar el chat para que se ajuste a la estética de tu página
-              web.
-              <br />
-            </p>
-          </div>
-        </template>
-      </Card>
-      <div class="config-container align-items-start justify-content-start mt-2 gap-2">
-        <div>
+        <Card class="mt-4 p-3 flex justify-content-center align-items-center">
+          <template #header>
+            <span class="text-lg font-bold">Integración con aplicaciones y sitios Web</span>
+          </template>
+          <template #content>
+            <div class="flex flex-col gap-4">
+              <p class="text-gray-500">
+                La integración web consiste en agregar un chat a tu página web para interactuar con
+                el asistente. Puedes personalizar el chat para que se ajuste a la estética de tu
+                página web.
+                <br />
+              </p>
+            </div>
+          </template>
+        </Card>
+        <div class="config-container align-items-start justify-content-start mt-2">
           <Card>
             <template #title>
               <div class="flex justify-content-center flex-row">
@@ -118,57 +118,54 @@ watch(codeMethodsBlock, (newValue) => {
               </div>
             </template>
             <template #content>
-              <div class="flex flex-column gap-2">
-                <p class="text-1xl text-bold text-gray-500">
-                  Base URL:
-                  <code class="text-sm font-bold text-primary">assistant.nymia.com.ar</code>
-                </p>
-              </div>
+              <div class="flex flex-column gap-2 code-section">
+                <div class="flex flex-column gap-2">
+                  <p class="text-1xl text-bold text-gray-500">
+                    Base URL:
+                    <code class="text-sm font-bold text-primary">assistant.nymia.com.ar</code>
+                  </p>
+                </div>
 
-              <div class="flex flex-column gap-2">
-                <p class="text-1xl text-bold text-gray-500">
-                  Paquete NPM:
-                  <a
-                    href="https://www.npmjs.com/package/seely-ai-assistant"
-                    target="_blank"
-                    class="font-ligth"
-                    >nymia assistant</a
-                  >
-                </p>
-              </div>
-
-              <div class="flex flex-column gap-2">
-                <p class="text-1xl text-bold text-gray-500">
-                  Crea tu api key en:
-                  <RouterLink to="/my-account" class="font-ligth">Mi cuenta</RouterLink>
-                </p>
-              </div>
-              <div class="flex flex-column gap-4 my-3">
-                <pre class="language-javascript">
-                  <code
-                    ref="codeConfigBlock"
-                    class="language-javascript"
-                    v-pre
+                <div class="flex flex-column gap-2">
+                  <p class="text-1xl text-bold text-gray-500">
+                    Paquete NPM:
+                    <a
+                      href="https://www.npmjs.com/package/seely-ai-assistant"
+                      target="_blank"
+                      class="font-ligth"
+                      >nymia assistant</a
                     >
-                  </code>
-                </pre>
+                  </p>
+                </div>
+
+                <div class="flex flex-column gap-2">
+                  <p class="text-1xl text-bold text-gray-500">
+                    Crea tu api key en:
+                    <RouterLink to="/my-account" class="font-ligth">Mi cuenta</RouterLink>
+                  </p>
+                </div>
+                <div class="code-container">
+                  <pre class="language-javascript">
+                    <code ref="codeConfigBlock" class="language-javascript" v-pre></code>
+                  </pre>
+                </div>
               </div>
             </template>
           </Card>
-        </div>
-        <!-- second section -->
-        <div>
+
           <Card>
             <template #title>
               <div class="flex justify-content-center flex-row">
-                <span class="font-bold text-2xl text-gray-500">Metodos</span>
+                <span class="font-bold text-2xl text-gray-500">Métodos</span>
               </div>
             </template>
             <template #content>
-              <div class="flex flex-column gap-2">
-                <pre class="language-javascript">
-                  <code class="language-javascript" ref="codeMethodsBlock" v-pre></code>
-                </pre>
+              <div class="flex flex-column gap-2 code-section">
+                <div class="code-container">
+                  <pre class="language-javascript">
+                      <code class="language-javascript" ref="codeMethodsBlock" v-pre></code>
+                    </pre>
+                </div>
               </div>
             </template>
           </Card>
@@ -180,21 +177,58 @@ watch(codeMethodsBlock, (newValue) => {
 
 <style scoped>
 .web-integration-view {
-  margin-top: 2rem;
+  margin: 2rem auto;
   width: 100%;
   max-width: 1400px;
   padding: 2rem;
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.content-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .config-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 2rem;
   width: 100%;
-
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
+}
+
+.code-section {
+  width: 100%;
+}
+
+.code-container {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+pre {
+  margin: 0;
+  padding: 1rem;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+code {
+  font-family: monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+:deep(.p-card) {
+  width: 100%;
+}
+
+:deep(.p-card-content) {
+  padding: 1rem;
 }
 </style>
