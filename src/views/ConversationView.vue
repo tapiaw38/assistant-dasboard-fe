@@ -55,7 +55,7 @@ const conversationSelectedHandler = computed(() => {
     <div class="grid conversation-container">
       <div class="flex flex-column gap-2">
         <div class="flex flex-row align-items-center">
-          <div class="flex flex-row gap-2 justify-content-center align-items-baseline">
+          <div class="flex flex-row gap-2 justify-content-center align-items-baseline mt-4">
             <span class="text-2xl font-bold mb-4 text-primary">Conversaciones</span>
             <i class="pi pi-comments text-primary text-2xl"></i>
             <i
@@ -65,34 +65,34 @@ const conversationSelectedHandler = computed(() => {
             ></i>
           </div>
         </div>
-        <DataTable
-          :value="conversations"
-          paginator
-          :rows="5"
-          :rowsPerPageOptions="[5, 10]"
-          v-if="isGetUserConversationSuccess"
-        >
-          <Column field="title" header="Titulo"></Column>
-          <Column field="created_at" header="Creada">
-            <template #body="slotProps">
-              {{ dateFormat(slotProps.data.created_at) }}
-            </template>
-          </Column>
-          <Column field="messages" header="Mensajes">
-            <template #body="slotProps">
-              {{ slotProps.data?.messages?.length || 0 }}
-            </template>
-          </Column>
-          <Column field="extra" header="Acciones">
-            <template #body="slotProps">
-              <Button
-                label="Ver"
-                class="p-button-success"
-                @click="conversationSelectedHandler(slotProps.data.id)"
-              />
-            </template>
-          </Column>
-        </DataTable>
+        <div v-if="isGetUserConversationSuccess" class="flex flex-column gap-2 table-container">
+          <p class="text-gray-500 font-semibold">
+            Aquí podrás ver todas las conversaciones con los clientes y revisar los mensajes
+            enviados y recibidos.
+          </p>
+          <DataTable :value="conversations" paginator :rows="5" :rowsPerPageOptions="[5, 10]">
+            <Column field="title" header="Titulo"></Column>
+            <Column field="created_at" header="Creada">
+              <template #body="slotProps">
+                {{ dateFormat(slotProps.data.created_at) }}
+              </template>
+            </Column>
+            <Column field="messages" header="Mensajes">
+              <template #body="slotProps">
+                {{ slotProps.data?.messages?.length || 0 }}
+              </template>
+            </Column>
+            <Column field="extra" header="Acciones">
+              <template #body="slotProps">
+                <Button
+                  label="Ver"
+                  class="p-button-success"
+                  @click="conversationSelectedHandler(slotProps.data.id)"
+                />
+              </template>
+            </Column>
+          </DataTable>
+        </div>
         <div v-else-if="isGetUserConversationPending">
           <LoadingSpinner />
         </div>
@@ -132,7 +132,9 @@ const conversationSelectedHandler = computed(() => {
                 </div>
                 <div class="flex flex-row gap-2">
                   <span class="text-gray-500 font-semibold">Creado:</span>
-                  <p class="text-gray-500 font-semibold">{{ dateFormat(message.created_at) }}</p>
+                  <p class="text-gray-500 font-semibold">
+                    {{ dateFormat(message.created_at) }}
+                  </p>
                 </div>
                 <div class="flex flex-column gap-2">
                   <span class="text-gray-500 font-semibold">Contenido:</span>
@@ -151,13 +153,17 @@ const conversationSelectedHandler = computed(() => {
 
 <style scoped>
 .conversation-view {
-  margin-top: 4rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
+  margin: 2rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
+
+  @media (max-width: 768px) {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+  }
 
   .conversation-container {
     grid-template-columns: 1fr 1fr;
@@ -166,7 +172,49 @@ const conversationSelectedHandler = computed(() => {
 
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
+      gap: 1rem;
     }
+  }
+}
+
+.table-container {
+  overflow-x: scroll;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    max-width: 310px !important;
+  }
+}
+
+:deep(.p-datatable) {
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+
+    .p-button {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+:deep(.p-scrollpanel) {
+  @media (max-width: 768px) {
+    height: 300px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+
+  .flex.flex-row {
+    flex-wrap: wrap;
+  }
+
+  .flex.flex-row.gap-2 {
+    gap: 0.5rem !important;
   }
 }
 

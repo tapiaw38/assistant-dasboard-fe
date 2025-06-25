@@ -134,19 +134,68 @@ const removeFile = (fileId: string) => {
 
 <style scoped>
 .container-store {
-  margin-top: 2rem;
+  margin: 1rem auto;
   max-width: 1400px;
-  padding: 2rem;
+  padding: 1rem;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+
+  @media (max-width: 768px) {
+    padding-top: 2.5rem;
+  }
 }
 
 .container-upload-store {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
+  width: 100%;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    padding: 0.5rem;
+    gap: 1rem;
+  }
+}
+
+:deep(.p-card) {
+  width: 100%;
+  overflow: hidden;
+}
+
+:deep(.p-card-content) {
+  padding: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+  .flex.justify-content-between {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  a {
+    word-break: break-all;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 0.5rem;
   }
 }
 </style>
