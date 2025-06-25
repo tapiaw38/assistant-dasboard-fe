@@ -7,10 +7,9 @@ import { useAuth } from '@/composables/useAuth'
 import { useForm, useField } from 'vee-validate'
 import { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
-import { watchEffect } from 'vue'
 
 const router = useRouter()
-const { loginUser, loginError, isLoginError, isLoginPending, isLoginSuccess } = useAuth()
+const { loginUser, loginError, isLoginError, isLoginPending } = useAuth()
 
 const schema = z.object({
   email: z.string().email('Email inválido'),
@@ -29,17 +28,11 @@ const onSubmit = handleSubmit(async (values) => {
     email: values.email,
     password: values.password,
   }
-
   try {
     await loginUser(loginParams)
+    await router.push('/dashboard')
   } catch (error) {
     console.error('Error al iniciar sesión:', error)
-  }
-})
-
-watchEffect(() => {
-  if (isLoginSuccess.value) {
-    router.push('/dashboard')
   }
 })
 </script>

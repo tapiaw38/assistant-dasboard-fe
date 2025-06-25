@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
 import AuthLogin from '@/components/core/AuthLogin/AuthLogin.vue'
@@ -10,7 +10,7 @@ import GoogleButton from '@/components/core/GoogleButton/GoogleButton.vue'
 
 const router = useRouter()
 
-const { isLoginPending, isLoginError, loginUser, isLoginSuccess, isAuthenticated } = useAuth()
+const { isLoginPending, isLoginError, loginUser } = useAuth()
 
 const isLogin = ref(true)
 const isLoginMessage = ref('Iniciar Sesión')
@@ -21,14 +21,13 @@ const toggleView = () => {
 }
 
 const loginWithGoogle = async (code: string) => {
-  await loginUser({ ssoType: 'google', ssoCode: code })
-}
-
-watchEffect(() => {
-  if (isAuthenticated.value && isLoginSuccess.value) {
-    router.push('/dashboard')
+  try {
+    await loginUser({ ssoType: 'google', ssoCode: code })
+    await router.push('/dashboard')
+  } catch (error) {
+    console.error('Error during Google login:', error)
   }
-})
+}
 </script>
 
 <template>
