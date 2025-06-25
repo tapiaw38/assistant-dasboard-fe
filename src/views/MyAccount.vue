@@ -96,7 +96,7 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
 
 <template>
   <div class="account-me flex flex-column gap-4">
-    <h1 class="text-2xl font-bold text-200 my-4 text-gray-500">Mi Cuenta</h1>
+    <h1 class="text-2xl font-bold text-200 pt-3 mt-4 mb-2 text-gray-500">Mi Cuenta</h1>
     <div class="grid container-account gap-4" v-if="isGetAssistantProfileSuccess">
       <!-- my subscriptions -->
       <div class="flex flex-column gap-2">
@@ -237,18 +237,21 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
               </div>
             </template>
             <template #content>
+              <!-- Modificar la sección de las api keys -->
               <div
                 class="flex flex-row gap-2 align-content-center align-items-center"
                 v-for="apiKey in assistantProfile?.api_keys"
                 :key="apiKey.id"
               >
-                <div class="flex flex-column gap-2" v-if="apiKey?.is_active">
+                <div class="flex flex-column gap-2 w-full" v-if="apiKey?.is_active">
                   <Tag :value="apiKey.description" severity="info" rounded class="w-full" />
-                  <div class="flex flex-row gap-2">
-                    <span class="text-sm font-ligth text-gray-500 api-value">{{
-                      apiKey.value
-                    }}</span>
-                    <div class="flex flex-row gap-2 align-content-center align-items-center">
+                  <div class="flex flex-column sm:flex-row gap-2">
+                    <span class="text-sm font-ligth text-gray-500 api-value flex-grow-1">
+                      {{ apiKey.value }}
+                    </span>
+                    <div
+                      class="flex flex-row gap-2 justify-content-center sm:justify-content-end w-full sm:w-auto"
+                    >
                       <Button
                         label=""
                         icon="pi pi-copy"
@@ -360,20 +363,33 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
 
 <style scoped>
 .account-me {
+  justify-content: center;
+  align-items: center;
   max-width: 1400px;
-  margin-top: 2rem;
+  margin-top: 3rem;
   padding: 2rem;
   min-height: 100vh;
 
   .container-account {
+    justify-content: center;
+    align-items: center;
     width: 100%;
     grid-template-columns: 1fr 1fr;
     display: grid;
+    gap: 1rem;
   }
 
   @media (max-width: 768px) {
+    padding: 1rem;
+    margin-top: 1rem;
+
     .container-account {
       grid-template-columns: 1fr;
+    }
+
+    h1 {
+      font-size: 1.5rem !important;
+      text-align: center;
     }
   }
 }
@@ -383,6 +399,38 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
   white-space: pre-wrap;
   overflow-wrap: break-word;
   max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  :deep(.p-card) {
+    margin-bottom: 1rem;
+  }
+
+  :deep(.p-card-content) {
+    padding: 0.5rem;
+  }
+
+  :deep(.p-button) {
+    padding: 0.5rem !important;
+  }
+
+  .flex.flex-row {
+    flex-direction: column !important;
+  }
+
+  .flex.flex-row .p-button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .flex.flex-row.gap-2 {
+    gap: 0.5rem !important;
+  }
+
+  :deep(.p-dialog) {
+    width: 90vw !important;
+    margin: 0 auto;
+  }
 }
 
 .container-api-key {
