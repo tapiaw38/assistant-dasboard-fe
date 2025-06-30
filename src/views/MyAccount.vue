@@ -96,7 +96,7 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
 
 <template>
   <div class="account-me flex flex-column gap-4">
-    <h1 class="text-2xl font-bold text-200 pt-3 mt-4 mb-2 text-gray-500">Mi Cuenta</h1>
+    <h1 class="text-2xl font-bold text-200 mb-4 text-gray-500">Mi Cuenta</h1>
     <div class="grid container-account gap-4" v-if="isGetAssistantProfileSuccess">
       <!-- my subscriptions -->
       <div class="flex flex-column gap-2">
@@ -237,7 +237,7 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
               </div>
             </template>
             <template #content>
-              <!-- Modificar la sección de las api keys -->
+              <!-- Modified to use v-for for api keys -->
               <div
                 class="flex flex-row gap-2 align-content-center align-items-center"
                 v-for="apiKey in assistantProfile?.api_keys"
@@ -363,16 +363,22 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
 
 <style scoped>
 .account-me {
-  justify-content: center;
-  align-items: center;
+  justify-content: start;
+  align-items: self-start;
   max-width: 1400px;
-  margin-top: 3rem;
-  padding: 2rem;
+  margin-top: 4rem;
+  padding: 1rem;
   min-height: 100vh;
+
+  h1 {
+    font-size: 2rem;
+    text-align: left;
+    margin-bottom: 1rem;
+  }
 
   .container-account {
     justify-content: center;
-    align-items: center;
+    align-items: self-start;
     width: 100%;
     grid-template-columns: 1fr 1fr;
     display: grid;
@@ -381,13 +387,15 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
 
   @media (max-width: 768px) {
     padding: 1rem;
-    margin-top: 1rem;
+    margin-top: 3rem;
+    align-items: center;
 
     .container-account {
       grid-template-columns: 1fr;
     }
 
     h1 {
+      margin-top: 1.5rem;
       font-size: 1.5rem !important;
       text-align: center;
     }
@@ -436,6 +444,9 @@ const removeApiKeyOpenModal = (apiKeyID: string) => {
 .container-api-key {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
