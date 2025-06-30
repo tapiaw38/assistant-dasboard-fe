@@ -313,7 +313,7 @@ function scrollToSection() {
       >
         <Card class="text-center plan-card p-4">
           <template #title>
-            <h3 class="text-xl font-bold">Free Beta</h3>
+            <h3 class="text-xl font-bold">Free Beta x10 dias</h3>
           </template>
           <template #content>
             <p class="text-lg font-light mb-4">Ideal para probar Nymia.</p>
@@ -338,7 +338,7 @@ function scrollToSection() {
           </template>
           <template #content>
             <p class="text-lg font-light mb-4">Ideal para pequeños negocios.</p>
-            <p class="text-2xl font-bold mb-4">$9.99/mes</p>
+            <p class="text-2xl font-bold mb-4">$19.99/mes</p>
             <ul class="text-left mb-4">
               <li>✔ Asistente inteligente</li>
               <li>✔ Comprensión contextual</li>
@@ -355,7 +355,7 @@ function scrollToSection() {
           </template>
           <template #content>
             <p class="text-lg font-light mb-4">Para negocios en crecimiento.</p>
-            <p class="text-2xl font-bold mb-4">$29.99/mes</p>
+            <p class="text-2xl font-bold mb-4">$49.99/mes</p>
             <ul class="text-left mb-4">
               <li>✔ Asistentes inteligentes</li>
               <li>✔ Comprensión contextual</li>
