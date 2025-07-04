@@ -3,19 +3,19 @@ const currentYear = new Date().getFullYear()
 const socialLinks = [
   {
     icon: 'pi pi-facebook',
-    url: 'https://www.facebook.com/seelyapp',
+    url: 'https://www.facebook.com/nymia-app',
   },
   {
     icon: 'pi pi-twitter',
-    url: 'https://twitter.com/seelyapp',
+    url: 'https://twitter.com/nymia-app',
   },
   {
     icon: 'pi pi-instagram',
-    url: 'https://www.instagram.com/seelyapp',
+    url: 'https://www.instagram.com/nymia-app',
   },
   {
     icon: 'pi pi-linkedin',
-    url: 'https://www.linkedin.com/company/seelyapp',
+    url: 'https://www.linkedin.com/company/nymia-app',
   },
 ]
 </script>

@@ -416,6 +416,11 @@ function scrollToSection() {
 
 .cta {
   background: linear-gradient(180deg, #0ff31a, #9333ea);
+  background-image: url('@/assets/icons/nymia-icon.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: overlay;
 }
 
 .step-circle {
