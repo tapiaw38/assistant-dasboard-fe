@@ -3659,6 +3659,11 @@ nwsapi@^2.2.16:
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.20.tgz#22e53253c61e7b0e7e93cef42c891154bcca11ef"
   integrity sha512-/ieB+mDe4MrrKMT8z+mQL8klXydZWGR5Dowt4RAGKbJ3kIGEx3X4ljUo+6V73IXtUPWgfOlU5B9MlGxFO5T+cA==
 
+nymia-ai-assistant@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/nymia-ai-assistant/-/nymia-ai-assistant-0.3.0.tgz#5561165ad8e7cba158c31aa3f6ee6208fa93fdc1"
+  integrity sha512-licNzvpJS0+mNFgNJF+ZkNPvaRjVvsOWQTW9PzacdvsS9F8CJ3BM9F1b9qoiFVU+OLRMLifFaSRe5TiTlCv0TA==
+
 object-assign@^4:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
@@ -4148,11 +4153,6 @@ saxes@^6.0.0:
   integrity sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==
   dependencies:
     xmlchars "^2.2.0"
-
-seely-ai-assistant@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/seely-ai-assistant/-/seely-ai-assistant-0.3.0.tgz#0b1759f0bfccc2205e0131281535ad08c2420c6f"
-  integrity sha512-kf/iXluKn1yGJUaGpKQqB9fgVxWeNesyKNRO+iA63Ngu0e0SYH5+IL9N1TwUtNUcelBvqf51c8hPMou6rRF8xA==
 
 semver@^6.3.1:
   version "6.3.1"

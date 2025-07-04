@@ -130,7 +130,7 @@ watch(codeMethodsBlock, (newValue) => {
                   <p class="text-1xl text-bold text-gray-500">
                     Paquete NPM:
                     <a
-                      href="https://www.npmjs.com/package/seely-ai-assistant"
+                      href="https://www.npmjs.com/package/nymia-ai-assistant"
                       target="_blank"
                       class="font-ligth"
                       >nymia assistant</a

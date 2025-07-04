@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted } from 'vue'
 import { RouterView } from 'vue-router'
-import { createAssistant } from 'seely-ai-assistant'
+import { createAssistant } from 'nymia-ai-assistant'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assistant: any = null
