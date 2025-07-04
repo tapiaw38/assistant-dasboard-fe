@@ -3659,10 +3659,10 @@ nwsapi@^2.2.16:
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.20.tgz#22e53253c61e7b0e7e93cef42c891154bcca11ef"
   integrity sha512-/ieB+mDe4MrrKMT8z+mQL8klXydZWGR5Dowt4RAGKbJ3kIGEx3X4ljUo+6V73IXtUPWgfOlU5B9MlGxFO5T+cA==
 
-nymia-ai-assistant@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/nymia-ai-assistant/-/nymia-ai-assistant-0.3.0.tgz#5561165ad8e7cba158c31aa3f6ee6208fa93fdc1"
-  integrity sha512-licNzvpJS0+mNFgNJF+ZkNPvaRjVvsOWQTW9PzacdvsS9F8CJ3BM9F1b9qoiFVU+OLRMLifFaSRe5TiTlCv0TA==
+nymia-ai-assistant@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/nymia-ai-assistant/-/nymia-ai-assistant-0.4.0.tgz#d2b8153a653adbb48acad5b9be5ac94771a3f4df"
+  integrity sha512-dS15+phJy0RMciXeojxgk/k+AM8l91zulQzbHnSBGk+VvU5fKM/8akWfXN2FYp/CBZak9A+eFsQhrRX/9N+QlQ==
 
 object-assign@^4:
   version "4.1.1"
