@@ -1,53 +1,53 @@
 <script setup lang="ts">
-import type { IntegrationParams } from '@/types/assistant'
-import { onMounted, reactive, computed } from 'vue'
-import { useAssistant } from '@/composables/useAssistant'
+import type { IntegrationParams } from "@/types/assistant";
+import { onMounted, reactive, computed } from "vue";
+import { useAssistant } from "@/composables/useAssistant";
 
-const { addIntegration, getAssistantProfile, assistantProfile } = useAssistant()
+const { addIntegration, getAssistantProfile, assistantProfile } = useAssistant();
 
 const whatsappIntegration = reactive<IntegrationParams>({
-  name: 'whatsapp',
-  type: 'integration',
+  name: "whatsapp",
+  type: "integration",
   config: {
-    phoneNumber: '',
-    whatsappToken: '',
+    phoneNumber: "",
+    whatsappToken: "",
   },
-})
+});
 
 const validationErrors = reactive({
-  phoneNumber: '',
-  whatsappToken: '',
-})
+  phoneNumber: "",
+  whatsappToken: "",
+});
 
 const saveConfig = async () => {
   validationErrors.phoneNumber = !whatsappIntegration.config.phoneNumber
-    ? 'El número de teléfono es obligatorio.'
-    : ''
+    ? "El número de teléfono es obligatorio."
+    : "";
   validationErrors.whatsappToken = !whatsappIntegration.config.whatsappToken
-    ? 'El token de WhatsApp es obligatorio.'
-    : ''
+    ? "El token de WhatsApp es obligatorio."
+    : "";
 
   if (validationErrors.phoneNumber || validationErrors.whatsappToken) {
-    return
+    return;
   }
   try {
-    await addIntegration(whatsappIntegration)
-    console.log('Configuración guardada:', whatsappIntegration)
-    await getAssistantProfile()
+    await addIntegration(whatsappIntegration);
+    console.log("Configuración guardada:", whatsappIntegration);
+    await getAssistantProfile();
   } catch (error) {
-    console.error('Error al guardar la configuración:', error)
+    console.error("Error al guardar la configuración:", error);
   }
-}
+};
 
 const searchWhatsappIntegration = computed(() => {
   return assistantProfile.value?.integrations?.find(
-    (integration) => integration.name === 'whatsapp',
-  )
-})
+    (integration) => integration.name === "whatsapp"
+  );
+});
 
 onMounted(async () => {
-  getAssistantProfile()
-})
+  getAssistantProfile();
+});
 </script>
 
 <template>
@@ -78,7 +78,7 @@ onMounted(async () => {
           type="text"
           v-model="whatsappIntegration.config.whatsappToken"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          placeholder="Ej: xxxxxxxxxxxxxxxxxxxxxx"
+          placeholder="Ej: xxxxxxxxxxxxxxxxxxxxx"
           required
         />
       </div>
@@ -92,11 +92,11 @@ onMounted(async () => {
     <h2 class="text-2xl font-bold mt-6 mb-4 text-primary">Configuración de WhatsApp</h2>
     <span class="font-bold mt-6 mb-4 text-primary">
       Número de Teléfono:
-      {{ searchWhatsappIntegration?.config.phoneNumber || 'No configurado' }}
+      {{ searchWhatsappIntegration?.config.phoneNumber || "No configurado" }}
     </span>
     <span class="font-bold mt-6 mb-4 text-primary">
       Token de WhatsApp:
-      {{ searchWhatsappIntegration?.config.whatsappToken || 'No configurado' }}
+      {{ searchWhatsappIntegration?.config.whatsappToken || "No configurado" }}
     </span>
   </div>
 </template>
