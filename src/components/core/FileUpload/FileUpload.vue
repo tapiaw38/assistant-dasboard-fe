@@ -1,90 +1,101 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { usePrimeVue } from "primevue/config";
-import type { FileUploadSelectEvent } from "primevue/fileupload";
-import FileUpload from "primevue/fileupload";
-import Button from "primevue/button";
-import ProgressBar from "primevue/progressbar";
-import Badge from "primevue/badge";
-import type { UploadFile } from "./types";
-import { useAssistant } from "../../../composables/useAssistant";
+import { ref } from 'vue'
+import { usePrimeVue } from 'primevue/config'
+import type { FileUploadSelectEvent } from 'primevue/fileupload'
+import FileUpload from 'primevue/fileupload'
+import Button from 'primevue/button'
+import ProgressBar from 'primevue/progressbar'
+import Badge from 'primevue/badge'
+import type { UploadFile } from './types'
+import { useAssistant } from '../../../composables/useAssistant'
 
-const { addFiles, addFilesError } = useAssistant();
+const { addFiles, addFilesError } = useAssistant()
 
-const $primevue = usePrimeVue();
+const $primevue = usePrimeVue()
 
-const totalSize = ref(0);
-const totalSizePercent = ref(0);
-const selectedFiles = ref<File[]>([]);
+const totalSize = ref(0)
+const totalSizePercent = ref(0)
+const selectedFiles = ref<File[]>([])
 
 const allowedTypes = [
-  "application/pdf",
-  "application/vnd.ms-excel",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-];
+  'application/pdf',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+]
 
 const onRemoveTemplatingFile = (
   file: UploadFile,
   removeFileCallback: (index: number) => void,
-  index: number
+  index: number,
 ) => {
   if (file.objectURL) {
-    URL.revokeObjectURL(file.objectURL);
+    URL.revokeObjectURL(file.objectURL)
   }
-  removeFileCallback(index);
-  totalSize.value -= file.size;
-  totalSizePercent.value = totalSize.value;
-};
+  removeFileCallback(index)
+  totalSize.value -= file.size
+  totalSizePercent.value = totalSize.value
+}
 
 const onSelectedFiles = (event: FileUploadSelectEvent) => {
-  totalSize.value = 0;
-  const filtered = event.files.filter((file: UploadFile) =>
-    allowedTypes.includes(file.type)
-  );
+  totalSize.value = 0
+  const filtered = event.files.filter((file: UploadFile) => allowedTypes.includes(file.type))
 
   if (filtered.length !== event.files.length) {
-    alert("Solo se permiten archivos PDF y Excel (.xls, .xlsx).");
+    alert('Solo se permiten archivos PDF y Excel (.xls, .xlsx).')
+  }
+
+  // Verificar tamaño individual de archivos
+  const maxFileSize = 262144000 // 250 MiB (250 * 1024 * 1024)
+  const oversizedFiles = filtered.filter((file: UploadFile) => file.size > maxFileSize)
+
+  if (oversizedFiles.length > 0) {
+    alert(
+      `Los siguientes archivos superan el límite de 250 MiB: ${oversizedFiles
+        .map((f: UploadFile) => f.name)
+        .join(', ')}`,
+    )
+    return
   }
 
   filtered.forEach((file: UploadFile) => {
-    file.objectURL = URL.createObjectURL(file);
-    totalSize.value += file.size;
-  });
+    file.objectURL = URL.createObjectURL(file)
+    totalSize.value += file.size
+  })
 
-  totalSizePercent.value = totalSize.value;
-  selectedFiles.value = filtered;
-};
+  totalSizePercent.value = totalSize.value
+  selectedFiles.value = filtered
+}
 
 const uploadEvent = async (uploadCallback: () => void, clearCallback: () => void) => {
   if (selectedFiles.value.length > 0) {
     try {
-      await addFiles(selectedFiles.value);
+      await addFiles(selectedFiles.value)
 
-      clearCallback();
+      clearCallback()
     } catch (error) {
-      console.error("Error uploading files:", error + " - ", addFilesError.value);
+      console.error('Error uploading files:', error + ' - ', addFilesError.value)
     }
   }
 
-  uploadCallback();
-};
+  uploadCallback()
+}
 
-const onTemplatedUpload = () => {};
+const onTemplatedUpload = () => {}
 
 const formatSize = (bytes: number) => {
-  const k = 2048 * 2048; // 2^21, which is 2 MiB
-  const dm = 2;
-  const sizes = $primevue.config?.locale?.fileSizeTypes || ["B", "KB", "MB", "GB", "TB"];
+  const k = 1024
+  const dm = 2
+  const sizes = $primevue.config?.locale?.fileSizeTypes || ['B', 'KB', 'MB', 'GB', 'TB']
 
   if (bytes === 0) {
-    return `0 ${sizes[0]}`;
+    return `0 ${sizes[0]}`
   }
 
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm))
 
-  return `${formattedSize} ${sizes[i]}`;
-};
+  return `${formattedSize} ${sizes[i]}`
+}
 </script>
 
 <template>
@@ -94,7 +105,7 @@ const formatSize = (bytes: number) => {
       @upload="onTemplatedUpload"
       :multiple="true"
       accept=".pdf,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      :maxFileSize="4000000"
+      :maxFileSize="262144000"
       @select="onSelectedFiles"
     >
       <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
@@ -129,19 +140,12 @@ const formatSize = (bytes: number) => {
             :showValue="false"
             class="md:w-20rem h-1 w-full md:ml-auto"
           >
-            <span class="whitespace-nowrap">{{ totalSize }}B </span>
+            <span class="whitespace-nowrap">{{ formatSize(totalSize) }}</span>
           </ProgressBar>
         </div>
       </template>
 
-      <template
-        #content="{
-          files,
-          uploadedFiles,
-          removeUploadedFileCallback,
-          removeFileCallback,
-        }"
-      >
+      <template #content="{ files, uploadedFiles, removeUploadedFileCallback, removeFileCallback }">
         <div class="flex flex-col gap-8 pt-4">
           <div v-if="files.length > 0">
             <h5>Pending</h5>
@@ -219,7 +223,7 @@ const formatSize = (bytes: number) => {
             class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"
           ></i>
           <p class="mt-2 mb-0">
-            Arrastra y suelta archivos PDF o Excel aquí para subirlos.
+            Arrastra y suelta archivos PDF o Excel aquí para subirlos (máximo 250 MiB por archivo).
           </p>
         </div>
       </template>
