@@ -152,7 +152,7 @@ const integrations = [
     icon: 'pi pi-whatsapp',
     color: 'text-green-500',
     to: 'whatsapp-integration',
-    enabled: false,
+    enabled: true,
   },
   {
     name: 'Google Calendar',
