@@ -155,6 +155,14 @@ const integrations = [
     enabled: false,
   },
   {
+    name: 'Mercado Libre',
+    description: 'Integración Mercado Libre, Contestar preguntas sin responder',
+    icon: 'pi pi-chat',
+    color: 'text-green-500',
+    to: 'meli-integration',
+    enabled: true,
+  },
+  {
     name: 'Google Calendar',
     description: 'Integración Google Calendar',
     icon: 'pi pi-calendar',

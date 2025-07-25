@@ -1,53 +1,58 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger'
-import TextPlugin from 'gsap/TextPlugin'
-import Button from 'primevue/button'
-import Card from 'primevue/card'
-import AppFooter from '@/components/core/shared/AppFooter/AppFooter.vue'
-import ContactForm from '@/components/core/ContactForm/ContactForm.vue'
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import TextPlugin from "gsap/TextPlugin";
+import Button from "primevue/button";
+import Card from "primevue/card";
+import AppFooter from "@/components/core/shared/AppFooter/AppFooter.vue";
+import ContactForm from "@/components/core/ContactForm/ContactForm.vue";
 
-const router = useRouter()
+const router = useRouter();
 
-gsap.registerPlugin(ScrollTrigger, TextPlugin)
+gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
-const hero = ref<HTMLElement | null>(null)
-const features = ref<HTMLElement | null>(null)
-const featuresText1 = ref<HTMLElement | null>(null)
-const featuresText2 = ref<HTMLElement | null>(null)
-const howItWorks = ref<HTMLElement | null>(null)
-const cta = ref<HTMLElement | null>(null)
-const plans = ref<HTMLElement | null>(null)
-const arrow = ref<HTMLElement | null>(null)
+const hero = ref<HTMLElement | null>(null);
+const features = ref<HTMLElement | null>(null);
+const featuresText1 = ref<HTMLElement | null>(null);
+const featuresText2 = ref<HTMLElement | null>(null);
+const howItWorks = ref<HTMLElement | null>(null);
+const cta = ref<HTMLElement | null>(null);
+const plans = ref<HTMLElement | null>(null);
+const arrow = ref<HTMLElement | null>(null);
 
 const featuresList = [
   {
-    icon: '🧠',
-    title: 'Conversaciones inteligentes',
-    text: 'Respuestas precisas y relevantes para tus clientes.',
+    icon: "🧠",
+    title: "Conversaciones inteligentes",
+    text: "Respuestas precisas y relevantes para tus clientes.",
   },
   {
-    icon: '🤖',
-    title: 'Soporte automatizado',
-    text: 'Resuelve problemas comunes sin intervención humana.',
+    icon: "🤖",
+    title: "Soporte automatizado",
+    text: "Resuelve problemas comunes sin intervención humana.",
   },
   {
-    icon: '⚙️',
-    title: 'Fácil integración',
-    text: 'Conéctalo a tu sitio web o aplicación en minutos.',
+    icon: "⚙️",
+    title: "Fácil integración",
+    text: "Conéctalo a tu sitio web o aplicación en minutos.",
   },
-]
+];
 
 const steps = [
-  'Regístrate y configura tu cuenta.',
-  'Crea tu asistente virtual.',
-  'Elige las integraciones que necesitas.',
-  'Deja que Nymia trabaje por ti.',
-]
+  "Regístrate y configura tu cuenta.",
+  "Crea tu asistente virtual.",
+  "Elige las integraciones que necesitas.",
+  "Deja que Nymia trabaje por ti.",
+];
 
 onMounted(() => {
+  const code = router.currentRoute.value.query.code;
+  if (code) {
+    console.log("Query param code:", code);
+  }
+
   const fadeUp = (el: Element) => {
     gsap.from(el, {
       opacity: 0,
@@ -55,10 +60,10 @@ onMounted(() => {
       duration: 1,
       scrollTrigger: {
         trigger: el,
-        start: 'top 80%',
+        start: "top 80%",
       },
-    })
-  }
+    });
+  };
 
   if (hero.value) {
     gsap.from(hero.value.children, {
@@ -66,71 +71,71 @@ onMounted(() => {
       y: 30,
       stagger: 0.3,
       duration: 1,
-    })
+    });
   }
 
   if (features.value) {
-    gsap.from(features.value.querySelectorAll('.feature-box'), {
+    gsap.from(features.value.querySelectorAll(".feature-box"), {
       opacity: 0,
       y: 40,
       duration: 0.8,
       stagger: 0.2,
       scrollTrigger: {
         trigger: features.value,
-        start: 'top 85%',
+        start: "top 85%",
       },
-    })
+    });
   }
 
   if (featuresText1.value) {
     gsap.fromTo(
       featuresText1.value,
-      { opacity: 0, text: '' },
+      { opacity: 0, text: "" },
       {
         opacity: 1,
         duration: 2,
         text: {
-          value: featuresText1.value.textContent || 'Texto de prueba',
-          delimiter: '',
+          value: featuresText1.value.textContent || "Texto de prueba",
+          delimiter: "",
         },
         scrollTrigger: {
           trigger: featuresText1.value,
-          start: 'left 85%',
+          start: "left 85%",
         },
-      },
-    )
+      }
+    );
   }
 
   if (featuresText2.value) {
     gsap.fromTo(
       featuresText2.value,
-      { opacity: 0, text: '' },
+      { opacity: 0, text: "" },
       {
         opacity: 1,
         duration: 2,
         text: {
-          value: featuresText2.value.textContent || 'Texto de prueba',
-          delimiter: '',
+          value: featuresText2.value.textContent || "Texto de prueba",
+          delimiter: "",
         },
         scrollTrigger: {
           trigger: featuresText2.value,
-          start: 'top 85%',
+          start: "top 85%",
         },
-      },
-    )
+      }
+    );
   }
 
   if (howItWorks.value) {
-    gsap.from(howItWorks.value.querySelectorAll('.step'), {
+    gsap.from(howItWorks.value.querySelectorAll(".step"), {
       opacity: 0,
       y: 40,
       duration: 0.8,
       stagger: 0.2,
       scrollTrigger: {
         trigger: howItWorks.value,
-        start: 'top 85%',
+        start: "top 85%",
       },
-    })
+    });
   }
 
   if (cta.value) {
@@ -139,20 +144,20 @@ onMounted(() => {
       y: 30,
       stagger: 0.3,
       duration: 1,
-    })
+    });
   }
 
   if (plans.value) {
-    gsap.from(plans.value.querySelectorAll('.card'), {
+    gsap.from(plans.value.querySelectorAll(".card"), {
       opacity: 0,
       y: 40,
       duration: 0.8,
       stagger: 0.2,
       scrollTrigger: {
         trigger: plans.value,
-        start: 'top 85%',
+        start: "top 85%",
       },
-    })
+    });
   }
 
   if (arrow.value) {
@@ -160,25 +165,25 @@ onMounted(() => {
       opacity: 0,
       y: 30,
       duration: 1,
-      ease: 'power2.out',
+      ease: "power2.out",
       onComplete: () => {
         gsap.to(arrow.value, {
-          y: '+=10',
+          y: "+=10",
           duration: 0.8,
           repeat: -1,
           yoyo: true,
-          ease: 'sine.inOut',
-        })
+          ease: "sine.inOut",
+        });
       },
-    })
+    });
   }
 
-  fadeUp(howItWorks.value!)
-  fadeUp(cta.value!)
-})
+  fadeUp(howItWorks.value!);
+  fadeUp(cta.value!);
+});
 
 function scrollToSection() {
-  features.value?.scrollIntoView({ behavior: 'smooth' })
+  features.value?.scrollIntoView({ behavior: "smooth" });
 }
 </script>
 
@@ -193,7 +198,8 @@ function scrollToSection() {
         Automatiza tu negocio con <code class="font-light">Nymia</code>
       </h1>
       <p class="text-xl mb-6">
-        El asistente virtual que aumenta productividad y mejora la experiencia de tus clientes
+        El asistente virtual que aumenta productividad y mejora la experiencia de tus
+        clientes
       </p>
       <div
         class="flex flex-column gap-2 absolute bottom-0 right-0 left-0 mb-5"
@@ -219,13 +225,15 @@ function scrollToSection() {
       <h2 class="text-3xl text-center mb-8">¿Por qué elegir Nymia?</h2>
 
       <p class="text-lg font-bold mb-2 mx-3" ref="featuresText1">
-        En <code>Nymia</code>, brindamos una plataforma y servicios diseñados para que puedas
-        integrar inteligencia artificial en tu sitio web, canales de atención o sistemas de trabajo.
+        En <code>Nymia</code>, brindamos una plataforma y servicios diseñados para que
+        puedas integrar inteligencia artificial en tu sitio web, canales de atención o
+        sistemas de trabajo.
       </p>
 
       <p class="text-lg font-bold mb-8 mx-3" ref="featuresText2">
-        Nuestro enfoque se basa en automatizar tareas, mejorar la experiencia del cliente y aumentar
-        la eficiencia operativa mediante soluciones adaptadas a tu industria y forma de trabajo.
+        Nuestro enfoque se basa en automatizar tareas, mejorar la experiencia del cliente
+        y aumentar la eficiencia operativa mediante soluciones adaptadas a tu industria y
+        forma de trabajo.
       </p>
 
       <div class="flex flex-wrap justify-content-center gap-4">
@@ -248,7 +256,9 @@ function scrollToSection() {
     <!-- HOW IT WORKS -->
     <section ref="howItWorks" class="how-it-works py-8 px-4 max-w-4xl mx-auto">
       <h2 class="text-3xl text-center mb-6 font-bold">¿Cómo funciona?</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 align-items-center justify-content-center">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 align-items-center justify-content-center"
+      >
         <div
           class="flex flex-row justify-content-center align-items-center gap-4 step"
           v-for="(step, index) in steps"
@@ -273,8 +283,8 @@ function scrollToSection() {
       <div class="flex flex-column align-items-center mt-5 mb-5">
         <h2 class="text-3xl font-bold mb-6">¿Listo para integrar IA en tu aplicación?</h2>
         <p class="text-lg mb-6 font-light">
-          Prueba gratis por 15 dias el plan Básico y descubre cómo Nymia puede transformar tu
-          negocio.
+          Prueba gratis por 15 dias el plan Básico y descubre cómo Nymia puede transformar
+          tu negocio.
         </p>
       </div>
       <div
@@ -283,7 +293,8 @@ function scrollToSection() {
         <div class="flex align-items-center gap-3">
           <span class="text-4xl">🤖</span>
           <p class="text-lg font-light">
-            La IA de Nymia está diseñada para aprender y adaptarse a las necesidades de tu negocio.
+            La IA de Nymia está diseñada para aprender y adaptarse a las necesidades de tu
+            negocio.
           </p>
         </div>
         <div class="flex align-items-center gap-3">
@@ -416,7 +427,7 @@ function scrollToSection() {
 
 .cta {
   background: linear-gradient(180deg, #0ff31a, #9333ea);
-  background-image: url('@/assets/icons/nymia-icon.png');
+  background-image: url("@/assets/icons/nymia-icon.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -432,9 +443,7 @@ function scrollToSection() {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
   width: 60px !important;
   height: 60px;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .step-circle:hover {

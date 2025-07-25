@@ -55,6 +55,12 @@ const router = createRouter({
           beforeEnter: [createAuthGuard(new IsAuthenticated())],
           component: () => import('../views/WhatsappIntegrationView.vue'),
         },
+        {
+          path: '/meli-integration',
+          name: 'meli-integration',
+          beforeEnter: [createAuthGuard(new IsAuthenticated())],
+          component: () => import('../views/MercadolibreIntegrationView.vue'),
+        },
       ],
     },
   ],
